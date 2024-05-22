@@ -129,7 +129,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="unittest.cpp" />
+    <ClCompile Include="MOCK_SSD.cpp" />
+    <ClCompile Include="SSD.cpp" />
+    <ClCompile Include="StorageDriver.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IStorage.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

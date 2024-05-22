@@ -1,30 +1,70 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\",
+  "WorkspaceRootPath": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{98F16AE7-4086-497D-90E5-711B8C43D0DE}|\uC194\uB8E8\uC158 \uD56D\uBAA9{98F16AE7-4086-497D-90E5-711B8C43D0DE}|C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\.editorconfig||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{98F16AE7-4086-497D-90E5-711B8C43D0DE}|\uC194\uB8E8\uC158 \uD56D\uBAA9{98F16AE7-4086-497D-90E5-711B8C43D0DE}|solutionrelative:.editorconfig||{3B902123-F8A7-4915-9F01-361F908088D0}"
+      "AbsoluteMoniker": "D:0:0:{66CBC725-203B-44F7-A49A-39FEF20CCEE5}|TestShellTest\\TestShellTest.vcxproj|C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShellTest\\test.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{66CBC725-203B-44F7-A49A-39FEF20CCEE5}|TestShellTest\\TestShellTest.vcxproj|solutionrelative:TestShellTest\\test.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{98F16AE7-4086-497D-90E5-711B8C43D0DE}|\uC194\uB8E8\uC158 \uD56D\uBAA9{98F16AE7-4086-497D-90E5-711B8C43D0DE}|C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\.gitingore||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{98F16AE7-4086-497D-90E5-711B8C43D0DE}|\uC194\uB8E8\uC158 \uD56D\uBAA9{98F16AE7-4086-497D-90E5-711B8C43D0DE}|solutionrelative:.gitingore||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{4ED2B784-92E0-4CC6-8C1B-4C4C43ED077B}|SSDTest\\SSDTest.vcxproj|C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\SSDTest\\test.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{4ED2B784-92E0-4CC6-8C1B-4C4C43ED077B}|SSDTest\\SSDTest.vcxproj|solutionrelative:SSDTest\\test.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A551FA3B-7393-43C7-9510-828E86F45CF2}|SSDProject\\SSDProject.vcxproj|C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\SSDProject\\unittest.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A551FA3B-7393-43C7-9510-828E86F45CF2}|SSDProject\\SSDProject.vcxproj|solutionrelative:SSDProject\\unittest.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{AF1358C1-64C4-458C-84B9-71ED2B7FAFC6}|TestShell\\TestShell.vcxproj|C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\TestApp1Command.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{AF1358C1-64C4-458C-84B9-71ED2B7FAFC6}|TestShell\\TestShell.vcxproj|solutionrelative:TestShell\\TestApp1Command.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AF1358C1-64C4-458C-84B9-71ED2B7FAFC6}|TestShell\\TestShell.vcxproj|C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\TestShell\\unittest.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{AF1358C1-64C4-458C-84B9-71ED2B7FAFC6}|TestShell\\TestShell.vcxproj|solutionrelative:TestShell\\unittest.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{AF1358C1-64C4-458C-84B9-71ED2B7FAFC6}|TestShell\\TestShell.vcxproj|C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\WriteCommand.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{AF1358C1-64C4-458C-84B9-71ED2B7FAFC6}|TestShell\\TestShell.vcxproj|solutionrelative:TestShell\\WriteCommand.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AF1358C1-64C4-458C-84B9-71ED2B7FAFC6}|TestShell\\TestShell.vcxproj|C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\TestShell\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{AF1358C1-64C4-458C-84B9-71ED2B7FAFC6}|TestShell\\TestShell.vcxproj|C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\ReadCommand.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{AF1358C1-64C4-458C-84B9-71ED2B7FAFC6}|TestShell\\TestShell.vcxproj|solutionrelative:TestShell\\ReadCommand.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AF1358C1-64C4-458C-84B9-71ED2B7FAFC6}|TestShell\\TestShell.vcxproj|C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\MOCKCommand.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{AF1358C1-64C4-458C-84B9-71ED2B7FAFC6}|TestShell\\TestShell.vcxproj|solutionrelative:TestShell\\MOCKCommand.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AF1358C1-64C4-458C-84B9-71ED2B7FAFC6}|TestShell\\TestShell.vcxproj|C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\Command.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{AF1358C1-64C4-458C-84B9-71ED2B7FAFC6}|TestShell\\TestShell.vcxproj|solutionrelative:TestShell\\Command.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AF1358C1-64C4-458C-84B9-71ED2B7FAFC6}|TestShell\\TestShell.vcxproj|C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\TestShellApplication.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{AF1358C1-64C4-458C-84B9-71ED2B7FAFC6}|TestShell\\TestShell.vcxproj|solutionrelative:TestShell\\TestShellApplication.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AF1358C1-64C4-458C-84B9-71ED2B7FAFC6}|TestShell\\TestShell.vcxproj|C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{AF1358C1-64C4-458C-84B9-71ED2B7FAFC6}|TestShell\\TestShell.vcxproj|solutionrelative:TestShell\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A551FA3B-7393-43C7-9510-828E86F45CF2}|SSDProject\\SSDProject.vcxproj|C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\SSDProject\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{A551FA3B-7393-43C7-9510-828E86F45CF2}|SSDProject\\SSDProject.vcxproj|C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\SSDProject\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{A551FA3B-7393-43C7-9510-828E86F45CF2}|SSDProject\\SSDProject.vcxproj|solutionrelative:SSDProject\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A551FA3B-7393-43C7-9510-828E86F45CF2}|SSDProject\\SSDProject.vcxproj|C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\SSDProject\\MOCK_SSD.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A551FA3B-7393-43C7-9510-828E86F45CF2}|SSDProject\\SSDProject.vcxproj|solutionrelative:SSDProject\\MOCK_SSD.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A551FA3B-7393-43C7-9510-828E86F45CF2}|SSDProject\\SSDProject.vcxproj|C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\SSDProject\\SSD.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A551FA3B-7393-43C7-9510-828E86F45CF2}|SSDProject\\SSDProject.vcxproj|solutionrelative:SSDProject\\SSD.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A551FA3B-7393-43C7-9510-828E86F45CF2}|SSDProject\\SSDProject.vcxproj|C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\SSDProject\\IStorage.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A551FA3B-7393-43C7-9510-828E86F45CF2}|SSDProject\\SSDProject.vcxproj|solutionrelative:SSDProject\\IStorage.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A551FA3B-7393-43C7-9510-828E86F45CF2}|SSDProject\\SSDProject.vcxproj|C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\SSDProject\\StorageDriver.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A551FA3B-7393-43C7-9510-828E86F45CF2}|SSDProject\\SSDProject.vcxproj|solutionrelative:SSDProject\\StorageDriver.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{98F16AE7-4086-497D-90E5-711B8C43D0DE}|\uC194\uB8E8\uC158 \uD56D\uBAA9{98F16AE7-4086-497D-90E5-711B8C43D0DE}|C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\.editorconfig||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{98F16AE7-4086-497D-90E5-711B8C43D0DE}|\uC194\uB8E8\uC158 \uD56D\uBAA9{98F16AE7-4086-497D-90E5-711B8C43D0DE}|solutionrelative:.editorconfig||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{98F16AE7-4086-497D-90E5-711B8C43D0DE}|\uC194\uB8E8\uC158 \uD56D\uBAA9{98F16AE7-4086-497D-90E5-711B8C43D0DE}|C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\.gitingore||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{98F16AE7-4086-497D-90E5-711B8C43D0DE}|\uC194\uB8E8\uC158 \uD56D\uBAA9{98F16AE7-4086-497D-90E5-711B8C43D0DE}|solutionrelative:.gitingore||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
   ],
   "DocumentGroupContainers": [
@@ -39,10 +79,192 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "test.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShellTest\\test.cpp",
+              "RelativeDocumentMoniker": "TestShellTest\\test.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShellTest\\test.cpp",
+              "RelativeToolTip": "TestShellTest\\test.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAADwvwAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-22T06:30:32.483Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "test.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\SSDTest\\test.cpp",
+              "RelativeDocumentMoniker": "SSDTest\\test.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\SSDTest\\test.cpp",
+              "RelativeToolTip": "SSDTest\\test.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAADwvwUAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-22T06:29:51.149Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TestApp1Command.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\TestApp1Command.cpp",
+              "RelativeDocumentMoniker": "TestShell\\TestApp1Command.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\TestApp1Command.cpp",
+              "RelativeToolTip": "TestShell\\TestApp1Command.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-22T06:28:18.229Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "WriteCommand.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\WriteCommand.cpp",
+              "RelativeDocumentMoniker": "TestShell\\WriteCommand.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\WriteCommand.cpp",
+              "RelativeToolTip": "TestShell\\WriteCommand.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-22T06:27:45.506Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ReadCommand.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\ReadCommand.cpp",
+              "RelativeDocumentMoniker": "TestShell\\ReadCommand.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\ReadCommand.cpp",
+              "RelativeToolTip": "TestShell\\ReadCommand.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-22T06:27:37.952Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MOCKCommand.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\MOCKCommand.cpp",
+              "RelativeDocumentMoniker": "TestShell\\MOCKCommand.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\MOCKCommand.cpp",
+              "RelativeToolTip": "TestShell\\MOCKCommand.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-22T06:27:24.114Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Command.h",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\Command.h",
+              "RelativeDocumentMoniker": "TestShell\\Command.h",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\Command.h",
+              "RelativeToolTip": "TestShell\\Command.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-05-22T06:27:14.357Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "TestShellApplication.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\TestShellApplication.cpp",
+              "RelativeDocumentMoniker": "TestShell\\TestShellApplication.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\TestShellApplication.cpp",
+              "RelativeToolTip": "TestShell\\TestShellApplication.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-22T06:27:02.57Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "MOCK_SSD.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\SSDProject\\MOCK_SSD.cpp",
+              "RelativeDocumentMoniker": "SSDProject\\MOCK_SSD.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\SSDProject\\MOCK_SSD.cpp",
+              "RelativeToolTip": "SSDProject\\MOCK_SSD.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAADwvwAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-22T06:26:05.184Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "main.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\SSDProject\\main.cpp",
+              "RelativeDocumentMoniker": "SSDProject\\main.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\SSDProject\\main.cpp",
+              "RelativeToolTip": "SSDProject\\main.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-22T02:57:33.675Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "main.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\main.cpp",
+              "RelativeDocumentMoniker": "TestShell\\main.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\TestShell\\main.cpp",
+              "RelativeToolTip": "TestShell\\main.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-22T02:57:26.102Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "SSD.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\SSDProject\\SSD.cpp",
+              "RelativeDocumentMoniker": "SSDProject\\SSD.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\SSDProject\\SSD.cpp",
+              "RelativeToolTip": "SSDProject\\SSD.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAADwvwAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-22T06:25:58.956Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "IStorage.h",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\SSDProject\\IStorage.h",
+              "RelativeDocumentMoniker": "SSDProject\\IStorage.h",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\SSDProject\\IStorage.h",
+              "RelativeToolTip": "SSDProject\\IStorage.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAADwvwAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-05-22T06:25:52.217Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "StorageDriver.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\SSDProject\\StorageDriver.cpp",
+              "RelativeDocumentMoniker": "SSDProject\\StorageDriver.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\SSDProject\\StorageDriver.cpp",
+              "RelativeToolTip": "SSDProject\\StorageDriver.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-22T06:25:35.208Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": ".editorconfig",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\.editorconfig",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\.editorconfig",
               "RelativeDocumentMoniker": ".editorconfig",
-              "ToolTip": "C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\.editorconfig",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\.editorconfig",
               "RelativeToolTip": ".editorconfig",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAATAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
@@ -51,65 +273,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 15,
               "Title": ".gitingore",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\.gitingore",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\.gitingore",
               "RelativeDocumentMoniker": ".gitingore",
-              "ToolTip": "C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\.gitingore",
+              "ToolTip": "C:\\Users\\User\\Desktop\\\uC0C8 \uD3F4\uB354\\SSDProject\\SSDProject\\.gitingore",
               "RelativeToolTip": ".gitingore",
               "ViewState": "AQIAAHgBAAAAAAAAAAAIwI0BAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-05-22T02:59:25.542Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "unittest.cpp",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\SSDProject\\unittest.cpp",
-              "RelativeDocumentMoniker": "SSDProject\\unittest.cpp",
-              "ToolTip": "C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\SSDProject\\unittest.cpp",
-              "RelativeToolTip": "SSDProject\\unittest.cpp",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-05-22T02:58:05.79Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "unittest.cpp",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\TestShell\\unittest.cpp",
-              "RelativeDocumentMoniker": "TestShell\\unittest.cpp",
-              "ToolTip": "C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\TestShell\\unittest.cpp",
-              "RelativeToolTip": "TestShell\\unittest.cpp",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAABAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-05-22T02:57:58.498Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "main.cpp",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\SSDProject\\main.cpp",
-              "RelativeDocumentMoniker": "SSDProject\\main.cpp",
-              "ToolTip": "C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\SSDProject\\main.cpp",
-              "RelativeToolTip": "SSDProject\\main.cpp",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAABAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-05-22T02:57:33.675Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "main.cpp",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\TestShell\\main.cpp",
-              "RelativeDocumentMoniker": "TestShell\\main.cpp",
-              "ToolTip": "C:\\Users\\User\\Desktop\\SSDProject\\SSDProject\\TestShell\\main.cpp",
-              "RelativeToolTip": "TestShell\\main.cpp",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAABAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-05-22T02:57:26.102Z"
+              "WhenOpened": "2024-05-22T02:59:25.542Z"
             }
           ]
         }
