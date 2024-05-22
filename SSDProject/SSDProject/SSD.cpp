@@ -2,9 +2,10 @@
 #include <fstream>
 #include <map>
 #include <string>
+#include "IStorage.h"
 
 using namespace std;
-class SSD /* : public iStorage */ {
+class SSD : public IStorage {
 public:
 	SSD(string nandname = "nand.txt", string resultname = "result.txt")
 		: nandname{ nandname },
@@ -19,7 +20,7 @@ public:
 		fNandIn.close();
 		fResultOut.close();
 	}
-	int read(int LBA) {
+	int read(int LBA) override {
 		if (!fNandIn) return 0;
 
 		string readData;
@@ -33,8 +34,8 @@ public:
 
 		return 0;
 	}
-	int write(int LBA, string data) {
-		if (!fNandOut) return -1;
+	void write(int LBA, string data) override {
+		if (!fNandOut) return;
 
 		fNandOut << LBA << " " << data << endl;
 	}
@@ -43,5 +44,4 @@ private:
 	string resultname;
 	ofstream fNandOut, fResultOut;
 	ifstream fNandIn;
-	map<int, string> data;
 };
