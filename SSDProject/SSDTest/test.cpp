@@ -1,6 +1,7 @@
-#include "pch.h"
+﻿#include "pch.h"
+#include "../SSDProject/StorageDriver.cpp"
 
-TEST(TestCaseName, TestName) {
-  EXPECT_EQ(1, 1);
-  EXPECT_TRUE(true);
+
+TEST(SSDTest, StorageDriverTest) {
+	EXPECT_EQ(1, 1);
 }
