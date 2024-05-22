@@ -30,12 +30,21 @@ public:
 private:
 	Command* parse(const string& str) {
 		vector<string> v = trim(str);
-
-		if (v[0] == "w") {
-			return new WriteCommand(v[1], v[2]);
+		string cmd = v.front();
+		if (cmd == "write") {
+			return new WriteCommand(v);
 		}
-		else if (v[0] == "r") {
-			return new ReadCommand(v[1]);
+		else if (cmd == "read") {
+			return new ReadCommand(v);
+		}
+		else if (cmd == "help") {
+			return new HelpCommand(v);
+		}
+		else if (cmd == "fullread") {
+			return new FullReadCommand(v);
+		}
+		else if (cmd == "fullwrite") {
+			return new FullWriteCommand(v);
 		}
 		return nullptr;
 	}
