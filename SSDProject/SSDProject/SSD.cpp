@@ -27,9 +27,10 @@ public:
 		string line;
 		while (getline(fNandIn, line)) {
 			int addr = stoi(line);
-			readData = line.substr(line.find(' '), 10);
-			readData = readData.substr(1, 10);
+			readData = line.substr(line.find(' '), 10).substr(1, 20);
+			if (addr == LBA) break;
 		}
+
 		fResultOut << readData;
 
 		return 0;
