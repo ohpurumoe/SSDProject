@@ -9,8 +9,8 @@ public:
             {"read", "read : Load data from the LBA ex) read 3"},
             {"exit", "exit : Exit this shell"},
             {"help", "help : Display this help message.ex) help write"},
-            {"fullwrite", "fullwrite : Perform save data to LBA's all range (0~99) ex) fullwrite 0xABCDFFFF"},
-            {"fullread", "fullread : Perform load data from LBA's all range (0~99) ex) full read"},
+            {"fullwrite", "full write : Perform save data to LBA's all range (0~99) ex) fullwrite 0xABCDFFFF"},
+            {"fullread", "full read : Perform load data from LBA's all range (0~99) ex) full read"},
             {"testapp1", "testapp1 : Execute test application 1."},
             {"testapp2", "testapp2 : Execute test application 2."}
         };
