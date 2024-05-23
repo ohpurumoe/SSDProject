@@ -34,6 +34,7 @@ private:
 
 	void writeMapToFile() {
 		fNand.open(nandname, ios::out);
+		checkFileOpen(fNand);
 		for (auto iter : mapNand) {
 			fNand << iter.first << " " << iter.second << endl;
 		}
@@ -52,8 +53,8 @@ private:
 		string removeAddr = data.substr(data.find(BLANK), DATA_SIZE + sizeof(BLANK));
 		return removeAddr.substr(1, DATA_SIZE);
 	}
-	void checkFileOpen(fstream file) {
-		if (file.is_open()) {
+	void checkFileOpen(fstream& file) {
+		if (!file.is_open()) {
 			throw std::exception("file open error");
 		}
 	}
@@ -62,6 +63,7 @@ private:
 
 		mapNand.clear();
 		fNand.open(nandname, ios::in);
+		checkFileOpen(fNand);
 		while (getline(fNand, line)) {
 			if (line.size() == 0) continue;
 			int addr = stoi(line);
@@ -74,6 +76,7 @@ private:
 		string line, readData;
 
 		fNand.open(nandname, ios_base::in);
+		checkFileOpen(fNand);
 		while (getline(fNand, line)) {
 			if (line.size() == 0) continue;
 			int addr = stoi(line);
@@ -86,6 +89,7 @@ private:
 	}
 	void storeReadData(const string data) {
 		fResult.open(resultname, ios::out);
+		checkFileOpen(fResult);
 		fResult << data;
 		fResult.close();
 	}
