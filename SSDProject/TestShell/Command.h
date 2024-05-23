@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+using namespace std;
+
 class Command {
 public:
     virtual ~Command() {}
@@ -14,6 +16,20 @@ public:
 private:
     const string ssdExe = "..\\x64\\Debug\\SSD.exe";
 
+};
+
+class ReadCommand : public Command {
+public:
+    void execute(std::vector<std::string> v) const override;
+private:
+    const string cmd = "R";
+};
+
+class WriteCommand : public Command {
+public:
+    void execute(std::vector<std::string> v) const override;
+private:
+    const string cmd = "W";
 };
 
 class Receiver {
