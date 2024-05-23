@@ -127,6 +127,12 @@ TEST(ReadCommand, TestExecuteInvalidArgument) {
     EXPECT_THROW(readCommand.execute({}), invalid_argument);
 }
 
+TEST(ReadCommand, TestExecuteNoReceiver) {
+    ReadCommand cmd(nullptr);
+    vector<string> args = { "r", "3" };
+    EXPECT_THROW(cmd.execute(args), invalid_argument);
+}
+
 TEST(WriteCommand, TestExecuteInvalidArgument) {
     MockReceiver mockReceiver;
     WriteCommand writeCommand(&mockReceiver);
