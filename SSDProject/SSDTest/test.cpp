@@ -3,6 +3,7 @@
 #include "../SSDProject/StorageDriver.cpp"
 #include "../SSDProject/SSD.cpp"
 #include "../SSDProject/util.h"
+#include "../SSDProject/StorageException.cpp"
 #include <cstring>
 
 class parseTestFixture: public ::testing::Test{
@@ -141,6 +142,11 @@ TEST_F(SSDTestFixture, SSDReadEmpty) {
 
 	string  expected = "0x00000000";
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
+}
+
+TEST_F(SSDTestFixture, SSDReadInvalidAddr) {
+	EXPECT_THROW(ssd.read(100), StorageException);
+	EXPECT_THROW(ssd.read(-1), StorageException);
 }
 
 class MockStorage : public IStorage {
