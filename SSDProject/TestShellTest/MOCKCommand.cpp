@@ -35,4 +35,5 @@ public:
 	MOCK_METHOD(void, help, (), (const));
 	MOCK_METHOD(void, fullwrite, (), (const));
 	MOCK_METHOD(void, fullread, (), (const));
+	MOCK_METHOD(int, getResultCode, (), (const));
 };

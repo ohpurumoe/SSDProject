@@ -13,7 +13,7 @@ public:
 			string argument = "W";
 			argument += " " + to_string(i);
 			argument += " 0x5A5A5A5A";
-			if (!invoke(argument)) {
+			if (invoke(argument)) {
 				throw invalid_argument("invoke error");
 			}
 		}
@@ -23,7 +23,7 @@ public:
 		string result;
 		for (int i = 0; i < 100; i++) {
 			string argument = "R " + to_string(i);
-			if (!invoke(argument)) {
+			if (invoke(argument)) {
 				cout << "invoke error" << endl;
 				throw invalid_argument("invoke error");
 			}

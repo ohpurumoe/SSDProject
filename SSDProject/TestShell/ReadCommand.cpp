@@ -12,7 +12,7 @@ public:
 		}
 
 		if (receiver == nullptr) {
-			throw invalid_argument("Need two argument for read command");
+			throw invalid_argument("Need valid read receiver");
 		}
 
 		string rdCmd;
