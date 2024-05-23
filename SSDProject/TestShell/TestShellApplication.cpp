@@ -25,6 +25,7 @@ public:
 					executeCommand(cmd, v);
 				else
 					cout << "invalid command, try again" << endl;
+			
 			}
 			catch (std::exception e) {
 				cout << e.what() << endl;
@@ -46,22 +47,23 @@ private:
 	}
 
 	Command* createCommandInstance(const string& cmd) {
-
+		Receiver receiver;
 		if (cmd == "write") {
-//			return new WriteCommand();
+			// return new WriteCommand(&receiver);
 		}
 		else if (cmd == "read") {
-//			return new ReadCommand();
+			// return new ReadCommand(&receiver);
 		}
 		else if (cmd == "help") {
-//			return new HelpCommand();
+			// return new HelpCommand(&receiver);
 		}
 		else if (cmd == "fullread") {
-//			return new FullReadCommand();
+			// return new FullReadCommand(&receiver);
 		}
 		else if (cmd == "fullwrite") {
-//			return new FullWriteCommand();
+			// return new FullWriteCommand(&receiver);
 		}
+
 		return nullptr;
 	}
 

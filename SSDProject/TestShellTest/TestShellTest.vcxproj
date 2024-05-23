@@ -96,7 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\TestShell\MOCKCommand.cpp" />
+    <ClCompile Include="MOCKCommand.cpp" />
     <ClCompile Include="mock_main.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
