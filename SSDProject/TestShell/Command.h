@@ -28,13 +28,15 @@ public:
         return system(arg.c_str());
     }
 
-private:
     Receiver* receiver;
+
+private:
     const std::string ssdExe = "..\\x64\\Debug\\SSD.exe";
 };
 
 class ReadCommand : public Command {
 public:
+    ReadCommand(Receiver* receiver) : Command(receiver) {}
     void execute(std::vector<std::string> v) const override;
 private:
     const string cmd = "R";
@@ -42,6 +44,7 @@ private:
 
 class WriteCommand : public Command {
 public:
+    WriteCommand(Receiver* receiver) : Command(receiver) {}
     void execute(std::vector<std::string> v) const override;
 private:
     const string cmd = "W";
