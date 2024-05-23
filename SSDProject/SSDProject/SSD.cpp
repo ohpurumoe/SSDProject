@@ -77,6 +77,7 @@ private:
 			int addr = stoi(line);
 			readData = getData(line);
 			if (addr == LBA) break;
+			readData = "0x00000000";
 		}
 		fNandIn.close();
 
