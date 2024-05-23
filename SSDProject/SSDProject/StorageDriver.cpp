@@ -1,4 +1,5 @@
-﻿#include "IStorage.h"
+﻿#pragma once
+#include "IStorage.h"
 
 class StorageDriver {
 public:

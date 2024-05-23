@@ -1,10 +1,16 @@
 ﻿#pragma once
 #include <stdexcept>
 #include <string>
+#include <utility>
+#include <vector>
+#include "StorageDriver.cpp"
+
 enum class Command{
 	READ,
 	WRITE
 };
+
+using CommandArgsPair = std::pair<Command, std::vector<std::string>>;
 
 void checkCmdValidity(int argc, const std::string& argv0, const std::string& argv1) {
 	if (argc < 2) {
@@ -24,7 +30,7 @@ void checkCmdValidity(int argc, const std::string& argv0, const std::string& arg
 	}
 }
 
-Command parse(int argc, char** argv){
+CommandArgsPair parse(int argc, char** argv){
 	std::string argv0 = argv[0];
 	std::string argv1 = argv[1];
 	try {
@@ -33,8 +39,17 @@ Command parse(int argc, char** argv){
 	catch (...) {
 		throw;
 	}
-	if(argv1 == "R"){
-		return Command::READ;
+	std::vector<std::string> args;
+	for (int i = 1; i < argc; ++i) {
+		args.push_back(argv[i]);
 	}
-	return Command::WRITE;
+	if(argv1 == "R"){
+		return { Command::READ, args };
+	}
+	return { Command::WRITE, args };
+}
+
+void execute(StorageDriver& driver, const CommandArgsPair& cmd_arg)
+{
+
 }

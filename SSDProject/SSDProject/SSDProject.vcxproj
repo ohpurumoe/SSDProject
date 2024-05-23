@@ -129,7 +129,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MOCK_SSD.cpp" />
     <ClCompile Include="SSD.cpp" />
     <ClCompile Include="StorageDriver.cpp" />
   </ItemGroup>
