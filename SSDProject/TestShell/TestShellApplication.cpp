@@ -63,7 +63,6 @@ private:
 		else if (cmd == "fullwrite") {
 //			return new FullWriteCommand();
 		}
-
 		return nullptr;
 	}
 
