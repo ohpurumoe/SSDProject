@@ -29,7 +29,8 @@ public:
     }
 
 private:
-    Receiver* receiver;
     const std::string ssdExe = "..\\x64\\Debug\\SSD.exe";
+protected:
+    Receiver* receiver;
 };
 

@@ -10,6 +10,10 @@ public:
 		if (v.size() < 2) {
 			throw invalid_argument("Need two argument for read command");
 		}
+
+		if (receiver == nullptr) {
+			throw invalid_argument("Need two argument for read command");
+		}
 	}
 private:
 	const string cmd = "R";
