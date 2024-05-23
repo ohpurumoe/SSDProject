@@ -72,10 +72,8 @@ TEST_F(parseTestFixture, parseWrite){
 class SSDTestFixture : public ::testing::Test {
 protected:
 	void SetUp() override {
-		ssd.open();
 	}
 	void TearDown() override {
-		ssd.close();
 	}
 	string readFileOneLine(string filename) {
 		fRead.open(filename);
