@@ -15,11 +15,16 @@ public:
 			cout << "$";
 			cin >> input;
 			try {
-				Command* cmd = parse(input);
+				vector<string> v = trim(input);
+				Command* cmd = parse(input, v);
+				
 				if (cmd == nullptr) {
 					cout << "Bye !~" << endl;
 					break;
 				}
+
+				executeCommand(cmd, v);
+
 			}
 			catch (std::exception e) {
 				cout << e.what() << endl;
@@ -27,9 +32,13 @@ public:
 		};
 	}
 
+	void executeCommand(Command *cmd, vector<string>& v) {
+		cmd->execute(v);
+	}
+
 private:
-	Command* parse(const string& str) {
-		vector<string> v = trim(str);
+	Command* parse(const string& str, vector<string>& v) {
+
 		string cmd = v.front();
 		if (cmd == "write") {
 			return new WriteCommand(v);
