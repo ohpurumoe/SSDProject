@@ -18,11 +18,14 @@ public:
 
     void execute(std::vector<std::string> v) const override {
         if (receiver_ == nullptr) {
-            cout << "receiver_ is nullptr" << endl;
-            return;
+            throw invalid_argument("receiver_ is nullptrr");;
         }
 
         receiver_->help();
+
+        if (v.size() > 2) {
+            throw invalid_argument("Max argument is two for help command");
+        }
 
         if (v.size() == 1) {
             for (const auto& cmd : helpMaps)
@@ -34,7 +37,8 @@ public:
             if (it != helpMaps.end())
                 cout << it->second << endl;
             else
-                cout << "Not Help available for command: " << command << endl;
+                throw invalid_argument("Not Help available for command");
+
         }
         return;
     }
