@@ -75,7 +75,7 @@ protected:
 	}
 	void TearDown() override {
 	}
-	string readResultFile(string filename) {
+	string readResultFile(string filename = "result.txt") {
 		fRead.open(filename);
 		string readResult;
 		getline(fRead, readResult);
@@ -93,7 +93,7 @@ TEST_F(SSDTestFixture, SSDRWSuccess1) {
 	ssd.read(12);
 
 	string  expected = "0xAAAAAAAA";
-	EXPECT_THAT(readResultFile("result.txt"), testing::StrEq(expected));
+	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
 TEST_F(SSDTestFixture, SSDRWSuccess2) {
@@ -105,7 +105,7 @@ TEST_F(SSDTestFixture, SSDRWSuccess2) {
 	ssd.read(12);
 
 	string  expected = "0xFFFFFFFF";
-	EXPECT_THAT(readResultFile("result.txt"), testing::StrEq(expected));
+	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
 TEST_F(SSDTestFixture, SSDRWSuccess3) {
@@ -117,7 +117,7 @@ TEST_F(SSDTestFixture, SSDRWSuccess3) {
 	ssd.read(14);
 
 	string  expected = "0xCCCCCCCC";
-	EXPECT_THAT(readResultFile("result.txt"), testing::StrEq(expected));
+	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
 TEST_F(SSDTestFixture, SSDDuplicatedWrite) {
@@ -126,5 +126,5 @@ TEST_F(SSDTestFixture, SSDDuplicatedWrite) {
 	ssd.read(10);
 
 	string  expected = "0xABCDEFGA";
-	EXPECT_THAT(readResultFile("result.txt"), testing::StrEq(expected));
+	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
