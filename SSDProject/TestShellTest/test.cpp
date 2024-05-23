@@ -1,5 +1,6 @@
 ﻿#include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include "../TestShell/TestShellApplication.cpp"
 
 TEST(TestShellApplication, WriteCommand) {
   EXPECT_EQ(1, 1);
@@ -17,8 +18,10 @@ TEST(TestShellApplication, HelpCommand) {
 }
 
 TEST(TestShellApplication, ExitCommand) {
-    EXPECT_EQ(1, 1);
-    EXPECT_TRUE(true);
+    TestShellApplication app;
+    std::string str = "exit";
+
+    EXPECT_TRUE(app.execute(str));
 }
 
 TEST(TestShellApplication, FulReadCommand) {
@@ -33,8 +36,10 @@ TEST(TestShellApplication, FullWriteCommand) {
 }
 
 TEST(TestShellApplication, TestApp1Command) {
-    EXPECT_EQ(1, 1);
-    EXPECT_TRUE(true);
+    TestShellApplication app;
+    std::string str = "testapp1";
+
+    EXPECT_TRUE(app.execute(str));
 }
 
 TEST(TestShellApplication, TestApp2Command) {
