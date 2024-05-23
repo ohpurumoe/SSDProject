@@ -6,6 +6,7 @@
 #include <iterator>
 
 #include "TestApp1Command.cpp"
+#include "HelpCommand.cpp"
 
 using namespace std;
 
@@ -63,7 +64,7 @@ private:
 			// return new ReadCommand(&receiver);
 		}
 		else if (cmd == "help") {
-			// return new HelpCommand(&receiver);
+			return new HelpCommand(&receiver);
 		}
 		else if (cmd == "fullread") {
 			// return new FullReadCommand(&receiver);

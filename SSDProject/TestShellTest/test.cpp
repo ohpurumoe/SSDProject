@@ -128,3 +128,4 @@ TEST(TestShellApplicationTest, TestApp2CommandTest) {
     EXPECT_EQ(1, 1);
     EXPECT_TRUE(true);
 }
+
