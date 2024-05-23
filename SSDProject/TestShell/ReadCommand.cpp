@@ -14,6 +14,16 @@ public:
 		if (receiver == nullptr) {
 			throw invalid_argument("Need two argument for read command");
 		}
+
+		string rdCmd;
+		string space = " ";
+
+		rdCmd.append(cmd);
+		rdCmd.append(space);
+		rdCmd.append(v[1]);
+
+		int ret = invoke(rdCmd);
+		receiver->read(ret);
 	}
 private:
 	const string cmd = "R";
