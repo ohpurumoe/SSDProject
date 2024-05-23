@@ -13,7 +13,7 @@ public:
 		resultname{ resultname } {}
 
 	string read(int LBA) override {
-		if (LBA < 0 || LBA > 99) {
+		if (LBA < ADDR_LOW || LBA > ADDR_HIGH) {
 			throw StorageException("LBA는 0 ~ 99 사이의 값이어야 합니다. LBA : " + to_string(LBA));
 		}
 		auto data = readData(LBA);
@@ -38,6 +38,8 @@ private:
 	const char BLANK = ' ';
 	const int DATA_SIZE = 10;
 	const string EMPTY = "0x00000000";
+	const int ADDR_HIGH = 99;
+	const int ADDR_LOW = 0;
 
 	void writeMapToFile() {
 		fNandOut.open(nandname);
