@@ -134,3 +134,13 @@ TEST(Execute, Read) {
 	CommandArgsPair cmd_args = { Command::READ, {"0"} };
 	execute(driver, cmd_args);
 }
+
+TEST(Execute, Write) {
+	MockStorage storage;
+	EXPECT_CALL(storage, write, ::testing::_)
+		.Times(1)
+		;
+	StorageDriver driver(&storage);
+	CommandArgsPair cmd_args = { Command::WRITE, {"0", "0x12345678"}};
+	execute(driver, cmd_args);
+}
