@@ -3,8 +3,7 @@
 #include "../TestShell/TestShellApplication.cpp"
 #include <fstream>
 #include "MOCKCommand.cpp"
-#include "../TestShell/ReadCommand.cpp"
-#include "../TestShell/WriteCommand.cpp"
+
 #include <stdexcept>
 
 using namespace std;

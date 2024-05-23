@@ -8,7 +8,10 @@
 #include "TestApp1Command.cpp"
 #include "TestApp2Command.cpp"
 #include "HelpCommand.cpp"
-
+#include "FullReadCommand.cpp"
+#include "FullWriteCommand.cpp"
+#include "ReadCommand.cpp"
+#include "WriteCommand.cpp"
 using namespace std;
 
 class TestShellApplication {
@@ -58,19 +61,19 @@ private:
 	Command* createCommandInstance(const string& cmd) {
 		Receiver receiver;
 		if (cmd == "write") {
-			// return new WriteCommand(&receiver);
+			return new WriteCommand(&receiver);
 		}
 		else if (cmd == "read") {
-			// return new ReadCommand(&receiver);
+			return new ReadCommand(&receiver);
 		}
 		else if (cmd == "help") {
 			return new HelpCommand(&receiver);
 		}
 		else if (cmd == "fullread") {
-			// return new FullReadCommand(&receiver);
+			return new FullReadCommand(&receiver);
 		}
 		else if (cmd == "fullwrite") {
-			// return new FullWriteCommand(&receiver);
+			return new FullWriteCommand(&receiver);
 		}
 		else if (cmd == "testapp1") {
 			return new TestApp1Command();
