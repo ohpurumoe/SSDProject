@@ -75,7 +75,7 @@ protected:
 	}
 	void TearDown() override {
 	}
-	string readFileOneLine(string filename) {
+	string readResultFile(string filename) {
 		fRead.open(filename);
 		string readResult;
 		getline(fRead, readResult);
@@ -92,14 +92,14 @@ TEST_F(SSDTestFixture, SSDWriteSuccess) {
 	ssd.write(10, "0xABCDEFGH");
 
 	string  expected = "10 0xABCDEFGH";
-	EXPECT_THAT(readFileOneLine("nand.txt"), testing::StrEq(expected));
+	EXPECT_THAT(readResultFile("nand.txt"), testing::StrEq(expected));
 }
 
 TEST_F(SSDTestFixture, SSDReadSuccess) {
 	ssd.read(10);
 
 	string  expected = "0xABCDEFGH";
-	EXPECT_THAT(readFileOneLine("result.txt"), testing::StrEq(expected));
+	EXPECT_THAT(readResultFile("result.txt"), testing::StrEq(expected));
 }
 
 TEST_F(SSDTestFixture, SSDDuplicatedWrite) {
@@ -108,5 +108,5 @@ TEST_F(SSDTestFixture, SSDDuplicatedWrite) {
 	ssd.read(10);
 
 	string  expected = "0xABCDEFGA";
-	EXPECT_THAT(readFileOneLine("result.txt"), testing::StrEq(expected));
+	EXPECT_THAT(readResultFile("result.txt"), testing::StrEq(expected));
 }
