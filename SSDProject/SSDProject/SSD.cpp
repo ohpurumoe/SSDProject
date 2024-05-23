@@ -20,9 +20,7 @@ public:
 
 	void write(int LBA, string data) override {
 		fillMapFromFile();
-
 		writeDataToMap(LBA, data);
-
 		writeMapToFile();
 	}
 
@@ -32,8 +30,10 @@ private:
 	ofstream fNandOut, fResultOut;
 	ifstream fNandIn;
 	map<int, string> mapNand;
+
 	const char BLANK = ' ';
 	const int DATA_SIZE = 10;
+	const string EMPTY = "0x00000000";
 
 	void writeMapToFile() {
 		fNandOut.open(nandname);
@@ -53,7 +53,7 @@ private:
 	}
 	string getData(string data) {
 		string removeAddr = data.substr(data.find(BLANK), DATA_SIZE + sizeof(BLANK));
-		return removeAddr.substr(1, DATA_SIZE);
+		return removeAddr.substr(sizeof(BLANK), DATA_SIZE);
 	}
 	void fillMapFromFile() {
 		string line, readData;
@@ -77,7 +77,7 @@ private:
 			int addr = stoi(line);
 			readData = getData(line);
 			if (addr == LBA) break;
-			readData = "0x00000000";
+			readData = EMPTY;
 		}
 		fNandIn.close();
 
