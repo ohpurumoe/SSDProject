@@ -1,12 +1,12 @@
 ﻿#include "Command.h"
-#include "map"
+#include "unordered_map"
 
 class HelpCommand : public Command {
 public:
     HelpCommand(Receiver* receiver) : receiver_(receiver) {
         helpMaps = {
             {"write", "write : Save data into the LBA ex) wrtie 3 0xAAAABBBB "},
-            {"read", "read : Loave data from the LBA ex) read 3"},
+            {"read", "read : Load data from the LBA ex) read 3"},
             {"exit", "exit : Exit this shell"},
             {"help", "help : Display this help message.ex) help write"},
             {"fullwrite", "fullwrite : Perform save data to LBA's all range (0~99) ex) fullwrite 0xABCDFFFF"},
@@ -29,7 +29,7 @@ public:
                 cout << cmd.second << endl;
         }
         else {
-            string command = *v.begin();
+            string command = *(v.begin()+1);
             auto it = helpMaps.find(command);
             if (it != helpMaps.end())
                 cout << it->second << endl;
@@ -40,5 +40,5 @@ public:
     }
 private:
     Receiver* receiver_;
-    map<string, string> helpMaps;
+    unordered_map<string, string> helpMaps;
 };
