@@ -2,6 +2,39 @@
 #include "gtest/gtest.h"
 #include "../TestShell/TestShellApplication.cpp"
 #include <fstream>
+#include "MOCKCommand.cpp"
+
+using namespace testing;
+
+#if 1 // This is example. TODO : will remove later after implementing read xxxCommand.cpp 
+// ReadCommand implementation
+void ReadCommand::execute(std::vector<std::string> v) const {
+    receiver->read();
+}
+
+// WriteCommand implementation
+void WriteCommand::execute(std::vector<std::string> v) const {
+    receiver->write();
+}
+#endif 
+
+// Test case for ReadCommand
+TEST(CommandTest, ReadCommand) {
+    MockReceiver mockReceiver;
+    EXPECT_CALL(mockReceiver, read()).Times(AtLeast(1));
+
+    ReadCommand readCommand(&mockReceiver);
+    readCommand.execute({});
+}
+
+// Test case for WriteCommand
+TEST(CommandTest, WriteCommand) {
+    MockReceiver mockReceiver;
+    EXPECT_CALL(mockReceiver, write()).Times(AtLeast(1));
+
+    WriteCommand writeCommand(&mockReceiver);
+    writeCommand.execute({});
+}
 
 TEST(TestShellApplicationTest, WriteCommandTest) {
   EXPECT_EQ(1, 1);
