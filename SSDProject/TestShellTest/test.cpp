@@ -123,7 +123,12 @@ TEST(TestShellApplicationTest, TestApp2CommandTest) {
 
 TEST(ReadCommand, TestExecuteInvalidArgument) {
     MockReceiver mockReceiver;
-    ReadCommand cmd(&mockReceiver);
-    vector<string> args;
-    EXPECT_THROW(cmd.execute(args), invalid_argument);
+    ReadCommand readCommand(&mockReceiver);
+    EXPECT_THROW(readCommand.execute({}), invalid_argument);
+}
+
+TEST(WriteCommand, TestExecuteInvalidArgument) {
+    MockReceiver mockReceiver;
+    WriteCommand writeCommand(&mockReceiver);
+    EXPECT_THROW(writeCommand.execute({}), invalid_argument);
 }
