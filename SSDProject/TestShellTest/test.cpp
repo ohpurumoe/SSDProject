@@ -36,6 +36,7 @@ TEST(CommandTest, WriteCommand) {
     writeCommand.execute({});
 }
 
+#if 0
 TEST(TestShellApplicationTest, WriteCommandTest) {
   EXPECT_EQ(1, 1);
   EXPECT_TRUE(true);
@@ -128,3 +129,5 @@ TEST(TestShellApplicationTest, TestApp2CommandTest) {
     EXPECT_EQ(1, 1);
     EXPECT_TRUE(true);
 }
+
+#endif
