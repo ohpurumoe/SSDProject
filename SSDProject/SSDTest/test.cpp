@@ -149,6 +149,11 @@ TEST_F(SSDTestFixture, SSDReadInvalidAddr) {
 	EXPECT_THROW(ssd.read(-1), StorageException);
 }
 
+TEST_F(SSDTestFixture, SSDWriteInvalidAddr) {
+	EXPECT_THROW(ssd.write(100, "0xFFFFFFFF"), StorageException);
+	EXPECT_THROW(ssd.write(-1, "0xFFFFFFFF"), StorageException);
+}
+
 class MockStorage : public IStorage {
 public:
 	MOCK_METHOD(string, read, (int), (override));
