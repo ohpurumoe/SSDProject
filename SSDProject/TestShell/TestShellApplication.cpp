@@ -6,6 +6,7 @@
 #include <iterator>
 
 #include "TestApp1Command.cpp"
+#include "TestApp2Command.cpp"
 #include "HelpCommand.cpp"
 
 using namespace std;
@@ -33,7 +34,6 @@ public:
 				executeCommand(cmd, v);
 			else
 				cout << "invalid command, try again" << endl;
-
 		}
 		catch (std::exception e) {
 			cout << e.what() << endl;
@@ -72,11 +72,12 @@ private:
 		else if (cmd == "fullwrite") {
 			// return new FullWriteCommand(&receiver);
 		}
-
 		else if (cmd == "testapp1") {
 			return new TestApp1Command();
 		}
-    
+		else if (cmd == "testapp2") {
+			return new TestApp2Command();
+		}
 		return nullptr;
 	}
 
