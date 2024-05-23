@@ -41,8 +41,8 @@ public:
 		return true;
 	}
 
-	int executeCommand(Command* cmd, vector<string>& v) {
-		return cmd->execute(v);
+	void executeCommand(Command* cmd, vector<string>& v) {
+		cmd->execute(v);
 	}
 
 private:
