@@ -126,7 +126,7 @@ TEST_F(SSDTestFixture, SSDDuplicatedWrite) {
 
 class MockStorage : public IStorage {
 public:
-	MOCK_METHOD(int, read, (int), (override));
+	MOCK_METHOD(string, read, (int), (override));
 	MOCK_METHOD(void, write, (int, string), (override));
 };
 
@@ -134,7 +134,7 @@ TEST(Execute, Read) {
 	MockStorage storage;
 	EXPECT_CALL(storage, read, ::testing::_)
 		.Times(1)
-		.WillOnce(::testing::Return(0))
+		.WillOnce(::testing::Return(""))
 		;
 	StorageDriver driver(&storage);
 	CommandArgsPair cmd_args = { Command::READ, {"0"} };

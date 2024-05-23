@@ -11,10 +11,11 @@ public:
 		: nandname{ nandname },
 		resultname{ resultname } {}
 
-	int read(int LBA) override {
-		storeReadData(readData(LBA));
+	string read(int LBA) override {
+		auto data = readData(LBA);
+		storeReadData(data);
 
-		return 0;
+		return data;
 	}
 
 	void write(int LBA, string data) override {
