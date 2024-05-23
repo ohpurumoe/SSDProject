@@ -23,16 +23,16 @@ protected:
 	char** argv;
 };
 
-TEST_F(parseTestFixture, parseFail0){
+TEST_F(parseTestFixture, tooLessArgc){
 	EXPECT_THROW(parse(0, argv), std::exception);
 }
 
-TEST_F(parseTestFixture, parseFail1){
+TEST_F(parseTestFixture, wrongCmdName){
 	strcpy(argv[0], "wrongCmd");
 	EXPECT_THROW(parse(1, argv), std::exception);
 }
 
-TEST_F(parseTestFixture, parseFail2){
+TEST_F(parseTestFixture, wrongArgName){
 	strcpy(argv[0], "ssd");
 	strcpy(argv[1], "WrongArg");
 	EXPECT_THROW(parse(3, argv), std::exception);
