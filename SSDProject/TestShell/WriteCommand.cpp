@@ -1,4 +1,4 @@
-﻿#include "Command.h"
+#include "Command.h"
 
 void WriteCommand::execute(std::vector<std::string> v) const
 {
