@@ -3,20 +3,12 @@
 #include "../TestShell/TestShellApplication.cpp"
 #include <fstream>
 #include "MOCKCommand.cpp"
+#include "../TestShell/ReadCommand.cpp"
+#include "../TestShell/WriteCommand.cpp"
+#include <stdexcept>
 
+using namespace std;
 using namespace testing;
-
-#if 1 // This is example. TODO : will remove later after implementing read xxxCommand.cpp 
-// ReadCommand implementation
-void ReadCommand::execute(std::vector<std::string> v) const {
-    receiver->read();
-}
-
-// WriteCommand implementation
-void WriteCommand::execute(std::vector<std::string> v) const {
-    receiver->write();
-}
-#endif 
 
 // Test case for ReadCommand
 TEST(CommandTest, ReadCommand) {
@@ -153,4 +145,22 @@ TEST_F(TestShellApplicationFixture, TestApp2CommandTest) {
     app.execute(str);
 
     EXPECT_THAT(expected, StrEq(strCout.str()));
+}
+
+TEST(ReadCommand, TestExecuteInvalidArgument) {
+    MockReceiver mockReceiver;
+    ReadCommand readCommand(&mockReceiver);
+    EXPECT_THROW(readCommand.execute({}), invalid_argument);
+}
+
+TEST(ReadCommand, TestExecuteNoReceiver) {
+    ReadCommand cmd(nullptr);
+    vector<string> args = { "r", "3" };
+    EXPECT_THROW(cmd.execute(args), invalid_argument);
+}
+
+TEST(WriteCommand, TestExecuteInvalidArgument) {
+    MockReceiver mockReceiver;
+    WriteCommand writeCommand(&mockReceiver);
+    EXPECT_THROW(writeCommand.execute({}), invalid_argument);
 }
