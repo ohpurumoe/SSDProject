@@ -45,22 +45,23 @@ private:
 		getline(cin, result);
 		return result;
 	}
-	
+
 	Command* createCommandInstance(const string& cmd) {
+
 		if (cmd == "write") {
-			return new WriteCommand();
+//			return new WriteCommand();
 		}
 		else if (cmd == "read") {
-			return new ReadCommand();
+//			return new ReadCommand();
 		}
 		else if (cmd == "help") {
-			return new HelpCommand();
+//			return new HelpCommand();
 		}
 		else if (cmd == "fullread") {
-			return new FullReadCommand();
+//			return new FullReadCommand();
 		}
 		else if (cmd == "fullwrite") {
-			return new FullWriteCommand();
+//			return new FullWriteCommand();
 		}
 		return nullptr;
 	}
