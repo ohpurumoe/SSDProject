@@ -26,8 +26,9 @@ public:
 		string readData;
 		string line;
 		while (getline(fNandIn, line)) {
+			if (line.size() == 0) continue;
 			int addr = stoi(line);
-			readData = line.substr(line.find(' '), 10).substr(1, 20);
+			readData = line.substr(line.find(' '), 11).substr(1, 10);
 			if (addr == LBA) break;
 		}
 

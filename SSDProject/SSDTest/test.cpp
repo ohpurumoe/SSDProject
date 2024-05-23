@@ -77,10 +77,28 @@ TEST(SSDTest, SSDWriteSuccess) {
 	SSD ssd;
 
 	ssd.open();
-	ssd.write(1, "0xABCDEFGH");
-	ssd.close();
+	ssd.write(10, "0xABCDEFGH");
+
+	ifstream fRead;
+	fRead.open("nand.txt");
+	string readResult;
+	getline(fRead, readResult);
+
+	string  expected = "10 0xABCDEFGH";
+	EXPECT_THAT(readResult, testing::StrEq(expected));
 }
 
 TEST(SSDTest, SSDReadSuccess) {
+	SSD ssd;
 
+	ssd.open();
+	ssd.read(10);
+
+	ifstream fRead;
+	fRead.open("result.txt");
+	string readResult;
+	getline(fRead, readResult);
+
+	string  expected = "0xABCDEFGH";
+	EXPECT_THAT(readResult, testing::StrEq(expected));
 }
