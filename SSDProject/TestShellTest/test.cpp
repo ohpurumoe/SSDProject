@@ -186,3 +186,41 @@ TEST(WriteCommand, TestExecute) {
     EXPECT_EQ(0, mockReceiver.getResultCode());
 
 }
+
+TEST(HelpCommand, HelpTestExecuteNoReceiver) {
+    ReadCommand cmd(nullptr);
+    vector<string> args = { "help", "3" };
+    EXPECT_THROW(cmd.execute(args), invalid_argument);
+}
+
+TEST(HelpCommand, HelpTestExecuteInvalidArgumentNo) {
+    MockReceiver mockReceiver;
+    HelpCommand helpCommand(&mockReceiver);
+    vector<string> args = { "help", "3",  };
+
+    EXPECT_THROW(helpCommand.execute(args), invalid_argument);
+}
+
+TEST(HelpCommand, HelpTestExecuteInvalidArgumentOver) {
+    MockReceiver mockReceiver;
+    HelpCommand helpCommand(&mockReceiver);
+    vector<string> args = { "help", "full", "3"};
+
+    EXPECT_THROW(helpCommand.execute(args), invalid_argument);
+}
+
+TEST(HelpCommand, HelpTestExecutePrintAll) {
+    MockReceiver mockReceiver;
+    HelpCommand helpCommand(&mockReceiver);
+    vector<string> args = { "help"};
+    helpCommand.execute(args);
+    EXPECT_TRUE(true);
+}
+
+TEST(HelpCommand, HelpTestExecutePrintOnlyONe) {
+    MockReceiver mockReceiver;
+    HelpCommand helpCommand(&mockReceiver);
+    vector<string> args = { "help", "write"};
+    helpCommand.execute(args);
+    EXPECT_TRUE(true);
+}
