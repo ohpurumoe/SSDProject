@@ -80,7 +80,7 @@ private:
 		fNandIn.close();
 	}
 	string readData(const int LBA) {
-		string line, readData;
+		string line, readData = EMPTY;
 
 		fNandIn.open(nandname, ios_base::in);
 		while (getline(fNandIn, line)) {
