@@ -26,3 +26,13 @@ public:
 private:
 	Receiver* receiver_;
 };
+
+class MockReceiver : public Receiver {
+public:
+	MOCK_METHOD(void, write, (), (const));
+	MOCK_METHOD(void, read, (), (const));
+	MOCK_METHOD(void, exit, (), (const));
+	MOCK_METHOD(void, help, (), (const));
+	MOCK_METHOD(void, fullwrite, (), (const));
+	MOCK_METHOD(void, fullread, (), (const));
+};
