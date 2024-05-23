@@ -1,5 +1,6 @@
 ﻿#include "Command.h"
 #include <stdexcept>
+#include <fstream>
 
 using namespace std;
 
@@ -23,8 +24,27 @@ public:
 		rdCmd.append(v[1]);
 
 		int ret = invoke(rdCmd);
+
+		// read result
+		if (ret == 0) {
+			string result = getReadResult();
+			cout << result << endl;
+		}
 		receiver->read(ret);
 	}
 private:
 	const string cmd = "R";
+	const std::string ssdResult = "..\\x64\\Debug\\result.txt";
+
+	string getReadResult() const {
+		ifstream ifs;
+
+		ifs.open(ssdResult);
+		string result = string((std::istreambuf_iterator<char>(ifs)),
+			std::istreambuf_iterator<char>());
+		cout << result << endl;
+		ifs.close();
+
+		return result;
+	}
 };
