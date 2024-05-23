@@ -6,7 +6,7 @@
 class Command {
 public:
     virtual ~Command() {}
-    virtual void execute(std::vector<std::string> v) const = 0;
+    virtual int execute(std::vector<std::string> v) const = 0;
 };
 
 class Receiver {

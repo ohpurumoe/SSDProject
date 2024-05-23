@@ -25,7 +25,6 @@ public:
 					executeCommand(cmd, v);
 				else
 					cout << "invalid command, try again" << endl;
-
 			}
 			catch (std::exception e) {
 				cout << e.what() << endl;
@@ -33,8 +32,8 @@ public:
 		};
 	}
 
-	void executeCommand(Command* cmd, vector<string>& v) {
-		cmd->execute(v);
+	int executeCommand(Command* cmd, vector<string>& v) {
+		return cmd->execute(v);
 	}
 
 private:
