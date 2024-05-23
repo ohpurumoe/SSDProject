@@ -3,6 +3,7 @@
 using namespace std;
 
 class TestApp1Command : public Command {
+public:
 	// Command을(를) 통해 상속됨
 	void execute(vector<string> v) const override
 	{
