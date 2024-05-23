@@ -10,7 +10,10 @@ class MockCommand : public Command {
 public:
 	MockCommand(Receiver* receiver) : receiver_(receiver) {}
 	void execute(vector<string> v) const override {
-		receiver_->mock();
+		if (receiver_ != nullptr)
+			receiver_->mock();
+		else
+			cout << "receiver_ is nullptr" << endl;
 	}
 
 	MOCK_METHOD(int, read, (int lba), ());
