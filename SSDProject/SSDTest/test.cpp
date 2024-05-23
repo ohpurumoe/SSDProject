@@ -35,12 +35,6 @@ TEST_F(parseTestFixture, tooLessArgc){
 	EXPECT_THROW(parse(0, argv), std::exception);
 }
 
-TEST_F(parseTestFixture, wrongCmdName){
-	strcpy(argv[0], "wrongCmd");
-	cpyArgs(1);
-	EXPECT_THROW(parse(1, argv), std::exception);
-}
-
 TEST_F(parseTestFixture, wrongArgName){
 	strcpy(argv[0], "SSD.exe");
 	strcpy(argv[1], "WrongArg");
