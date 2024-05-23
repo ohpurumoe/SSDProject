@@ -8,7 +8,11 @@ using namespace std;
 class Receiver {
 public:
     // TODO : need to check whether print log or not.
-    void write() const { std::cout << "Executing write command" << std::endl; }
+    void write(int retCode) { 
+        returnCode = retCode;
+        std::cout << "Executing write command : " << retCode << std::endl;
+    }
+
     void read(int retCode) {
         returnCode = retCode;
         std::cout << "Executing read command : " << retCode << std::endl;
@@ -21,7 +25,8 @@ public:
 
     void mock() const { std::cout << "Executing mock command" << std::endl; }
 
-    int getResultCode() { return returnCode; }
+    int getResultCode() const { return returnCode; }
+
 private:
     int returnCode;
 };

@@ -156,8 +156,33 @@ TEST(ReadCommand, TestExecuteNoReceiver) {
     EXPECT_THROW(cmd.execute(args), invalid_argument);
 }
 
+TEST(ReadCommand, TestExecute) {
+    MockReceiver mockReceiver;
+    ReadCommand readCommand(&mockReceiver);
+
+    EXPECT_CALL(mockReceiver, getResultCode())
+        .Times(1)
+        .WillOnce(Return(0));
+
+    readCommand.execute({"R", "3"});
+    EXPECT_EQ(0, mockReceiver.getResultCode());
+}
+
 TEST(WriteCommand, TestExecuteInvalidArgument) {
     MockReceiver mockReceiver;
     WriteCommand writeCommand(&mockReceiver);
     EXPECT_THROW(writeCommand.execute({}), invalid_argument);
+}
+
+TEST(WriteCommand, TestExecute) {
+    MockReceiver mockReceiver;
+    WriteCommand writeCommand(&mockReceiver);
+
+    EXPECT_CALL(mockReceiver, getResultCode())
+        .Times(1)
+        .WillOnce(Return(0));
+        
+    writeCommand.execute({ "W", "3", "0xFFF" });
+    EXPECT_EQ(0, mockReceiver.getResultCode());
+
 }
