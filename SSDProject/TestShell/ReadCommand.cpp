@@ -1,6 +1,14 @@
 ﻿#include "Command.h"
+#include <stdexcept>
 
-void ReadCommand::execute(std::vector<std::string> v) const
-{
-	// TODO: need to implement
-}
+using namespace std;
+
+class ReadCommand : public Command {
+public:
+	ReadCommand(Receiver* receiver) : Command(receiver) {}
+	void execute(std::vector<std::string> v) const override {
+		// TODO: need to implement
+	}
+private:
+	const string cmd = "R";
+};
