@@ -10,7 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "솔루션 항목", "솔루션 항목", "{98F16AE7-4086-497D-90E5-711B8C43D0DE}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		.gitingore = .gitingore
+		.gitignore = .gitignore
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SSDTest", "SSDTest\SSDTest.vcxproj", "{4ED2B784-92E0-4CC6-8C1B-4C4C43ED077B}"
