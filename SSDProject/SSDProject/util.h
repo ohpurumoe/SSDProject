@@ -16,7 +16,7 @@ void checkCmdValidity(int argc, const std::string& argv0, const std::string& arg
 	if (argc < 2) {
 		throw std::runtime_error("ssd cmd argument number is lesser than 1. Please check usage of ssd.");
 	}
-	if (argv0 != "ssd") {
+	if (argv0 != "SSD.exe") {
 		throw std::runtime_error("Wrong cmd used.");
 	}
 	if (argv1 != "R" && argv1 != "W") {
@@ -40,7 +40,7 @@ CommandArgsPair parse(int argc, char** argv){
 		throw;
 	}
 	std::vector<std::string> args;
-	for (int i = 1; i < argc; ++i) {
+	for (int i = 2; i < argc; ++i) {
 		args.push_back(argv[i]);
 	}
 	if(argv1 == "R"){

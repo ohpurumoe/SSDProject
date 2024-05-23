@@ -15,7 +15,7 @@ protected:
 		}
 	}
 	void cpyArgs(int argc) {
-		for(int i = 1; i < argc; ++i){
+		for(int i = 2; i < argc; ++i){
 			args.push_back(argv[i]);
 		}
 	}
@@ -42,14 +42,14 @@ TEST_F(parseTestFixture, wrongCmdName){
 }
 
 TEST_F(parseTestFixture, wrongArgName){
-	strcpy(argv[0], "ssd");
+	strcpy(argv[0], "SSD.exe");
 	strcpy(argv[1], "WrongArg");
 	cpyArgs(2);
 	EXPECT_THROW(parse(3, argv), std::exception);
 }
 
 TEST_F(parseTestFixture, parseReadFail){
-	strcpy(argv[0], "ssd");
+	strcpy(argv[0], "SSD.exe");
 	strcpy(argv[1], "R");
 	strcpy(argv[2], "5");
 	strcpy(argv[3], "wrongArg");
@@ -58,7 +58,7 @@ TEST_F(parseTestFixture, parseReadFail){
 }
 
 TEST_F(parseTestFixture, parseWriteFail){
-	strcpy(argv[0], "ssd");
+	strcpy(argv[0], "SSD.exe");
 	strcpy(argv[1], "W");
 	strcpy(argv[2], "5");
 	cpyArgs(3);
@@ -66,7 +66,7 @@ TEST_F(parseTestFixture, parseWriteFail){
 }
 
 TEST_F(parseTestFixture, parseRead){
-	strcpy(argv[0], "ssd");
+	strcpy(argv[0], "SSD.exe");
 	strcpy(argv[1], "R");
 	strcpy(argv[2], "5");
 	cpyArgs(3);
@@ -74,7 +74,7 @@ TEST_F(parseTestFixture, parseRead){
 }
 
 TEST_F(parseTestFixture, parseWrite){
-	strcpy(argv[0], "ssd");
+	strcpy(argv[0], "SSD.exe");
 	strcpy(argv[1], "W");
 	strcpy(argv[2], "5");
 	strcpy(argv[3], "0x12345678");
