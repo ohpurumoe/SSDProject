@@ -25,7 +25,7 @@ TEST(TestShellApplicationTest, ExitCommandTest) {
     EXPECT_TRUE(app.execute(str));
 }
 
-TEST(TestShellApplicationTest, FulReadCommandTest) {
+TEST(TestShellApplicationTest, FullReadCommandTest) {
     //TODO
     //cout 결과를 strCout에 저장되게함
     //std::streambuf* oldCoutStreamBuf = std::cout.rdbuf();
