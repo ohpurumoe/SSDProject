@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="HelpCommand.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ReadCommand.cpp" />
     <ClCompile Include="TestApp1Command.cpp" />
