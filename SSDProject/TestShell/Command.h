@@ -6,8 +6,8 @@
 class Command {
 public:
     virtual ~Command() {}
-    virtual void execute(std::vector<std::string> v) = 0;
-    int invoke(std::string cmd) {
+    virtual void execute(std::vector<std::string> v) const = 0;
+    int invoke(std::string cmd) const {
         std::string arg = ssdExe + " " + cmd;
         return system(arg.c_str());
     }

@@ -4,7 +4,7 @@ using namespace std;
 
 class TestApp1Command : public Command {
 	// Command을(를) 통해 상속됨
-	void execute(vector<string> v) override
+	void execute(vector<string> v) const override
 	{
 		// full write
 		for (int i = 0; i < 100; i++) {
