@@ -11,9 +11,9 @@ public:
 		: nandname{ nandname },
 		resultname{ resultname } {}
 	void open() {
-		fNandOut.open(nandname);
-		fNandIn.open(nandname);
-		fResultOut.open(resultname);
+		fNandOut.open(nandname, ios_base::in);
+		fNandIn.open(nandname, ios_base::in);
+		fResultOut.open(resultname, ios_base::in);
 	}
 	void close() {
 		fNandOut.close();
