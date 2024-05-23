@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include "IStorage.h"
+#include "StorageException.h"
 
 using namespace std;
 class SSD : public IStorage {
@@ -12,6 +13,9 @@ public:
 		resultname{ resultname } {}
 
 	string read(int LBA) override {
+		if (LBA < 0 || LBA > 99) {
+			throw StorageException("LBA는 0 ~ 99 사이의 값이어야 합니다. LBA : " + to_string(LBA));
+		}
 		auto data = readData(LBA);
 		storeReadData(data);
 
