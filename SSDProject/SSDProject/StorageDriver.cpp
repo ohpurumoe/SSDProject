@@ -7,7 +7,7 @@ public:
 		: ssd(ssd)
 	{
 	}
-	int read(int lba)
+	std::string read(int lba)
 	{
 		return ssd->read(lba);
 	}
