@@ -1,7 +1,8 @@
-﻿#include <cstring>
+﻿#include "gmock/gmock.h"
 #include "gtest/gtest.h"
-#include "gmock/gmock.h"
+﻿#include <cstring>
 #include "../SSDProject/StorageDriver.cpp"
+#include "../SSDProject/SSD.cpp"
 #include "../SSDProject/util.h"
 
 class parseTestFixture: public ::testing::Test{
@@ -66,4 +67,20 @@ TEST_F(parseTestFixture, parseWrite){
 	strcpy(argv[2], "5");
 	strcpy(argv[3], "0x12345678");
 	EXPECT_EQ(parse(4, argv), Command::WRITE);
+}
+
+TEST(SSDTest, StorageDriverTest) {
+	EXPECT_EQ(1, 1);
+}
+
+TEST(SSDTest, SSDWriteSuccess) {
+	SSD ssd;
+
+	ssd.open();
+	ssd.write(1, "0xABCDEFGH");
+	ssd.close();
+}
+
+TEST(SSDTest, SSDReadSuccess) {
+
 }
