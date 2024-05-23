@@ -3,20 +3,10 @@
 #include "../TestShell/TestShellApplication.cpp"
 #include <fstream>
 #include "MOCKCommand.cpp"
+#include "../TestShell/ReadCommand.cpp"
+#include "../TestShell/WriteCommand.cpp"
 
 using namespace testing;
-
-#if 1 // This is example. TODO : will remove later after implementing read xxxCommand.cpp 
-// ReadCommand implementation
-void ReadCommand::execute(std::vector<std::string> v) const {
-    receiver->read();
-}
-
-// WriteCommand implementation
-void WriteCommand::execute(std::vector<std::string> v) const {
-    receiver->write();
-}
-#endif 
 
 // Test case for ReadCommand
 TEST(CommandTest, ReadCommand) {

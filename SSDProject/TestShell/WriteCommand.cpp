@@ -1,6 +1,12 @@
-#include "Command.h"
+﻿#include "Command.h"
 
-void WriteCommand::execute(std::vector<std::string> v) const
-{
-	// TODO: need to implement
-}
+
+class WriteCommand : public Command {
+public:
+    WriteCommand(Receiver* receiver) : Command(receiver) {}
+    void execute(std::vector<std::string> v) const override {
+        // TODO: need to implement
+    }
+private:
+    const string cmd = "W";
+};

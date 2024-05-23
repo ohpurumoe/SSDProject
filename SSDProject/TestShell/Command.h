@@ -33,10 +33,3 @@ private:
     const std::string ssdExe = "..\\x64\\Debug\\SSD.exe";
 };
 
-class WriteCommand : public Command {
-public:
-    WriteCommand(Receiver* receiver) : Command(receiver) {}
-    void execute(std::vector<std::string> v) const override;
-private:
-    const string cmd = "W";
-};
