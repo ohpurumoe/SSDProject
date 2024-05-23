@@ -5,7 +5,9 @@
 #include "MOCKCommand.cpp"
 #include "../TestShell/ReadCommand.cpp"
 #include "../TestShell/WriteCommand.cpp"
+#include <stdexcept>
 
+using namespace std;
 using namespace testing;
 
 // Test case for ReadCommand
@@ -117,4 +119,11 @@ TEST(TestShellApplicationTest, TestApp1CommandTest) {
 TEST(TestShellApplicationTest, TestApp2CommandTest) {
     EXPECT_EQ(1, 1);
     EXPECT_TRUE(true);
+}
+
+TEST(ReadCommand, TestExecuteInvalidArgument) {
+    MockReceiver mockReceiver;
+    ReadCommand cmd(&mockReceiver);
+    vector<string> args;
+    EXPECT_THROW(cmd.execute(args), invalid_argument);
 }
