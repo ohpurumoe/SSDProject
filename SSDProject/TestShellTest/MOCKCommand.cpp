@@ -9,15 +9,15 @@ using namespace std;
 class MockCommand : public Command {
 public:
 	MockCommand(Receiver* receiver) : receiver_(receiver) {}
-	int execute(vector<string> v) const override {
+	void execute(vector<string> v) const override {
 		if (receiver_ == nullptr) {
 			cout << "receiver_ is nullptr" << endl;
-			return -1;
+			return;
 		}
 
 		receiver_->mock();
 		// TODO : something
-		return 0;
+		return;
 	}
 
 	MOCK_METHOD(int, read, (int lba), ());
