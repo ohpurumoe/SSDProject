@@ -30,6 +30,9 @@
     <ClCompile Include="TestApp1Command.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="TestApp2Command.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
     <ClCompile Include="HelpCommand.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>

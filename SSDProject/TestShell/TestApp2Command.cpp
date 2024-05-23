@@ -3,26 +3,37 @@
 
 using namespace std;
 
-class TestApp1Command : public Command {
+class TestApp2Command : public Command {
 public:
 	// Command을(를) 통해 상속됨
 	void execute(vector<string> v) const override
 	{
 		// full write
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 5; i++) {
 			string argument = "W";
 			argument += " " + to_string(i);
-			argument += " 0x5A5A5A5A";
+			argument += " 0xAAAABBBB";
+			for(int j = 0 ; j < 30 ; j++)
 			if (!invoke(argument)) {
 				throw invalid_argument("invoke error");
 			}
 		}
-		
-		// full read
+
+		for (int i = 0; i < 5; i++) {
+			string argument = "W";
+			argument += " " + to_string(i);
+			argument += " 0x12345678";
+			if (!invoke(argument)) {
+				cout << "invoke error" << endl;
+				throw invalid_argument("invoke error");
+			}
+		}
+
 		ifstream ifs;
-		string result;
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 5; i++) {
 			string argument = "R " + to_string(i);
+			string result;
+
 			if (!invoke(argument)) {
 				cout << "invoke error" << endl;
 				throw invalid_argument("invoke error");
