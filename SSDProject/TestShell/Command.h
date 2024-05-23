@@ -1,10 +1,12 @@
-﻿#include <iostream>
+﻿#pragma once
+#include <iostream>
 #include <string>
+#include <vector>
 
 class Command {
 public:
     virtual ~Command() {}
-    virtual void execute() const = 0;
+    virtual void execute(std::vector<std::string> v) const = 0;
 };
 
 class Receiver {
