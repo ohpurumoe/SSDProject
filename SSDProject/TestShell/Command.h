@@ -6,7 +6,14 @@
 class Command {
 public:
     virtual ~Command() {}
-    virtual int execute(std::vector<std::string> v) const = 0;
+    virtual void execute(std::vector<std::string> v) const = 0;
+    int invoke(string cmd) {
+        string arg = ssdExe + " " + cmd;
+        return system(arg.c_str());
+    }
+private:
+    const string ssdExe = "..\\x64\\Debug\\SSD.exe";
+
 };
 
 class Receiver {
