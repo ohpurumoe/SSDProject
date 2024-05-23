@@ -23,7 +23,6 @@ public:
 		writeDataToMap(LBA, data);
 
 		writeMapToFile();
-
 	}
 
 private:
@@ -32,22 +31,28 @@ private:
 	ofstream fNandOut, fResultOut;
 	ifstream fNandIn;
 	map<int, string> mapNand;
+	const char BLANK = ' ';
+	const int DATA_SIZE = 10;
 
 	void writeMapToFile() {
 		fNandOut.open(nandname);
-		for (auto iter = mapNand.begin(); iter != mapNand.end(); ++iter) {
-			fNandOut << iter->first << " " << iter->second << endl;
+		for (auto iter : mapNand) {
+			fNandOut << iter.first << " " << iter.second << endl;
 		}
 		fNandOut.close();
 	}
 
 	void writeDataToMap(const int LBA, const string data) {
-		if (!mapNand.empty() && LBA == mapNand.find(LBA)->first) {
+		if (!mapNand.empty() && mapNand.find(LBA) != mapNand.end() && LBA == mapNand.find(LBA)->first) {
 			mapNand.find(LBA)->second = data;
 		}
 		else {
 			mapNand.insert({ LBA, data });
 		}
+	}
+	string getData(string data) {
+		string removeAddr = data.substr(data.find(BLANK), DATA_SIZE + sizeof(BLANK));
+		return removeAddr.substr(1, DATA_SIZE);
 	}
 	void fillMap() {
 		string line, readData;
@@ -57,7 +62,7 @@ private:
 		while (getline(fNandIn, line)) {
 			if (line.size() == 0) continue;
 			int addr = stoi(line);
-			readData = line.substr(line.find(' '), 11).substr(1, 10);
+			readData = getData(line);
 			mapNand.insert({ addr, readData });
 		}
 		fNandIn.close();

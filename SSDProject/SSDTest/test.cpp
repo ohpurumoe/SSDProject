@@ -96,9 +96,10 @@ TEST_F(SSDTestFixture, SSDWriteSuccess) {
 }
 
 TEST_F(SSDTestFixture, SSDReadSuccess) {
-	ssd.read(10);
+	ssd.write(12, "0xAAAAAAAA");
+	ssd.read(12);
 
-	string  expected = "0xABCDEFGH";
+	string  expected = "0xAAAAAAAA";
 	EXPECT_THAT(readResultFile("result.txt"), testing::StrEq(expected));
 }
 
