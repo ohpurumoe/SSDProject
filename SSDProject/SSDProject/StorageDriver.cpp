@@ -9,7 +9,7 @@ public:
 	}
 	int read(int lba)
 	{
-		ssd->read(lba);
+		return ssd->read(lba);
 	}
 	void write(int lba, std::string data)
 	{

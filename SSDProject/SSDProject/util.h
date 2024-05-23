@@ -51,5 +51,9 @@ CommandArgsPair parse(int argc, char** argv){
 
 void execute(StorageDriver& driver, const CommandArgsPair& cmd_arg)
 {
-
+	if (cmd_arg.first == Command::READ) {
+		driver.read(std::stoi(cmd_arg.second[0]));
+		return;
+	}
+	driver.write(std::stoi(cmd_arg.second[0]), cmd_arg.second[1]);
 }

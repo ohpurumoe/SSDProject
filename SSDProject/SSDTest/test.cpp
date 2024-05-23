@@ -111,6 +111,6 @@ TEST(Execute, Read) {
 		.WillOnce(::testing::Return(0))
 		;
 	StorageDriver driver(&storage);
-	CommandArgsPair cmd_args;
+	CommandArgsPair cmd_args = { Command::READ, {"0"} };
 	execute(driver, cmd_args);
 }
