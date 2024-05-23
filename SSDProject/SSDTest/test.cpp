@@ -69,36 +69,37 @@ TEST_F(parseTestFixture, parseWrite){
 	EXPECT_EQ(parse(4, argv), Command::WRITE);
 }
 
-TEST(SSDTest, StorageDriverTest) {
-	EXPECT_EQ(1, 1);
-}
+class SSDTestFixture : public ::testing::Test {
+protected:
+	void SetUp() override {
+		ssd.open();
+	}
+	void TearDown() override {
+		ssd.close();
+	}
+	string readFileOneLine(string filename) {
+		fRead.open(filename);
+		string readResult;
+		getline(fRead, readResult);
 
-TEST(SSDTest, SSDWriteSuccess) {
+		return readResult;
+	}
+public:
 	SSD ssd;
+private:
+	ifstream fRead;
+};
 
-	ssd.open();
+TEST_F(SSDTestFixture, SSDWriteSuccess) {
 	ssd.write(10, "0xABCDEFGH");
 
-	ifstream fRead;
-	fRead.open("nand.txt");
-	string readResult;
-	getline(fRead, readResult);
-
 	string  expected = "10 0xABCDEFGH";
-	EXPECT_THAT(readResult, testing::StrEq(expected));
+	EXPECT_THAT(readFileOneLine("nand.txt"), testing::StrEq(expected));
 }
 
-TEST(SSDTest, SSDReadSuccess) {
-	SSD ssd;
-
-	ssd.open();
+TEST_F(SSDTestFixture, SSDReadSuccess) {
 	ssd.read(10);
 
-	ifstream fRead;
-	fRead.open("result.txt");
-	string readResult;
-	getline(fRead, readResult);
-
 	string  expected = "0xABCDEFGH";
-	EXPECT_THAT(readResult, testing::StrEq(expected));
+	EXPECT_THAT(readFileOneLine("result.txt"), testing::StrEq(expected));
 }
