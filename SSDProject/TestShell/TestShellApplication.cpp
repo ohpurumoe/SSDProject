@@ -10,20 +10,21 @@ using namespace std;
 class TestShellApplication {
 public:
 	void run(void) {
-		string input;
 		while (true) {
-			cout << "$";
-			cin >> input;
+			string input = getUserCommand();
+
 			try {
 				vector<string> v = trim(input);
-				Command* cmd = parse(input, v);
 
-				if (cmd == nullptr) {
-					cout << "Bye !~" << endl;
+				if (v.front() == "exit" || v.size() == 0 )
 					break;
-				}
 
-				executeCommand(cmd, v);
+				Command* cmd = createCommandInstance(v.front());
+
+				if (cmd != nullptr)
+					executeCommand(cmd, v);
+				else
+					cout << "invalid command, try again" << endl;
 
 			}
 			catch (std::exception e) {
@@ -37,23 +38,29 @@ public:
 	}
 
 private:
-	Command* parse(const string& str, vector<string>& v) {
 
-		string cmd = v.front();
+	string getUserCommand() {
+		string result;
+		cout << "$ ";
+		getline(cin, result);
+		return result;
+	}
+	
+	Command* createCommandInstance(const string& cmd) {
 		if (cmd == "write") {
-			return new WriteCommand(v);
+			return new WriteCommand();
 		}
 		else if (cmd == "read") {
-			return new ReadCommand(v);
+			return new ReadCommand();
 		}
 		else if (cmd == "help") {
-			return new HelpCommand(v);
+			return new HelpCommand();
 		}
 		else if (cmd == "fullread") {
-			return new FullReadCommand(v);
+			return new FullReadCommand();
 		}
 		else if (cmd == "fullwrite") {
-			return new FullWriteCommand(v);
+			return new FullWriteCommand();
 		}
 		return nullptr;
 	}
