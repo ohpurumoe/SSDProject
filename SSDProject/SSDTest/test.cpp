@@ -82,7 +82,7 @@ protected:
 	}
 	void TearDown() override {
 	}
-	string readResultFile(string filename) {
+	string readResultFile(string filename = "result.txt") {
 		fRead.open(filename);
 		string readResult;
 		getline(fRead, readResult);
@@ -95,19 +95,36 @@ private:
 	ifstream fRead;
 };
 
-TEST_F(SSDTestFixture, SSDWriteSuccess) {
-	ssd.write(10, "0xABCDEFGH");
-
-	string  expected = "10 0xABCDEFGH";
-	EXPECT_THAT(readResultFile("nand.txt"), testing::StrEq(expected));
-}
-
-TEST_F(SSDTestFixture, SSDReadSuccess) {
+TEST_F(SSDTestFixture, SSDRWSuccess1) {
 	ssd.write(12, "0xAAAAAAAA");
 	ssd.read(12);
 
 	string  expected = "0xAAAAAAAA";
-	EXPECT_THAT(readResultFile("result.txt"), testing::StrEq(expected));
+	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
+}
+
+TEST_F(SSDTestFixture, SSDRWSuccess2) {
+	ssd.write(12, "0xAAAAAAAA");
+	ssd.write(13, "0xBBBBBBBB");
+	ssd.write(14, "0xCCCCCCCC");
+	ssd.write(11, "0xDDDDDDDD");
+	ssd.write(12, "0xFFFFFFFF");
+	ssd.read(12);
+
+	string  expected = "0xFFFFFFFF";
+	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
+}
+
+TEST_F(SSDTestFixture, SSDRWSuccess3) {
+	ssd.write(12, "0xAAAAAAAA");
+	ssd.write(13, "0xBBBBBBBB");
+	ssd.write(14, "0xCCCCCCCC");
+	ssd.write(11, "0xDDDDDDDD");
+	ssd.write(12, "0xFFFFFFFF");
+	ssd.read(14);
+
+	string  expected = "0xCCCCCCCC";
+	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
 TEST_F(SSDTestFixture, SSDDuplicatedWrite) {
@@ -115,7 +132,7 @@ TEST_F(SSDTestFixture, SSDDuplicatedWrite) {
 	ssd.write(10, "0xABCDEFGA");
 	ssd.read(10);
 	string  expected = "0xABCDEFGA";
-	EXPECT_THAT(readResultFile("result.txt"), testing::StrEq(expected));
+	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
 class MockStorage : public IStorage {
