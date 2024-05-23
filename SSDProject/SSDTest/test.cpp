@@ -131,7 +131,15 @@ TEST_F(SSDTestFixture, SSDDuplicatedWrite) {
 	ssd.write(10, "0xABCDEFGH");
 	ssd.write(10, "0xABCDEFGA");
 	ssd.read(10);
+
 	string  expected = "0xABCDEFGA";
+	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
+}
+
+TEST_F(SSDTestFixture, SSDReadEmpty) {
+	ssd.read(99);
+
+	string  expected = "0x00000000";
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 

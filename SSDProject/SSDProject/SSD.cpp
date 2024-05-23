@@ -19,7 +19,7 @@ public:
 	}
 
 	void write(int LBA, string data) override {
-		fillMap();
+		fillMapFromFile();
 
 		writeDataToMap(LBA, data);
 
@@ -55,7 +55,7 @@ private:
 		string removeAddr = data.substr(data.find(BLANK), DATA_SIZE + sizeof(BLANK));
 		return removeAddr.substr(1, DATA_SIZE);
 	}
-	void fillMap() {
+	void fillMapFromFile() {
 		string line, readData;
 
 		mapNand.clear();
@@ -75,7 +75,7 @@ private:
 		while (getline(fNandIn, line)) {
 			if (line.size() == 0) continue;
 			int addr = stoi(line);
-			readData = line.substr(line.find(' '), 11).substr(1, 10);
+			readData = getData(line);
 			if (addr == LBA) break;
 		}
 		fNandIn.close();
