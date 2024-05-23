@@ -128,7 +128,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MOCKCommand.cpp" />
     <ClCompile Include="ReadCommand.cpp" />
     <ClCompile Include="TestApp1Command.cpp" />
     <ClCompile Include="TestShellApplication.cpp" />

@@ -18,4 +18,6 @@ public:
     void help() const { std::cout << "Executing help command" << std::endl; }
     void fullwrite() const { std::cout << "Executing fullwrite command" << std::endl; }
     void fullread() const { std::cout << "Executing fullread command" << std::endl; }
+ 
+    void mock() const { std::cout << "Executing mock command" << std::endl; }
 };
