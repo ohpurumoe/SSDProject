@@ -16,6 +16,7 @@ public:
 		if (LBA < ADDR_LOW || LBA > ADDR_HIGH) {
 			throw StorageException("LBA는 0 ~ 99 사이의 값이어야 합니다. LBA : " + to_string(LBA));
 		}
+
 		auto data = readData(LBA);
 		storeReadData(data);
 
@@ -23,6 +24,10 @@ public:
 	}
 
 	void write(int LBA, string data) override {
+		if (LBA < ADDR_LOW || LBA > ADDR_HIGH) {
+			throw StorageException("LBA는 0 ~ 99 사이의 값이어야 합니다. LBA : " + to_string(LBA));
+		}
+
 		fillMapFromFile();
 		writeDataToMap(LBA, data);
 		writeMapToFile();
