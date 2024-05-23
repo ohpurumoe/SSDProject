@@ -41,8 +41,8 @@ public:
 		return true;
 	}
 
-	void executeCommand(Command* cmd, vector<string>& v) {
-		cmd->execute(v);
+	int executeCommand(Command* cmd, vector<string>& v) {
+		return cmd->execute(v);
 	}
 
 private:
@@ -55,25 +55,27 @@ private:
 	}
 
 	Command* createCommandInstance(const string& cmd) {
-
+		Receiver receiver;
 		if (cmd == "write") {
-//			return new WriteCommand();
+			// return new WriteCommand(&receiver);
 		}
 		else if (cmd == "read") {
-//			return new ReadCommand();
+			// return new ReadCommand(&receiver);
 		}
 		else if (cmd == "help") {
-//			return new HelpCommand();
+			// return new HelpCommand(&receiver);
 		}
 		else if (cmd == "fullread") {
-//			return new FullReadCommand();
+			// return new FullReadCommand(&receiver);
 		}
 		else if (cmd == "fullwrite") {
-//			return new FullWriteCommand();
+			// return new FullWriteCommand(&receiver);
 		}
+
 		else if (cmd == "testapp1") {
 			return new TestApp1Command();
 		}
+    
 		return nullptr;
 	}
 
