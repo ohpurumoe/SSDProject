@@ -5,32 +5,40 @@
 #include <vector>
 #include <iterator>
 
+#include "TestApp1Command.cpp"
+
 using namespace std;
 
 class TestShellApplication {
 public:
-	void run(void) {
-		while (true) {
+	void run() {
+		bool exit = false;
+		do {
 			string input = getUserCommand();
+			exit = execute(input);
+		} while (exit);
+	}
 
-			try {
-				vector<string> v = trim(input);
+	bool execute(string input) {
+		try {
+			vector<string> v = trim(input);
 
-				if (v.front() == "exit" || v.size() == 0 )
-					break;
+			if (v.front() == "exit" || v.size() == 0)
+				return false;
 
-				Command* cmd = createCommandInstance(v.front());
+			Command* cmd = createCommandInstance(v.front());
 
-				if (cmd != nullptr)
-					executeCommand(cmd, v);
-				else
-					cout << "invalid command, try again" << endl;
+			if (cmd != nullptr)
+				executeCommand(cmd, v);
+			else
+				cout << "invalid command, try again" << endl;
 
-			}
-			catch (std::exception e) {
-				cout << e.what() << endl;
-			}
-		};
+		}
+		catch (std::exception e) {
+			cout << e.what() << endl;
+		}
+
+		return true;
 	}
 
 	void executeCommand(Command* cmd, vector<string>& v) {
@@ -62,6 +70,9 @@ private:
 		}
 		else if (cmd == "fullwrite") {
 //			return new FullWriteCommand();
+		}
+		else if (cmd == "testapp1") {
+			return new TestApp1Command();
 		}
 		return nullptr;
 	}
