@@ -98,7 +98,6 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="test.cpp" />
-    <ClCompile Include="test_main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SSDProject\SSDProject.vcxproj">
