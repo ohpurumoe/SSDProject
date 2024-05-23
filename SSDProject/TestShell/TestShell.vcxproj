@@ -130,6 +130,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ReadCommand.cpp" />
     <ClCompile Include="TestApp1Command.cpp" />
+    <ClCompile Include="TestApp2Command.cpp" />
     <ClCompile Include="TestShellApplication.cpp" />
     <ClCompile Include="WriteCommand.cpp" />
   </ItemGroup>
