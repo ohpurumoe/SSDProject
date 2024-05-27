@@ -198,3 +198,36 @@ TEST(Execute, Write) {
 	CommandArgsPair cmd_args = { Command::WRITE, {"0", "0x12345678"}};
 	execute(driver, cmd_args);
 }
+
+TEST_F(SSDTestFixture, FlushTest1) {
+	StorageDriver driver(&ssd);
+	driver.write(1, "0xAAAAAAAA");
+	driver.write(2, "0xBBBBBBBB");
+	driver.write(3, "0xCCCCCCCC");
+	driver.write(4, "0xDDDDDDDD");
+	driver.write(5, "0xFFFFFFFF");
+	driver.write(6, "0xAAAAAAAA");
+	driver.write(7, "0xBBBBBBBB");
+	driver.write(8, "0xCCCCCCCC");
+	driver.write(9, "0xDDDDDDDD");
+	driver.write(10, "0xFFFFFFFF");
+
+	string  expected = "";
+	EXPECT_THAT(readResultFile("buffer.txt"), testing::StrEq(expected));
+	driver.read(8);
+	expected = "0xCCCCCCCC";
+	EXPECT_THAT(readResultFile("result.txt"), testing::StrEq(expected));
+}
+
+TEST_F(SSDTestFixture, FlushTest1) {
+	StorageDriver driver(&ssd);
+	driver.write(7, "0xBBBBBBBB");
+	driver.write(8, "0xCCCCCCCC");
+	driver.flush();
+
+	string  expected = "";
+	EXPECT_THAT(readResultFile("buffer.txt"), testing::StrEq(expected));
+	driver.read(8);
+	expected = "0xCCCCCCCC";
+	EXPECT_THAT(readResultFile("result.txt"), testing::StrEq(expected));
+}
