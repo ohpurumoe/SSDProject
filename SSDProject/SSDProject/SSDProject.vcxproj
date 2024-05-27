@@ -131,9 +131,11 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SSD.cpp" />
     <ClCompile Include="StorageDriver.cpp" />
+    <ClCompile Include="StorageException.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IStorage.h" />
+    <ClInclude Include="StorageException.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
