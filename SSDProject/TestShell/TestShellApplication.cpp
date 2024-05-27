@@ -35,8 +35,10 @@ public:
 
 			if (cmd != nullptr)
 				executeCommand(cmd, v);
-			else
+			else {
 				cout << "invalid command, try again" << endl;
+				return false;
+			}
 		}
 		catch (std::exception e) {
 			cout << e.what() << endl;
