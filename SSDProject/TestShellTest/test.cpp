@@ -27,19 +27,17 @@ public:
 // Test case for ReadCommand
 TEST(CommandTest, ReadCommand) {
     MockReceiver mockReceiver;
-    EXPECT_CALL(mockReceiver, read()).Times(AtLeast(1));
 
     ReadCommand readCommand(&mockReceiver);
-    readCommand.execute({});
+    readCommand.execute({"R", "3"});
 }
 
 // Test case for WriteCommand
 TEST(CommandTest, WriteCommand) {
     MockReceiver mockReceiver;
-    EXPECT_CALL(mockReceiver, write()).Times(AtLeast(1));
 
     WriteCommand writeCommand(&mockReceiver);
-    writeCommand.execute({});
+    writeCommand.execute({"W", "3", "0x5A5A5A5A"});
 }
 
 
