@@ -21,6 +21,7 @@ public:
 	}
 	void erase(int lba, int size)
 	{
+
 		//if(commandBuffer->erase(lba, size) == MAX_BUFFER_SIZE) flush();
 		ssd->erase(lba, size);
 	}
