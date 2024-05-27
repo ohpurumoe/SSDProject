@@ -34,7 +34,7 @@ public:
 	}
 private:
 	const string cmd = "R";
-	const std::string ssdResult = "..\\x64\\Debug\\result.txt";
+	const std::string ssdResult = ".\\result.txt";
 
 	string getReadResult() const {
 		ifstream ifs;
@@ -42,7 +42,6 @@ private:
 		ifs.open(ssdResult);
 		string result = string((std::istreambuf_iterator<char>(ifs)),
 			std::istreambuf_iterator<char>());
-		cout << result << endl;
 		ifs.close();
 
 		return result;
