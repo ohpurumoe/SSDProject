@@ -48,5 +48,5 @@ public:
 	}
 
 private:
-	const std::string ssdResult = "..\\x64\\Debug\\result.txt";
+	const std::string ssdResult = ".\\result.txt";
 };
