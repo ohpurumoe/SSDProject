@@ -65,7 +65,7 @@ TEST_F(parseTestFixture, parseRead){
 	strcpy(argv[1], "R");
 	strcpy(argv[2], "5");
 	cpyArgs(3);
-	EXPECT_EQ(parse(3, argv), std::make_pair(Command::READ, args));
+	EXPECT_EQ(parse(3, argv), std::make_pair(CMD::READ, args));
 }
 
 TEST_F(parseTestFixture, parseWrite){
@@ -74,7 +74,7 @@ TEST_F(parseTestFixture, parseWrite){
 	strcpy(argv[2], "5");
 	strcpy(argv[3], "0x12345678");
 	cpyArgs(4);
-	EXPECT_EQ(parse(4, argv), std::make_pair(Command::WRITE, args));
+	EXPECT_EQ(parse(4, argv), std::make_pair(CMD::WRITE, args));
 }
 
 class SSDTestFixture : public ::testing::Test {

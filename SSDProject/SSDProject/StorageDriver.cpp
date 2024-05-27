@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include "IStorage.h"
+#include <stdexcept>
+#include <vector>
 
 class StorageDriver {
 public:
@@ -7,14 +9,15 @@ public:
 		: ssd(ssd)
 	{
 	}
-	std::string read(int lba)
+	void read(int lba)
 	{
-		return ssd->read(lba);
+		ssd->read(lba);
 	}
 	void write(int lba, std::string data)
 	{
 		ssd->write(lba, data);
 	}
+
 private:
 	IStorage* ssd;
 };
