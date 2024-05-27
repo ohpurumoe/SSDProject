@@ -1,5 +1,6 @@
 ﻿#include "Command.h"
 #include <stdexcept>
+#include "InputValidChecker.cpp"
 
 using namespace std;
 
@@ -7,12 +8,12 @@ class WriteCommand : public Command {
 public:
 	WriteCommand(Receiver* receiver) : Command(receiver) {}
 	void execute(std::vector<std::string> v) override {
-		if (v.size() < 2) {
-			throw invalid_argument("Need two argument for write command");
-		}
-
 		if (receiver == nullptr) {
 			throw invalid_argument("Need valid write receiver");
+		}
+
+		if (!checker.check(v, InputValidChecker::TYPE_CMD_LBA_VAL)) {
+			throw invalid_argument("Need valid argument");
 		}
 
 		string wrCmd;
