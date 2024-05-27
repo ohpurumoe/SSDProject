@@ -84,7 +84,7 @@ private:
 		else if (cmd == "testapp2") {
 			return new TestApp2Command();
 		}
-		else if (cmd == "erase") {
+		else if (cmd == "erase" || cmd == "erase_range") {
 			return new EraseCommand(&receiver);
 		}
 		return nullptr;
