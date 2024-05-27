@@ -12,6 +12,8 @@ public:
 	static const int TYPE_CMD = 0;
 	static const int TYPE_CMD_LBA = 1;
 	static const int TYPE_CMD_LBA_VAL = 2;
+	static const int TYPE_CMD_LBA_SIZE = 3;
+	static const int TYPE_CMD_LBA_LBA = 4;
 
 	bool check(std::vector<std::string> args, int type = TYPE_CMD) {
 		if (args.empty()) {
@@ -28,6 +30,14 @@ public:
 
 		if (type == TYPE_CMD_LBA_VAL) {
 			return (args.size() == 3) && isValidLBA(args[1]) && isValidValue(args[2]);
+		}
+
+		if (type == TYPE_CMD_LBA_SIZE) {
+			return (args.size() == 3) && isValidLBA(args[1]) && isValidSize(args[2]);
+		}
+
+		if (type == TYPE_CMD_LBA_LBA) {
+			return (args.size() == 3) && isValidLBA(args[1]) && isValidLBA(args[2]);
 		}
 
 		return false;
@@ -63,5 +73,16 @@ private:
 		return true;
 	}
 
+	bool isValidSize(const string size) {
+		int num = -1;
 
+		try {
+			num = stoi(size);
+		}
+		catch (...) {
+			return false;
+		}
+
+		return (num >= 0 && num <= 10);
+	}
 };

@@ -12,6 +12,8 @@
 #include "FullWriteCommand.cpp"
 #include "ReadCommand.cpp"
 #include "WriteCommand.cpp"
+#include "EraseCommand.cpp"
+
 using namespace std;
 
 class TestShellApplication {
@@ -86,6 +88,9 @@ private:
 		}
 		else if (cmd == "testapp2") {
 			return new TestApp2Command(&receiver);
+		}
+		else if (cmd == "erase" || cmd == "erase_range") {
+			return new EraseCommand(&receiver);
 		}
 		return nullptr;
 	}
