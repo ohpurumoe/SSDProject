@@ -1,7 +1,5 @@
 ﻿#include "SSD.cpp"
-#include "StorageDriver.cpp"
 #include "Parser.h"
-#include "Command.h"
 
 int main(int argc, char** argv) {
 	auto hardware = new SSD();
