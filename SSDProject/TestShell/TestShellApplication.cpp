@@ -84,6 +84,9 @@ private:
 		else if (cmd == "testapp2") {
 			return new TestApp2Command();
 		}
+		else if (cmd == "erase") {
+			return new EraseCommand(&receiver);
+		}
 		return nullptr;
 	}
 
