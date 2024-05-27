@@ -40,7 +40,17 @@ public:
 	}
 
 	void erase(int LBA, int size) override {
+		if (LBA < ADDR_LOW || LBA > ADDR_HIGH) {
+			throw StorageException("LBA는 0 ~ 99 사이의 값이어야 합니다. LBA : " + to_string(LBA));
+		}
 
+		fillMapFromFile();
+
+		for (int i = LBA; i < LBA + size; i++) {
+			writeDataToMap(i, "0x00000000");
+		}
+
+		writeMapToFile();
 	}
 
 private:
