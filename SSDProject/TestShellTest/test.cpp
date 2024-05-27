@@ -212,14 +212,22 @@ TEST(HelpCommand, HelpTestExecutePrintAll) {
     MockReceiver mockReceiver;
     HelpCommand helpCommand(&mockReceiver);
     vector<string> args = { "help"};
+
+    ::internal::CaptureStdout();
     helpCommand.execute(args);
-    EXPECT_TRUE(true);
+    string output = ::internal::GetCapturedStdout();
+
+    EXPECT_THAT(output, HasSubstr("Execute test application"));
 }
 
 TEST(HelpCommand, HelpTestExecutePrintOnlyONe) {
     MockReceiver mockReceiver;
     HelpCommand helpCommand(&mockReceiver);
     vector<string> args = { "help", "write"};
+
+    ::internal::CaptureStdout();
     helpCommand.execute(args);
-    EXPECT_TRUE(true);
+    string output = ::internal::GetCapturedStdout();
+
+    EXPECT_THAT(output, HasSubstr("write"));
 }
