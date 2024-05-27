@@ -18,6 +18,8 @@ int main(int argc, char** argv) {
 	}
 	catch (...) {
 		std::cout << "Wrong use of SSD.exe. Please retry." << std::endl;
+		delete hardware;
+		return -1;
 	}
 	delete hardware;
 	
