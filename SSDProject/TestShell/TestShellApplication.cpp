@@ -12,6 +12,8 @@
 #include "FullWriteCommand.cpp"
 #include "ReadCommand.cpp"
 #include "WriteCommand.cpp"
+#include "EraseCommand.cpp"
+
 using namespace std;
 
 class TestShellApplication {

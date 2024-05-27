@@ -243,17 +243,30 @@ TEST(InputValidChecker, TestWriteCommandInvalidLBA) {
 TEST(ReadCommand, ReadCommandTestExecuteInvalidInput) {
     Receiver receiver;
     ReadCommand readCommand(&receiver);
-    EXPECT_THROW(readCommand.execute({ "R", "100" }); , invalid_argument);
+    EXPECT_THROW(readCommand.execute({ "R", "100" }), invalid_argument);
 }
 
 TEST(ReadCommand, ReadCommandTestExecuteInvalidInputNum) {
     Receiver receiver;
     ReadCommand readCommand(&receiver);
-    EXPECT_THROW(readCommand.execute({ "R", "A" });, invalid_argument);
+    EXPECT_THROW(readCommand.execute({ "R", "A" }), invalid_argument);
 }
 
 TEST(WriteCommand, WriteCommandTestExecuteInvalidInput) {
     Receiver receiver;
     WriteCommand writeCommand(&receiver);
-    EXPECT_THROW(writeCommand.execute({ "W", "3", "FFFF"}); , invalid_argument);
+    EXPECT_THROW(writeCommand.execute({ "W", "3", "FFFF" }), invalid_argument);
+}
+
+TEST(EraseCommand, EraseCommandTestExecuteInvalidInput) {
+    Receiver receiver;
+    WriteCommand writeCommand(&receiver);
+    EXPECT_THROW(writeCommand.execute({ "E", "3", "FFFF" }), invalid_argument);
+}
+
+TEST(EraseCommand, EraseCommandTestExecute) {
+    Receiver receiver;
+    EraseCommand eraseCommand(&receiver);
+    eraseCommand.execute({ "E", "3", "FFFF" });
+    EXPECT_THAT(receiver.getResultCode(), 0);
 }
