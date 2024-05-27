@@ -270,3 +270,19 @@ TEST_F(commandTestFixture, Write) {
 	auto& args = cmd_args.second;
 	cmd->execute(args);
 }
+
+TEST_F(commandTestFixture, Erase) {
+	strcpy(argv[1], "E");
+	strcpy(argv[2], "0");
+	strcpy(argv[2], "3");
+	MockStorage storage;
+	EXPECT_CALL(storage, erase, ::testing::_)
+		.Times(1)
+		;
+	StorageDriver driver(&storage);
+	Parser parser(&driver);
+	auto cmd_args = parser.parse(3, argv);
+	auto& cmd = cmd_args.first;
+	auto& args = cmd_args.second;
+	cmd->execute(args);
+}

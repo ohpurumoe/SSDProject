@@ -17,6 +17,10 @@ public:
 	{
 		ssd->write(lba, data);
 	}
+	void erase(int lba, int size)
+	{
+		ssd->erase(lba, size);
+	}
 
 private:
 	IStorage* ssd;
