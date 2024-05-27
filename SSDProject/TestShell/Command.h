@@ -22,7 +22,9 @@ public:
     void fullread() const { }
 
     void mock() const { }
-
+    void setResultCode(int retCode) {
+        returnCode = retCode;
+    }
     int getResultCode() const { return returnCode; }
 
 private:
