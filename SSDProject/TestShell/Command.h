@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include "Logger.h"
+
 using namespace std;
 
 class Receiver {
@@ -40,7 +42,9 @@ public:
 
 private:
     const std::string ssdExe = "..\\x64\\Debug\\SSD.exe";
+
 protected:
     Receiver* receiver;
+    Logger& logger = Logger::getInstance();
 };
 

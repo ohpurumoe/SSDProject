@@ -36,7 +36,7 @@ public:
 			if (cmd != nullptr)
 				executeCommand(cmd, v);
 			else
-				cout << "invalid command, try again" << endl;
+				logger.print("INVALID COMMAND, TRY AGAIN");				
 		}
 		catch (std::exception e) {
 			cout << e.what() << endl;
@@ -93,4 +93,6 @@ private:
 
 		return vstrings;
 	}
+
+	Logger& logger = Logger::getInstance();
 };
