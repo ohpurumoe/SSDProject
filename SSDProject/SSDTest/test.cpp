@@ -2,11 +2,19 @@
 #include "gtest/gtest.h"
 #include "../SSDProject/StorageDriver.cpp"
 #include "../SSDProject/SSD.cpp"
-#include "../SSDProject/util.h"
+#include "../SSDProject/Parser.h"
 #include "../SSDProject/StorageException.cpp"
+#include "../SSDProject/Command.h"
 #include <cstring>
+#include <utility>
 
-class parseTestFixture: public ::testing::Test{
+class MockStorage : public IStorage {
+public:
+	MOCK_METHOD(string, read, (int), (override));
+	MOCK_METHOD(void, write, (int, string), (override));
+};
+
+class argsTestFixture: public ::testing::Test{
 protected:
 	void SetUp() override {
 		argv = new char*[4];
@@ -31,16 +39,52 @@ protected:
 	std::vector<std::string> args;
 };
 
+class parseTestFixture: public argsTestFixture{
+protected:
+	void SetUp() override {
+		argsTestFixture::SetUp();
+		driver = new StorageDriver(&storage);
+		parser = new Parser(driver);
+	}
+	void TearDown() override {
+		argsTestFixture::TearDown();
+		delete parser;
+		delete driver;
+	}
+
+	Parser* parser;
+	StorageDriver* driver;
+	testing::NiceMock<MockStorage> storage;
+};
+
+class commandTestFixture: public argsTestFixture{
+protected:
+	void SetUp() override {
+		argsTestFixture::SetUp();
+		driver = new StorageDriver(&storage);
+		parser = new Parser(driver);
+	}
+	void TearDown() override {
+		argsTestFixture::TearDown();
+		delete parser;
+		delete driver;
+	}
+
+	Parser* parser;
+	StorageDriver* driver;
+	testing::NiceMock<MockStorage> storage;
+};
+
 TEST_F(parseTestFixture, tooLessArgc){
 	cpyArgs(0);
-	EXPECT_THROW(parse(0, argv), std::exception);
+	EXPECT_THROW(parser->parse(0, argv), std::exception);
 }
 
 TEST_F(parseTestFixture, wrongArgName){
 	strcpy(argv[0], "SSD.exe");
 	strcpy(argv[1], "WrongArg");
 	cpyArgs(2);
-	EXPECT_THROW(parse(3, argv), std::exception);
+	EXPECT_THROW(parser->parse(3, argv), std::exception);
 }
 
 TEST_F(parseTestFixture, parseReadFail){
@@ -49,7 +93,7 @@ TEST_F(parseTestFixture, parseReadFail){
 	strcpy(argv[2], "5");
 	strcpy(argv[3], "wrongArg");
 	cpyArgs(4);
-	EXPECT_THROW(parse(4, argv), std::exception);
+	EXPECT_THROW(parser->parse(4, argv), std::exception);
 }
 
 TEST_F(parseTestFixture, parseWriteFail){
@@ -57,7 +101,7 @@ TEST_F(parseTestFixture, parseWriteFail){
 	strcpy(argv[1], "W");
 	strcpy(argv[2], "5");
 	cpyArgs(3);
-	EXPECT_THROW(parse(3, argv), std::exception);
+	EXPECT_THROW(parser->parse(3, argv), std::exception);
 }
 
 TEST_F(parseTestFixture, parseRead){
@@ -65,7 +109,8 @@ TEST_F(parseTestFixture, parseRead){
 	strcpy(argv[1], "R");
 	strcpy(argv[2], "5");
 	cpyArgs(3);
-	EXPECT_EQ(parse(3, argv), std::make_pair(CMD::READ, args));
+	auto parsed_pair = parser->parse(3, argv);
+	EXPECT_EQ(typeid(*parsed_pair.first), typeid(ReadCommand));
 }
 
 TEST_F(parseTestFixture, parseWrite){
@@ -74,7 +119,8 @@ TEST_F(parseTestFixture, parseWrite){
 	strcpy(argv[2], "5");
 	strcpy(argv[3], "0x12345678");
 	cpyArgs(4);
-	EXPECT_EQ(parse(4, argv), std::make_pair(CMD::WRITE, args));
+	auto parsed_pair = parser->parse(4, argv);
+	EXPECT_EQ(typeid(*parsed_pair.first), typeid(WriteCommand));
 }
 
 class SSDTestFixture : public ::testing::Test {
@@ -154,29 +200,34 @@ TEST_F(SSDTestFixture, SSDWriteInvalidAddr) {
 	EXPECT_THROW(ssd.write(-1, "0xFFFFFFFF"), StorageException);
 }
 
-class MockStorage : public IStorage {
-public:
-	MOCK_METHOD(string, read, (int), (override));
-	MOCK_METHOD(void, write, (int, string), (override));
-};
-
-TEST(Execute, Read) {
+TEST_F(commandTestFixture, Read) {
+	strcpy(argv[1], "R");
+	strcpy(argv[2], "0");
 	MockStorage storage;
 	EXPECT_CALL(storage, read, ::testing::_)
 		.Times(1)
 		.WillOnce(::testing::Return(""))
 		;
 	StorageDriver driver(&storage);
-	CommandArgsPair cmd_args = { Command::READ, {"0"} };
-	execute(driver, cmd_args);
+	Parser parser(&driver);
+	auto cmd_args = parser.parse(3, argv);
+	auto& cmd = cmd_args.first;
+	auto& args = cmd_args.second;
+	cmd->execute(args);
 }
 
-TEST(Execute, Write) {
+TEST_F(commandTestFixture, Write) {
+	strcpy(argv[1], "W");
+	strcpy(argv[2], "0");
+	strcpy(argv[2], "0x12345678");
 	MockStorage storage;
 	EXPECT_CALL(storage, write, ::testing::_)
 		.Times(1)
 		;
 	StorageDriver driver(&storage);
-	CommandArgsPair cmd_args = { Command::WRITE, {"0", "0x12345678"}};
-	execute(driver, cmd_args);
+	Parser parser(&driver);
+	auto cmd_args = parser.parse(4, argv);
+	auto& cmd = cmd_args.first;
+	auto& args = cmd_args.second;
+	cmd->execute(args);
 }
