@@ -22,8 +22,9 @@ public:
 			return (args.size() == 1);
 		}
 
-		if (type == TYPE_CMD_LBA)
+		if (type == TYPE_CMD_LBA) {
 			return (args.size() == 2) && isValidLBA(args[1]);
+		}
 
 		if (type == TYPE_CMD_LBA_VAL) {
 			return (args.size() == 3) && isValidLBA(args[1]) && isValidValue(args[2]);
@@ -43,7 +44,7 @@ private:
 			return false;
 		}
 
-		return num >= 0 && num <= 99;
+		return (num >= 0 && num <= 99);
 	}
 
 	bool isValidValue(const string value) {

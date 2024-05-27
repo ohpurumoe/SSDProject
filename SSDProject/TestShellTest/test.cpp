@@ -243,7 +243,13 @@ TEST(InputValidChecker, TestWriteCommandInvalidLBA) {
 TEST(ReadCommand, ReadCommandTestExecuteInvalidInput) {
     Receiver receiver;
     ReadCommand readCommand(&receiver);
-    EXPECT_THROW(readCommand.execute({ "R", "A" }); , invalid_argument);
+    EXPECT_THROW(readCommand.execute({ "R", "100" }); , invalid_argument);
+}
+
+TEST(ReadCommand, ReadCommandTestExecuteInvalidInputNum) {
+    Receiver receiver;
+    ReadCommand readCommand(&receiver);
+    EXPECT_THROW(readCommand.execute({ "R", "A" });, invalid_argument);
 }
 
 TEST(WriteCommand, WriteCommandTestExecuteInvalidInput) {
