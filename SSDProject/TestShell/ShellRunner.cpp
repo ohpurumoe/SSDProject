@@ -8,18 +8,26 @@ public:
 
 	void run(string filename) {
 		ifstream file;
-
 		file.open(filename);
 		string read;
 		while (file.peek() != EOF) {
 			getline(file, read);
-			cout << "read : " << read << endl;
+			string cmd = getStringToCommand(read);
 
-			app->execute(read);
+			if (cmd.length() != 0) {
+				app->execute(cmd);
+			}
 		}
 	}
 
 private:
+	void printHeader() {
+
+	}
+
+	void printFooter() {
+
+	}
 	string getStringToCommand(const string &str) {
 		if (str == "FullWriteReadCompare" )
 			return "testapp1";
