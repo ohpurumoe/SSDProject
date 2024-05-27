@@ -158,10 +158,24 @@ TEST_F(SSDTestFixture, SSDWriteInvalidData) {
 	EXPECT_THROW(ssd.write(1, "0xABCDEFGH"), StorageException);
 }
 
+TEST_F(SSDTestFixture, SSDErase1Addr) {
+	ssd.write(12, "0xAAAAAAAA");
+	ssd.write(13, "0xBBB1BBBB");
+	ssd.write(14, "0xCCCCCCCC");
+
+	ssd.erase(13, 1);
+
+	ssd.read(13);
+
+	string  expected = "0x00000000";
+	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
+}
+
 class MockStorage : public IStorage {
 public:
 	MOCK_METHOD(string, read, (int), (override));
 	MOCK_METHOD(void, write, (int, string), (override));
+	MOCK_METHOD(void, erase, (int, int), (override));
 };
 
 TEST(Execute, Read) {
