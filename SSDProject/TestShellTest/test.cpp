@@ -81,24 +81,24 @@ TEST(TestShellApplicationTest, ExitCommandTest) {
 TEST_F(TestShellApplicationFixture, FullReadCommandTest) {
     for (int lba = 0; lba < 100; lba++) 
     {
-        v = { "write", to_string(lba), "0X12345678"};
+        v = { "write", to_string(lba), "0x12345678"};
         app.executeCommand(writeCmd, v);
     }
     v = { "fullread" };
     app.executeCommand(fullreadCmd, v);
  
-    for (int lba = 0; lba < 100; lba++) expected += "0X12345678\n";
+    for (int lba = 0; lba < 100; lba++) expected += "0x12345678\n";
     EXPECT_THAT(strCout.str(), testing::Eq(expected));
 }
 
 
 TEST_F(TestShellApplicationFixture, FullWriteCommandTest) {
-    v = { "fullwrite", "0X12345678" };
+    v = { "fullwrite", "0x12345678" };
     app.executeCommand(fullwriteCmd, v);
     v = { "fullread" };
     app.executeCommand(fullreadCmd, v);
 
-    for (int lba = 0; lba < 100; lba++) expected += "0X12345678\n";
+    for (int lba = 0; lba < 100; lba++) expected += "0x12345678\n";
     EXPECT_THAT(strCout.str(), testing::Eq(expected));
 }
 
