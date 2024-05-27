@@ -22,42 +22,13 @@ public:
     TestShellApplication app;
     ostringstream strCout;
     streambuf* oldCoutStreamBuf;
+
+    MockReceiver mockReceiver;
+
 };
 
-// Test case for ReadCommand
-TEST(CommandTest, ReadCommand) {
-    MockReceiver mockReceiver;
 
-    ReadCommand readCommand(&mockReceiver);
-    readCommand.execute({"R", "3"});
-}
-
-// Test case for WriteCommand
-TEST(CommandTest, WriteCommand) {
-    MockReceiver mockReceiver;
-
-    WriteCommand writeCommand(&mockReceiver);
-    writeCommand.execute({"W", "3", "0x5A5A5A5A"});
-}
-
-
-TEST(TestShellApplicationTest, WriteCommandTest) {
-  EXPECT_EQ(1, 1);
-  EXPECT_TRUE(true);
-}
-
-TEST(TestShellApplicationTest, ReadCommandTest) {
-    EXPECT_EQ(1, 1);
-    EXPECT_TRUE(true);
-}
-
-TEST(TestShellApplicationTest, HelpCommandTest) {
-    EXPECT_EQ(1, 1);
-    EXPECT_TRUE(true);
-}
-
-TEST(TestShellApplicationTest, ExitCommandTest) {
-    TestShellApplication app;
+TEST_F(TestShellApplicationFixture, ExitCommandTest) {
     std::string str = "exit";
 
     EXPECT_FALSE(app.execute(str));
@@ -156,20 +127,24 @@ TEST_F(TestShellApplicationFixture, TestApp2CommandTest) {
     EXPECT_THAT(expected, StrEq(strCout.str()));
 }
 
-TEST(ReadCommand, TestExecuteInvalidArgument) {
-    MockReceiver mockReceiver;
+// ReadCommand
+TEST_F(TestShellApplicationFixture, ReadCommandCommandTest) {
+    ReadCommand readCommand(&mockReceiver);
+    readCommand.execute({ "R", "3" });
+}
+
+TEST_F(TestShellApplicationFixture, ReadCommandTestExecuteInvalidArgument) {
     ReadCommand readCommand(&mockReceiver);
     EXPECT_THROW(readCommand.execute({}), invalid_argument);
 }
 
-TEST(ReadCommand, TestExecuteNoReceiver) {
+TEST_F(TestShellApplicationFixture, ReadCommandTestExecuteNoReceiver) {
     ReadCommand cmd(nullptr);
     vector<string> args = { "r", "3" };
     EXPECT_THROW(cmd.execute(args), invalid_argument);
 }
 
-TEST(ReadCommand, TestExecute) {
-    MockReceiver mockReceiver;
+TEST_F(TestShellApplicationFixture, ReadCommandTestExecute) {
     ReadCommand readCommand(&mockReceiver);
 
     EXPECT_CALL(mockReceiver, getResultCode())
@@ -180,14 +155,18 @@ TEST(ReadCommand, TestExecute) {
     EXPECT_EQ(0, mockReceiver.getResultCode());
 }
 
-TEST(WriteCommand, TestExecuteInvalidArgument) {
-    MockReceiver mockReceiver;
+// WriteCommand
+TEST_F(TestShellApplicationFixture, WriteCommandCommandTest) {
+    WriteCommand writeCommand(&mockReceiver);
+    writeCommand.execute({ "W", "3", "0x5A5A5A5A" });
+}
+
+TEST_F(TestShellApplicationFixture, WriteCommandTestExecuteInvalidArgument) {
     WriteCommand writeCommand(&mockReceiver);
     EXPECT_THROW(writeCommand.execute({}), invalid_argument);
 }
 
-TEST(WriteCommand, TestExecute) {
-    MockReceiver mockReceiver;
+TEST_F(TestShellApplicationFixture, WriteCommandTestExecute) {
     WriteCommand writeCommand(&mockReceiver);
 
     EXPECT_CALL(mockReceiver, getResultCode())
@@ -199,50 +178,46 @@ TEST(WriteCommand, TestExecute) {
 
 }
 
-TEST(HelpCommand, HelpTestExecuteNoReceiver) {
+// HelpCommand
+TEST_F(TestShellApplicationFixture, HelpTestExecuteNoReceiver) {
     ReadCommand cmd(nullptr);
     vector<string> args = { "help", "3" };
     EXPECT_THROW(cmd.execute(args), invalid_argument);
 }
 
-TEST(HelpCommand, HelpTestExecuteInvalidArgumentNo) {
-    MockReceiver mockReceiver;
+TEST_F(TestShellApplicationFixture, HelpTestExecuteInvalidArgumentNo) {
     HelpCommand helpCommand(&mockReceiver);
     vector<string> args = { "help", "3",  };
 
     EXPECT_THROW(helpCommand.execute(args), invalid_argument);
 }
 
-TEST(HelpCommand, HelpTestExecuteInvalidArgumentOver) {
-    MockReceiver mockReceiver;
+TEST_F(TestShellApplicationFixture, HelpTestExecuteInvalidArgumentOver) {
     HelpCommand helpCommand(&mockReceiver);
     vector<string> args = { "help", "full", "3"};
 
     EXPECT_THROW(helpCommand.execute(args), invalid_argument);
 }
 
-TEST(HelpCommand, HelpTestExecutePrintAll) {
-    MockReceiver mockReceiver;
+TEST_F(TestShellApplicationFixture, HelpTestExecutePrintAll) {
     HelpCommand helpCommand(&mockReceiver);
     vector<string> args = { "help"};
 
-    ::internal::CaptureStdout();
     helpCommand.execute(args);
-    string output = ::internal::GetCapturedStdout();
 
-    EXPECT_THAT(output, HasSubstr("Execute test application"));
+    string expected = "Executing help command\nwrite : Save data into the LBA ex) wrtie 3 0xAAAABBBB \nexit : Exit this shell\nread : Load data from the LBA ex) read 3\ntestapp2 : Execute test application 2.\nhelp : Display this help message.ex) help write\nfull write : Perform save data to LBA's all range (0~99) ex) fullwrite 0xABCDFFFF\nfull read : Perform load data from LBA's all range (0~99) ex) full read\ntestapp1 : Execute test application 1.\n";
+    EXPECT_THAT(expected, StrEq(strCout.str()));
+
 }
 
-TEST(HelpCommand, HelpTestExecutePrintOnlyONe) {
-    MockReceiver mockReceiver;
+TEST_F(TestShellApplicationFixture, HelpTestExecutePrintOnlyONe) {
     HelpCommand helpCommand(&mockReceiver);
     vector<string> args = { "help", "write"};
 
-    ::internal::CaptureStdout();
     helpCommand.execute(args);
-    string output = ::internal::GetCapturedStdout();
 
-    EXPECT_THAT(output, HasSubstr("write"));
+    string expected = "Executing help command\nwrite : Save data into the LBA ex) wrtie 3 0xAAAABBBB \n";
+    EXPECT_THAT(expected, StrEq(strCout.str()));
 }
 
 TEST_F(TestShellApplicationFixture, HelpCommandTest) {
