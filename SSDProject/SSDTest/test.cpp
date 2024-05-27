@@ -5,6 +5,7 @@
 #include "../SSDProject/util.h"
 #include "../SSDProject/StorageException.cpp"
 #include <cstring>
+#include "../SSDProject/Buffer.cpp"
 
 class parseTestFixture: public ::testing::Test{
 protected:
@@ -190,6 +191,12 @@ TEST_F(SSDTestFixture, SSDErase3Addr) {
 
 TEST_F(SSDTestFixture, SSDEraseInvalidSize) {
 	EXPECT_THROW(ssd.erase(12, 11), StorageException);
+}
+
+TEST(BufferTest, BufferWrite) {
+	Buffer buf;
+
+	buf.write(10, "0xabcdefab");
 }
 
 class MockStorage : public IStorage {
