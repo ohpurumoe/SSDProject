@@ -1,5 +1,13 @@
 ﻿#pragma once
 #include <string>
+#include <queue>
+
+struct _Buffer {
+    char op;
+    int addr;
+    std::string data;
+    int size;
+};
 
 class IStorage {
 public:
