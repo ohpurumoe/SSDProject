@@ -16,8 +16,21 @@ int Logger::getFileSize(const string& filename) {
 	return static_cast<int>(file.tellg());
 }
 
+string Logger::getDateFromtString() {
+	auto now = chrono::system_clock::now();
+	auto in_time_t = chrono::system_clock::to_time_t(now);
+	tm buf;
+	localtime_s(&buf, &in_time_t);
+
+	ostringstream dateTimeStream;
+	dateTimeStream << put_time(&buf, "%y%m%d_%Hh%Mm%Ss");
+
+	return dateTimeStream.str();
+}
+
 void Logger::saveUntilLog() {
-	string strDatesInfo = "날짜_시간"; // TODO
+
+	string strDatesInfo = getDateFromtString();
 	string oldFileName = LOG_FILE_NAME_LATEST;
 	string newFileName = "until_" + strDatesInfo + ".log";
 

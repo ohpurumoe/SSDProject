@@ -34,6 +34,7 @@ public:
 	void printLog(string funcName, string messages);
 
 	int getFileSize(const string& filename);
+	string getDateFromtString();
 	void saveUntilLog();
 	void modifyLogToZip();
 	void checkLogFileSize(size_t logSize);
