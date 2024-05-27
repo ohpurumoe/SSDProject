@@ -128,12 +128,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SSD.cpp" />
     <ClCompile Include="StorageDriver.cpp" />
     <ClCompile Include="StorageException.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Buffer.h" />
     <ClInclude Include="IStorage.h" />
     <ClInclude Include="StorageException.h" />
     <ClInclude Include="util.h" />
