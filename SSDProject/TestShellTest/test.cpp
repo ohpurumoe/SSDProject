@@ -14,19 +14,28 @@ public:
     void SetUp() override {
         oldCoutStreamBuf = std::cout.rdbuf();
         cout.rdbuf(strCout.rdbuf());
+
+        fullreadCmd = new FullReadCommand(&receiver);
+        writeCmd = new WriteCommand(&receiver);
+        fullwriteCmd = new FullWriteCommand(&receiver);
     }
     void TearDown() override {
         cout.rdbuf(oldCoutStreamBuf);
     }
 
     TestShellApplication app;
-    ostringstream strCout;
     streambuf* oldCoutStreamBuf;
+    ostringstream strCout;
+    Receiver receiver;
+    FullReadCommand* fullreadCmd;
+    FullWriteCommand* fullwriteCmd;
+    WriteCommand* writeCmd;
+
+    string expected = "";
+    vector<string> v;
 
     MockReceiver mockReceiver;
-
 };
-
 
 TEST_F(TestShellApplicationFixture, ExitCommandTest) {
     std::string str = "exit";
@@ -34,63 +43,27 @@ TEST_F(TestShellApplicationFixture, ExitCommandTest) {
     EXPECT_FALSE(app.execute(str));
 }
 
-TEST(TestShellApplicationTest, FullReadCommandTest) {
-    //TODO
-    //cout 결과를 strCout에 저장되게함
-    //std::streambuf* oldCoutStreamBuf = std::cout.rdbuf();
-    //std::ostringstream strCout;
-    //std::cout.rdbuf(strCout.rdbuf());
-
-    //TestShellApplication testShell;
-    //FullReadCommand fullreadCmd;
-    //WriteCommand writeCmd;
-    //
-    //for (int lba = 0; lba < 100; lba++) 
-    //{
-    //    vector<string> v = { "write", to_string(lba), "0X12345678", " "};
-    //    testShell.executeCommand(&writeCmd, v);
-    //}
-
-    //vector<string> v = { "fullread", " " };
-    //testShell.executeCommand(&fullreadCmd, v);
+TEST_F(TestShellApplicationFixture, FullReadCommandTest) {
+    for (int lba = 0; lba < 100; lba++) 
+    {
+        v = { "write", to_string(lba), "0x12345678"};
+        app.executeCommand(writeCmd, v);
+    }
+    v = { "fullread" };
+    app.executeCommand(fullreadCmd, v);
  
-
-    //
-    //std::string expected = "";
-    //for (int lba = 0; lba < 100; lba++)
-    //{
-    //    expected += "0X12345678\n";
-    //}
-    //std::cout.rdbuf(oldCoutStreamBuf);
-    //EXPECT_THAT(strCout.str(), testing::Eq(expected));
-    
+    for (int lba = 0; lba < 100; lba++) expected += "0x12345678\n";
+    EXPECT_THAT(strCout.str(), testing::Eq(expected));
 }
 
+TEST_F(TestShellApplicationFixture, FullWriteCommandTest) {
+    v = { "fullwrite", "0x12345678" };
+    app.executeCommand(fullwriteCmd, v);
+    v = { "fullread" };
+    app.executeCommand(fullreadCmd, v);
 
-TEST(TestShellApplicationTest, FullWriteCommandTest) {
-    //TODO
-    //cout 결과를 strCout에 저장되게함
-    //std::streambuf* oldCoutStreamBuf = std::cout.rdbuf();
-    //std::ostringstream strCout;
-    //std::cout.rdbuf(strCout.rdbuf());
-
-    //TestShellApplication testShell;
-    //FullWriteCommand fullwriteCmd;
-    //FullReadCommand fullreadCmd;
-
-    //vector<string> v = { "fullwrite", "0X12345678", " " };
-    //testShell.executeCommand(&fullwriteCmd, v);
-    //v = { "fullread", " " };
-    //testShell.executeCommand(&fullreadCmd, v);
-
-    //std::string expected = "";
-    //for (int lba = 0; lba < 100; lba++)
-    //{
-    //    expected += "0X12345678\n";
-    //}
-    //std::cout.rdbuf(oldCoutStreamBuf);
-    //EXPECT_THAT(strCout.str(), testing::Eq(expected));
-
+    for (int lba = 0; lba < 100; lba++) expected += "0x12345678\n";
+    EXPECT_THAT(strCout.str(), testing::Eq(expected));
 }
 
 TEST_F(TestShellApplicationFixture, TestApp1CommandTest) {
@@ -102,7 +75,6 @@ TEST_F(TestShellApplicationFixture, TestApp1CommandTest) {
     EXPECT_THAT(expected, StrEq(strCout.str()));
 
 }
-
 
 TEST_F(TestShellApplicationFixture, TestApp1InvalidCommandTest) {
     string str = "error";
