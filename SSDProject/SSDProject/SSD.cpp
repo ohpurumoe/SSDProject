@@ -2,6 +2,7 @@
 #include <fstream>
 #include <map>
 #include <string>
+#include <regex>
 #include "IStorage.h"
 #include "StorageException.h"
 
@@ -28,9 +29,18 @@ public:
 			throw StorageException("LBA는 0 ~ 99 사이의 값이어야 합니다. LBA : " + to_string(LBA));
 		}
 
+		regex re("^0x[A-F0-9]{8}");
+		if (!regex_match(data, re)) {
+			throw StorageException("data는 0x로 시작하고 숫자와 대문자 8개로 이루어져야합니다. data : " + data);
+		}
+
 		fillMapFromFile();
 		writeDataToMap(LBA, data);
 		writeMapToFile();
+	}
+
+	void erase(int LBA, int size) override {
+
 	}
 
 private:

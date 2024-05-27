@@ -164,10 +164,10 @@ TEST_F(SSDTestFixture, SSDRWSuccess2) {
 
 TEST_F(SSDTestFixture, SSDRWSuccess3) {
 	ssd.write(12, "0xAAAAAAAA");
-	ssd.write(13, "0xBBBBBBBB");
+	ssd.write(13, "0xBBB1BBBB");
 	ssd.write(14, "0xCCCCCCCC");
-	ssd.write(11, "0xDDDDDDDD");
-	ssd.write(12, "0xFFFFFFFF");
+	ssd.write(11, "0xDDDD2DDD");
+	ssd.write(12, "0xF5FFFFFF");
 	ssd.read(14);
 
 	string  expected = "0xCCCCCCCC";
@@ -175,11 +175,11 @@ TEST_F(SSDTestFixture, SSDRWSuccess3) {
 }
 
 TEST_F(SSDTestFixture, SSDDuplicatedWrite) {
-	ssd.write(10, "0xABCDEFGH");
-	ssd.write(10, "0xABCDEFGA");
+	ssd.write(10, "0xABCDEFAB");
+	ssd.write(10, "0xABCDEFBA");
 	ssd.read(10);
 
-	string  expected = "0xABCDEFGA";
+	string  expected = "0xABCDEFBA";
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
@@ -198,6 +198,23 @@ TEST_F(SSDTestFixture, SSDReadInvalidAddr) {
 TEST_F(SSDTestFixture, SSDWriteInvalidAddr) {
 	EXPECT_THROW(ssd.write(100, "0xFFFFFFFF"), StorageException);
 	EXPECT_THROW(ssd.write(-1, "0xFFFFFFFF"), StorageException);
+}
+
+TEST_F(SSDTestFixture, SSDWriteInvalidData) {
+	EXPECT_THROW(ssd.write(1, "0xABCDEFGH"), StorageException);
+}
+
+TEST_F(SSDTestFixture, SSDErase1Addr) {
+	ssd.write(12, "0xAAAAAAAA");
+	ssd.write(13, "0xBBB1BBBB");
+	ssd.write(14, "0xCCCCCCCC");
+
+	ssd.erase(13, 1);
+
+	ssd.read(13);
+
+	string  expected = "0x00000000";
+	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
 TEST_F(commandTestFixture, Read) {
