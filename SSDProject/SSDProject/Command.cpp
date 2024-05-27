@@ -11,3 +11,7 @@ void ReadCommand::execute(const std::vector<std::string>& args) {
 void WriteCommand::execute(const std::vector<std::string>& args) {
 	m_driver->write(std::stoi(args[0]), args[1]);
 }
+
+void EraseCommand::execute(const std::vector<std::string>& args) {
+	m_driver->erase(std::stoi(args[0]), std::stoi(args[1]));
+}

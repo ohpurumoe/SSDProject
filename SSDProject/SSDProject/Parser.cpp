@@ -21,11 +21,14 @@ Parser::parse(int argc, char** argv) {
 	if (argv1 == "R") {
 		return { new ReadCommand(m_driver), args };
 	}
-	return { new WriteCommand(m_driver), args};
+	if (argv1 == "W") {
+		return { new WriteCommand(m_driver), args};
+	}
+	return { new EraseCommand(m_driver), args};
 }
 
 void checkCmdValidity(int argc, const std::string& argv0, const std::string& argv1) {
-	if (argv1 != "R" && argv1 != "W") {
+	if (argv1 != "R" && argv1 != "W" && argv1 != "E") {
 		throw std::runtime_error("First argument must be \"R\" or \"W\". Please check usage of ssd.");
 	}
 	if (argv1 == "R" && argc != 3) {
@@ -33,6 +36,9 @@ void checkCmdValidity(int argc, const std::string& argv0, const std::string& arg
 	}
 	if (argv1 == "W" && argc != 4) {
 		throw std::runtime_error("Wrong usage of ssd Write. Please check usage of ssd.");
+	}
+	if (argv1 == "E" && argc != 4) {
+		throw std::runtime_error("Wrong usage of ssd Erase. Please check usage of ssd.");
 	}
 }
 

@@ -258,9 +258,25 @@ TEST_F(commandTestFixture, Read) {
 TEST_F(commandTestFixture, Write) {
 	strcpy(argv[1], "W");
 	strcpy(argv[2], "0");
-	strcpy(argv[2], "0x12345678");
+	strcpy(argv[3], "0x12345678");
 	MockStorage storage;
 	EXPECT_CALL(storage, write, ::testing::_)
+		.Times(1)
+		;
+	StorageDriver driver(&storage);
+	Parser parser(&driver);
+	auto cmd_args = parser.parse(4, argv);
+	auto& cmd = cmd_args.first;
+	auto& args = cmd_args.second;
+	cmd->execute(args);
+}
+
+TEST_F(commandTestFixture, Erase) {
+	strcpy(argv[1], "E");
+	strcpy(argv[2], "0");
+	strcpy(argv[3], "3");
+	MockStorage storage;
+	EXPECT_CALL(storage, erase, ::testing::_)
 		.Times(1)
 		;
 	StorageDriver driver(&storage);

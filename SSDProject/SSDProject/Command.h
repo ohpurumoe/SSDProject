@@ -24,3 +24,9 @@ public:
 	StorageDriver* m_driver;
 };
 
+class EraseCommand : public Command {
+public:
+	EraseCommand(StorageDriver* driver) : m_driver{ driver } {}
+	void execute(const std::vector<std::string>& args) override;
+	StorageDriver* m_driver;
+};
