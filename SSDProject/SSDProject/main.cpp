@@ -1,7 +1,5 @@
 ﻿#include "SSD.cpp"
-#include "StorageDriver.cpp"
 #include "Parser.h"
-#include "Command.h"
 
 int main(int argc, char** argv) {
 	auto hardware = new SSD();
@@ -18,6 +16,8 @@ int main(int argc, char** argv) {
 	}
 	catch (...) {
 		std::cout << "Wrong use of SSD.exe. Please retry." << std::endl;
+		delete hardware;
+		return -1;
 	}
 	delete hardware;
 	
