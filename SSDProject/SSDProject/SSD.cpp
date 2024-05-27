@@ -39,6 +39,10 @@ public:
 		writeMapToFile();
 	}
 
+	void erase(int LBA, int size) override {
+
+	}
+
 private:
 	string nandname;
 	string resultname;
