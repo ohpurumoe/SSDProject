@@ -14,15 +14,28 @@ public:
     void SetUp() override {
         oldCoutStreamBuf = std::cout.rdbuf();
         cout.rdbuf(strCout.rdbuf());
+
+        fullreadCmd = new FullReadCommand(&receiver);
+        writeCmd = new WriteCommand(&receiver);
+        fullwriteCmd = new FullWriteCommand(&receiver);
     }
     void TearDown() override {
         cout.rdbuf(oldCoutStreamBuf);
     }
 
     TestShellApplication app;
-    ostringstream strCout;
     streambuf* oldCoutStreamBuf;
+    ostringstream strCout;
+    Receiver receiver;
+    FullReadCommand* fullreadCmd;
+    FullWriteCommand* fullwriteCmd;
+    WriteCommand* writeCmd;
+
+    string expected = "";
+    vector<string> v;
 };
+
+
 
 // Test case for ReadCommand
 TEST(CommandTest, ReadCommand) {
@@ -63,52 +76,27 @@ TEST(TestShellApplicationTest, ExitCommandTest) {
     EXPECT_FALSE(app.execute(str));
 }
 
-class FullRWTestFixture : public Test {
-public:
-    void SetUp() override {
-        oldCoutStreamBuf = std::cout.rdbuf();
-        cout.rdbuf(strCout.rdbuf());
 
-        fullreadCmd = new FullReadCommand(&receiver);
-        writeCmd = new WriteCommand(&receiver);
-        fullwriteCmd = new FullWriteCommand(&receiver);
-    }
-    void TearDown() override {
-        cout.rdbuf(oldCoutStreamBuf);
-    }
 
-    streambuf* oldCoutStreamBuf;
-    ostringstream strCout;
-
-    TestShellApplication testShell;
-    Receiver receiver;
-    FullReadCommand* fullreadCmd;
-    FullWriteCommand* fullwriteCmd;
-    WriteCommand* writeCmd;
-
-    string expected = "";
-    vector<string> v;
-};
-
-TEST_F(FullRWTestFixture, FullReadCommandTest) {
+TEST_F(TestShellApplicationFixture, FullReadCommandTest) {
     for (int lba = 0; lba < 100; lba++) 
     {
         v = { "write", to_string(lba), "0X12345678"};
-        testShell.executeCommand(writeCmd, v);
+        app.executeCommand(writeCmd, v);
     }
     v = { "fullread" };
-    testShell.executeCommand(fullreadCmd, v);
+    app.executeCommand(fullreadCmd, v);
  
     for (int lba = 0; lba < 100; lba++) expected += "0X12345678\n";
     EXPECT_THAT(strCout.str(), testing::Eq(expected));
 }
 
 
-TEST_F(FullRWTestFixture, FullWriteCommandTest) {
+TEST_F(TestShellApplicationFixture, FullWriteCommandTest) {
     v = { "fullwrite", "0X12345678" };
-    testShell.executeCommand(fullwriteCmd, v);
+    app.executeCommand(fullwriteCmd, v);
     v = { "fullread" };
-    testShell.executeCommand(fullreadCmd, v);
+    app.executeCommand(fullreadCmd, v);
 
     for (int lba = 0; lba < 100; lba++) expected += "0X12345678\n";
     EXPECT_THAT(strCout.str(), testing::Eq(expected));
