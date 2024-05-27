@@ -1,6 +1,6 @@
 ﻿#include "gmock/gmock.h"
 #include "gtest/gtest.h"
-#include "../TestShell/TestShellApplication.cpp"
+#include "../TestShell/ShellRunner.cpp"
 #include "../TestShell/InputValidChecker.cpp"
 #include <fstream>
 #include "MOCKCommand.cpp"
@@ -256,4 +256,13 @@ TEST(WriteCommand, WriteCommandTestExecuteInvalidInput) {
     Receiver receiver;
     WriteCommand writeCommand(&receiver);
     EXPECT_THROW(writeCommand.execute({ "W", "3", "FFFF"}); , invalid_argument);
+}
+
+TEST_F(TestShellApplicationFixture, ShellRunnerTest) {
+    ShellRunner runner(&app);
+    string expected = "FullWriteReadCompare --- Run...PASS\nFullRead10AndCompare --- Run...PASS\nWrite10AndCompare --- Run...FAIL\nLoop_WriteAndReadCompare --- Run...FAIL\nUnknown --- Run...FAIL\n";
+
+    runner.run("..\\x64\\Debug\\run_list.lst");
+
+    EXPECT_THAT(expected, StrEq(strCout.str()));
 }

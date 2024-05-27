@@ -17,7 +17,9 @@ public:
 			prepare(read);
 			if (cmd.length() != 0) {
 				result = app->execute(cmd);
+				result &= !(app->getLastResult());
 			}
+
 			unprepare(result);
 		}
 	}
@@ -31,8 +33,10 @@ private:
 
 	void unprepare(bool result) {
 		cout.rdbuf(oldCoutStreamBuf);
+		strCout.clear();
 		cout << (result ? "PASS" : "FAIL") << endl;
 	}
+
 	string getStringToCommand(const string &str) {
 		if (str == "FullWriteReadCompare" )
 			return "testapp1";
