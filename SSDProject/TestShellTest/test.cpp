@@ -262,7 +262,22 @@ TEST_F(TestShellApplicationFixture, ShellRunnerTest) {
     ShellRunner runner(&app);
     string expected = "FullWriteReadCompare --- Run...PASS\nFullRead10AndCompare --- Run...PASS\nWrite10AndCompare --- Run...FAIL\nLoop_WriteAndReadCompare --- Run...FAIL\nUnknown --- Run...FAIL\n";
 
-    runner.run("..\\x64\\Debug\\run_list.lst");
+    string osCmd = "echo FullWriteReadCompare> .\\run_list.lst";
+    system(osCmd.c_str());
+
+    osCmd = "echo FullRead10AndCompare>> .\\run_list.lst";
+    system(osCmd.c_str());
+
+    osCmd = "echo Write10AndCompare>> .\\run_list.lst";
+    system(osCmd.c_str());
+
+    osCmd = "echo Loop_WriteAndReadCompare>> .\\run_list.lst";
+    system(osCmd.c_str());
+
+    osCmd = "echo Unknown>> .\\run_list.lst";
+    system(osCmd.c_str());
+
+    runner.run(".\\run_list.lst");
 
     EXPECT_THAT(expected, StrEq(strCout.str()));
 }
