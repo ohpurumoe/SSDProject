@@ -1,6 +1,6 @@
 ﻿#include "Command.h"
 #include <stdexcept>
-#include <fstream>
+
 
 using namespace std;
 
@@ -12,7 +12,7 @@ public:
 			throw invalid_argument("Need valid read receiver");
 		}
 
-		if (!checker.check(v, InputValidChecker::TYPE_CMD_LBA_VAL)) {
+		if (!checker.check(v, InputValidChecker::TYPE_CMD_LBA)) {
 			throw invalid_argument("Need valid argument");
 		}
 
