@@ -14,9 +14,7 @@ public:
 		resultname{ resultname } {}
 
 	string read(int LBA) override {
-		if (LBA < ADDR_LOW || LBA > ADDR_HIGH) {
-			throw StorageException("LBA는 0 ~ 99 사이의 값이어야 합니다. LBA : " + to_string(LBA));
-		}
+		validateAddr(LBA);
 
 		auto data = readData(LBA);
 		storeReadData(data);
@@ -25,14 +23,8 @@ public:
 	}
 
 	void write(int LBA, string data) override {
-		if (LBA < ADDR_LOW || LBA > ADDR_HIGH) {
-			throw StorageException("LBA는 0 ~ 99 사이의 값이어야 합니다. LBA : " + to_string(LBA));
-		}
-
-		regex re("^0x[A-F0-9]{8}");
-		if (!regex_match(data, re)) {
-			throw StorageException("data는 0x로 시작하고 숫자와 대문자 8개로 이루어져야합니다. data : " + data);
-		}
+		validateAddr(LBA);
+		validateData(data);
 
 		fillMapFromFile();
 		writeDataToMap(LBA, data);
@@ -40,7 +32,14 @@ public:
 	}
 
 	void erase(int LBA, int size) override {
+		validateAddr(LBA);
+		validateEraseSize(size);
 
+		fillMapFromFile();
+		for (int addr = LBA; addr < LBA + size; addr++) {
+			writeDataToMap(addr, EMPTY);
+		}
+		writeMapToFile();
 	}
 
 private:
@@ -55,6 +54,27 @@ private:
 	const string EMPTY = "0x00000000";
 	const int ADDR_HIGH = 99;
 	const int ADDR_LOW = 0;
+
+	void validateEraseSize(const int size) {
+		if (size < 1 || 10 < size) {
+			throw StorageException("size는 1 ~ 10 사이의 값이어야 합니다. size : " + to_string(size));
+		}
+	}
+
+	void validateData(const std::string& data)
+	{
+		regex re("^0x[A-F0-9]{8}");
+		if (!regex_match(data, re)) {
+			throw StorageException("data는 0x로 시작하고 숫자와 16진수 대문자 8개로 이루어져야합니다. data : " + data);
+		}
+	}
+
+	void validateAddr(const int LBA)
+	{
+		if (LBA < ADDR_LOW || LBA > ADDR_HIGH) {
+			throw StorageException("LBA는 0 ~ 99 사이의 값이어야 합니다. LBA : " + to_string(LBA));
+		}
+	}
 
 	void writeMapToFile() {
 		fNandOut.open(nandname);
@@ -72,7 +92,7 @@ private:
 			mapNand.insert({ LBA, data });
 		}
 	}
-	string getData(string data) {
+	string getData(const string data) {
 		string removeAddr = data.substr(data.find(BLANK), DATA_SIZE + sizeof(BLANK));
 		return removeAddr.substr(sizeof(BLANK), DATA_SIZE);
 	}
