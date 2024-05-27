@@ -6,7 +6,7 @@ using namespace std;
 class FullReadCommand : public Command {
 public:
 	FullReadCommand(Receiver* receiver) : Command(receiver) {}
-	void execute(std::vector<std::string> v) const override {
+	void execute(std::vector<std::string> v) override {
 		if (v.size() != 1) {
 			throw invalid_argument("Need No argument for full read command");
 		}
