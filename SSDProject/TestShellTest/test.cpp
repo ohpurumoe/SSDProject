@@ -37,23 +37,7 @@ TEST(CommandTest, WriteCommand) {
     MockReceiver mockReceiver;
 
     WriteCommand writeCommand(&mockReceiver);
-    writeCommand.execute({"W", "3", "0x5A5A5A5A"});
-}
-
-
-TEST(TestShellApplicationTest, WriteCommandTest) {
-  EXPECT_EQ(1, 1);
-  EXPECT_TRUE(true);
-}
-
-TEST(TestShellApplicationTest, ReadCommandTest) {
-    EXPECT_EQ(1, 1);
-    EXPECT_TRUE(true);
-}
-
-TEST(TestShellApplicationTest, HelpCommandTest) {
-    EXPECT_EQ(1, 1);
-    EXPECT_TRUE(true);
+    writeCommand.execute({ "W", "3", "0x5A5A5A5A" });
 }
 
 TEST(TestShellApplicationTest, ExitCommandTest) {
