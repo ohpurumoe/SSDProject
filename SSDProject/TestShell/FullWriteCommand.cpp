@@ -26,7 +26,7 @@ public:
 			wrCmd.append(v[1]);
 
 			int ret = invoke(wrCmd);
-			receiver->write();
+			receiver->write(ret);
 		}
 	}
 private:
