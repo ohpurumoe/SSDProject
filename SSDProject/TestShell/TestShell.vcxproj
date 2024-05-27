@@ -127,10 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FullReadCommand.cpp" />
+    <ClCompile Include="FullWriteCommand.cpp" />
+    <ClCompile Include="HelpCommand.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MOCKCommand.cpp" />
     <ClCompile Include="ReadCommand.cpp" />
     <ClCompile Include="TestApp1Command.cpp" />
+    <ClCompile Include="TestApp2Command.cpp" />
     <ClCompile Include="TestShellApplication.cpp" />
     <ClCompile Include="WriteCommand.cpp" />
   </ItemGroup>
