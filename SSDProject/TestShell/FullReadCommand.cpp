@@ -16,7 +16,8 @@ public:
 		}
 
 		for (int lba = 0; lba < 100; lba++) {
-			string rdCmd ="";
+
+			string rdCmd;
 			string space = " ";
 
 			rdCmd.append(cmd);
@@ -24,9 +25,28 @@ public:
 			rdCmd.append(to_string(lba));
 
 			int ret = invoke(rdCmd);
+
+			// read result
+			if (ret == 0) {
+				string result = getReadResult();
+				cout << result << endl;
+			}
 			receiver->read(ret);
 		}
 	}
+
 private:
 	const string cmd = "R";
+	const std::string ssdResult = ".\\result.txt";
+
+	string getReadResult() const {
+		ifstream ifs;
+
+		ifs.open(ssdResult);
+		string result = string((std::istreambuf_iterator<char>(ifs)),
+			std::istreambuf_iterator<char>());
+		ifs.close();
+
+		return result;
+	}
 };
