@@ -1,6 +1,7 @@
 ﻿#include "gmock/gmock.h"
 #include "gtest/gtest.h"
 #include "../TestShell/TestShellApplication.cpp"
+#include "../TestShell/InputValidChecker.cpp"
 #include <fstream>
 #include "MOCKCommand.cpp"
 
@@ -207,4 +208,52 @@ TEST_F(TestShellApplicationFixture, HelpCommandExceptionTest) {
     Receiver* receiver = nullptr;
 
     EXPECT_THROW(app.executeCommand(new HelpCommand(receiver), v), invalid_argument);
+}
+
+TEST(InputValidChecker, EmptyInput) {
+    InputValidChecker checker;
+    EXPECT_FALSE(checker.check({}));
+}
+
+TEST(InputValidChecker, TestHelpCommand) {
+    InputValidChecker checker;
+    EXPECT_TRUE(checker.check({ "help" }));
+}
+
+TEST(InputValidChecker, TestReadCommand) {
+    InputValidChecker checker;
+    EXPECT_TRUE(checker.check({ "read", "3" }, InputValidChecker::TYPE_CMD_LBA));
+}
+
+TEST(InputValidChecker, TestReadCommandInvalidLBA) {
+    InputValidChecker checker;
+    EXPECT_FALSE(checker.check({ "read", "A" }, InputValidChecker::TYPE_CMD_LBA));
+}
+
+TEST(InputValidChecker, TestWriteCommand) {
+    InputValidChecker checker;
+    EXPECT_TRUE(checker.check({ "write", "3", "0xFFFF" }, InputValidChecker::TYPE_CMD_LBA_VAL));
+}
+
+TEST(InputValidChecker, TestWriteCommandInvalidLBA) {
+    InputValidChecker checker;
+    EXPECT_FALSE(checker.check({ "write", "3", "FFFF" }, InputValidChecker::TYPE_CMD_LBA_VAL));
+}
+
+TEST(ReadCommand, ReadCommandTestExecuteInvalidInput) {
+    Receiver receiver;
+    ReadCommand readCommand(&receiver);
+    EXPECT_THROW(readCommand.execute({ "R", "100" }); , invalid_argument);
+}
+
+TEST(ReadCommand, ReadCommandTestExecuteInvalidInputNum) {
+    Receiver receiver;
+    ReadCommand readCommand(&receiver);
+    EXPECT_THROW(readCommand.execute({ "R", "A" });, invalid_argument);
+}
+
+TEST(WriteCommand, WriteCommandTestExecuteInvalidInput) {
+    Receiver receiver;
+    WriteCommand writeCommand(&receiver);
+    EXPECT_THROW(writeCommand.execute({ "W", "3", "FFFF"}); , invalid_argument);
 }

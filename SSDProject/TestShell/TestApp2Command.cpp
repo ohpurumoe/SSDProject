@@ -6,7 +6,7 @@ using namespace std;
 class TestApp2Command : public Command {
 public:
 	// Command을(를) 통해 상속됨
-	void execute(vector<string> v) const override
+	void execute(vector<string> v) override
 	{
 		// full write
 		for (int i = 0; i < 5; i++) {

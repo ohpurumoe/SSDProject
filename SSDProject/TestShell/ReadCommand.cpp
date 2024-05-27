@@ -7,13 +7,13 @@ using namespace std;
 class ReadCommand : public Command {
 public:
 	ReadCommand(Receiver* receiver) : Command(receiver) {}
-	void execute(std::vector<std::string> v) const override {
-		if (v.size() < 2) {
-			throw invalid_argument("Need two argument for read command");
-		}
-
+	void execute(std::vector<std::string> v) override {
 		if (receiver == nullptr) {
 			throw invalid_argument("Need valid read receiver");
+		}
+
+		if (!checker.check(v, InputValidChecker::TYPE_CMD_LBA_VAL)) {
+			throw invalid_argument("Need valid argument");
 		}
 
 		string rdCmd;
