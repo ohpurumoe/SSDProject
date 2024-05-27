@@ -8,7 +8,7 @@ public:
 
 	void run(string filename) {
 		ifstream file;
-		bool result;
+		bool result = false;
 		file.open(filename);
 		string read;
 		while (file.peek() != EOF) {
