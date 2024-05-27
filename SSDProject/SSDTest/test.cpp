@@ -87,6 +87,7 @@ protected:
 		fRead.open(filename);
 		string readResult;
 		getline(fRead, readResult);
+		fRead.close();
 
 		return readResult;
 	}
@@ -169,6 +170,26 @@ TEST_F(SSDTestFixture, SSDErase1Addr) {
 
 	string  expected = "0x00000000";
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
+}
+
+TEST_F(SSDTestFixture, SSDErase3Addr) {
+	ssd.write(12, "0xAAAAAAAA");
+	ssd.write(13, "0xBBB1BBBB");
+	ssd.write(14, "0xCCCCCCCC");
+
+	ssd.erase(12, 3);
+
+	string  expected = "0x00000000";
+	ssd.read(12);
+	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
+	ssd.read(13);
+	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
+	ssd.read(14);
+	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
+}
+
+TEST_F(SSDTestFixture, SSDEraseInvalidSize) {
+	EXPECT_THROW(ssd.erase(12, 11), StorageException);
 }
 
 class MockStorage : public IStorage {

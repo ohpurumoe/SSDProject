@@ -33,6 +33,7 @@ public:
 
 	void erase(int LBA, int size) override {
 		validateAddr(LBA);
+		validateEraseSize(size);
 
 		fillMapFromFile();
 		for (int addr = LBA; addr < LBA + size; addr++) {
@@ -53,6 +54,12 @@ private:
 	const string EMPTY = "0x00000000";
 	const int ADDR_HIGH = 99;
 	const int ADDR_LOW = 0;
+
+	void validateEraseSize(const int size) {
+		if (size < 1 || 10 < size) {
+			throw StorageException("size는 1 ~ 10 사이의 값이어야 합니다. size : " + to_string(size));
+		}
+	}
 
 	void validateData(const std::string& data)
 	{
