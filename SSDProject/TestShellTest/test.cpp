@@ -264,9 +264,15 @@ TEST(EraseCommand, EraseCommandTestExecuteInvalidInput) {
     EXPECT_THROW(writeCommand.execute({ "E", "3", "FFFF" }), invalid_argument);
 }
 
+TEST(EraseCommand, EraseCommandTestExecuteInvalidSize) {
+    Receiver receiver;
+    WriteCommand writeCommand(&receiver);
+    EXPECT_THROW(writeCommand.execute({ "E", "3", "11" }), invalid_argument);
+}
+
 TEST(EraseCommand, EraseCommandTestExecute) {
     Receiver receiver;
     EraseCommand eraseCommand(&receiver);
-    eraseCommand.execute({ "E", "3", "FFFF" });
+    eraseCommand.execute({ "E", "3", "1" });
     EXPECT_THAT(receiver.getResultCode(), 0);
 }

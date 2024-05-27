@@ -15,6 +15,10 @@ public:
     void read(int retCode) {
         returnCode = retCode;
     }
+
+    void erase(int retCode) {
+        returnCode = retCode;
+    }
         
     void exit() const { }
     void help() const { }
