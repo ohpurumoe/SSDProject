@@ -6,7 +6,7 @@ using namespace std;
 class FullWriteCommand : public Command {
 public:
 	FullWriteCommand(Receiver* receiver) : Command(receiver) {}
-	void execute(std::vector<std::string> v) const override {
+	void execute(std::vector<std::string> v) override {
 		if (v.size() < 2) {
 			throw invalid_argument("Need two argument for full write command");
 		}

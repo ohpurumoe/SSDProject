@@ -9,7 +9,7 @@ using namespace std;
 class MockCommand : public Command {
 public:
 	MockCommand(Receiver* receiver) : receiver_(receiver) {}
-	void execute(vector<string> v) const override {
+	void execute(vector<string> v) override {
 		if (receiver_ == nullptr) {
 			cout << "receiver_ is nullptr" << endl;
 			return;

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "InputValidChecker.cpp"
 
 using namespace std;
 
@@ -32,7 +33,7 @@ class Command {
 public:
     Command(Receiver* receiver = nullptr) : receiver(receiver) {}
     virtual ~Command() {}
-    virtual void execute(std::vector<std::string> v) const = 0;
+    virtual void execute(std::vector<std::string> v) = 0;
     int invoke(std::string cmd) const {
         std::string arg = ssdExe + " " + cmd;
         return system(arg.c_str());
@@ -42,5 +43,6 @@ private:
     const std::string ssdExe = "..\\x64\\Debug\\SSD.exe";
 protected:
     Receiver* receiver;
+    InputValidChecker checker;
 };
 
