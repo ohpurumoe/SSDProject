@@ -4,6 +4,7 @@
 #include "../SSDProject/Parser.h"
 #include "../SSDProject/StorageException.cpp"
 #include <cstring>
+#include "../SSDProject/Buffer.cpp"
 #include <utility>
 
 class MockStorage : public IStorage {
@@ -235,6 +236,12 @@ TEST_F(SSDTestFixture, SSDErase3Addr) {
 
 TEST_F(SSDTestFixture, SSDEraseInvalidSize) {
 	EXPECT_THROW(ssd.erase(12, 11), StorageException);
+}
+
+TEST(BufferTest, BufferWrite) {
+	Buffer buf;
+
+	buf.write(10, "0xabcdefab");
 }
 
 TEST_F(commandTestFixture, Read) {

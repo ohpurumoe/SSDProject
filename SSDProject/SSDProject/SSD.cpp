@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <regex>
+#include <queue>
 #include "IStorage.h"
 #include "StorageException.h"
 
@@ -16,30 +17,21 @@ public:
 	string read(int LBA) override {
 		validateAddr(LBA);
 
-		auto data = readData(LBA);
-		storeReadData(data);
-
-		return data;
+		return _read(LBA);
 	}
 
 	void write(int LBA, string data) override {
 		validateAddr(LBA);
 		validateData(data);
 
-		fillMapFromFile();
-		writeDataToMap(LBA, data);
-		writeMapToFile();
+		_write(LBA, data);
 	}
 
 	void erase(int LBA, int size) override {
 		validateAddr(LBA);
 		validateEraseSize(size);
 
-		fillMapFromFile();
-		for (int addr = LBA; addr < LBA + size; addr++) {
-			writeDataToMap(addr, EMPTY);
-		}
-		writeMapToFile();
+		_erase(LBA, size);
 	}
 
 private:
@@ -54,6 +46,36 @@ private:
 	const string EMPTY = "0x00000000";
 	const int ADDR_HIGH = 99;
 	const int ADDR_LOW = 0;
+
+
+	string _read(int LBA) {
+		validateAddr(LBA);
+
+		auto data = readData(LBA);
+		storeReadData(data);
+
+		return data;
+	}
+
+	void _write(int LBA, string data) {
+		validateAddr(LBA);
+		validateData(data);
+
+		fillMapFromFile();
+		writeDataToMap(LBA, data);
+		writeMapToFile();
+	}
+
+	void _erase(int LBA, int size) {
+		validateAddr(LBA);
+		validateEraseSize(size);
+
+		fillMapFromFile();
+		for (int addr = LBA; addr < LBA + size; addr++) {
+			writeDataToMap(addr, EMPTY);
+		}
+		writeMapToFile();
+	}
 
 	void validateEraseSize(const int size) {
 		if (size < 1 || 10 < size) {
