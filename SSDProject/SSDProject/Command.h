@@ -30,3 +30,10 @@ public:
 	void execute(const std::vector<std::string>& args) override;
 	StorageDriver* m_driver;
 };
+
+class FlushCommand : public Command {
+public:
+	FlushCommand(StorageDriver* driver) : m_driver{ driver } {}
+	void execute(const std::vector<std::string>& args) override;
+	StorageDriver* m_driver;
+};

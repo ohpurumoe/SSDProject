@@ -15,3 +15,7 @@ void WriteCommand::execute(const std::vector<std::string>& args) {
 void EraseCommand::execute(const std::vector<std::string>& args) {
 	m_driver->erase(std::stoi(args[0]), std::stoi(args[1]));
 }
+
+void FlushCommand::execute(const std::vector<std::string>& args) {
+	m_driver->flush();
+}
