@@ -8,25 +8,30 @@ public:
 
 	void run(string filename) {
 		ifstream file;
+		bool result;
 		file.open(filename);
 		string read;
 		while (file.peek() != EOF) {
 			getline(file, read);
 			string cmd = getStringToCommand(read);
-
+			prepare(read);
 			if (cmd.length() != 0) {
-				app->execute(cmd);
+				result = app->execute(cmd);
 			}
+			unprepare(result);
 		}
 	}
 
 private:
-	void printHeader() {
-
+	void prepare(const string &str) {
+		cout << str << " --- Run...";
+		oldCoutStreamBuf = std::cout.rdbuf();
+		cout.rdbuf(strCout.rdbuf());
 	}
 
-	void printFooter() {
-
+	void unprepare(bool result) {
+		cout.rdbuf(oldCoutStreamBuf);
+		cout << (result ? "PASS" : "FAIL") << endl;
 	}
 	string getStringToCommand(const string &str) {
 		if (str == "FullWriteReadCompare" )
@@ -41,6 +46,7 @@ private:
 		return "";
 	}
 private:
-
+	streambuf* oldCoutStreamBuf;
+	ostringstream strCout;
 	TestShellApplication * app;
 };
