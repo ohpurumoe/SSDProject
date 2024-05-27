@@ -45,6 +45,15 @@
     <ClCompile Include="Logger.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="ShellRunner.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="InputValidChecker.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="EraseCommand.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Command.h">

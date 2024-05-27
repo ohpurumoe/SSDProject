@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "InputValidChecker.cpp"
 
 #include "Logger.h"
 
@@ -16,6 +17,10 @@ public:
     void read(int retCode) {
         returnCode = retCode;
     }
+
+    void erase(int retCode) {
+        returnCode = retCode;
+    }
         
     void exit() const { }
     void help() const { }
@@ -23,7 +28,9 @@ public:
     void fullread() const { }
 
     void mock() const { }
-
+    void setResultCode(int retCode) {
+        returnCode = retCode;
+    }
     int getResultCode() const { return returnCode; }
 
 private:
@@ -34,7 +41,7 @@ class Command {
 public:
     Command(Receiver* receiver = nullptr) : receiver(receiver) {}
     virtual ~Command() {}
-    virtual void execute(std::vector<std::string> v) const = 0;
+    virtual void execute(std::vector<std::string> v) = 0;
     int invoke(std::string cmd) const {
         std::string arg = ssdExe + " " + cmd;
         return system(arg.c_str());
@@ -46,5 +53,6 @@ private:
 protected:
     Receiver* receiver;
     Logger& logger = Logger::getInstance();
+    InputValidChecker checker;
 };
 

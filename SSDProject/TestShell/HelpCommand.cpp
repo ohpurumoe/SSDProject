@@ -16,7 +16,7 @@ public:
         };
     }
 
-    void execute(std::vector<std::string> v) const override {
+    void execute(std::vector<std::string> v) override {
         if (receiver_ == nullptr) {
             throw invalid_argument("receiver_ is nullptrr");;
         }

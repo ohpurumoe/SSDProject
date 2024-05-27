@@ -5,9 +5,12 @@ using namespace std;
 
 class TestApp1Command : public Command {
 public:
+	TestApp1Command(Receiver* receiver) : Command(receiver) {}
+
 	// Command을(를) 통해 상속됨
-	void execute(vector<string> v) const override
+	void execute(vector<string> v) override
 	{
+		int ret = 0;
 		// full write
 		if (v.size() >= 2)
 			throw invalid_argument("invalid vector size");
@@ -34,9 +37,15 @@ public:
 			ifs.open(ssdResult);
 			result = string((std::istreambuf_iterator<char>(ifs)),
 				std::istreambuf_iterator<char>());
+
+			if ("0x5A5A5A5A" != result)
+				ret++;
+
 			cout << result << endl;
 			ifs.close();
 		}
+
+		receiver->setResultCode(ret);
 	}
 
 private:

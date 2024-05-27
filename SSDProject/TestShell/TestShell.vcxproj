@@ -127,12 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EraseCommand.cpp" />
     <ClCompile Include="FullReadCommand.cpp" />
     <ClCompile Include="FullWriteCommand.cpp" />
     <ClCompile Include="HelpCommand.cpp" />
     <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="InputValidChecker.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ReadCommand.cpp" />
+    <ClCompile Include="ShellRunner.cpp" />
     <ClCompile Include="TestApp1Command.cpp" />
     <ClCompile Include="TestApp2Command.cpp" />
     <ClCompile Include="TestShellApplication.cpp" />

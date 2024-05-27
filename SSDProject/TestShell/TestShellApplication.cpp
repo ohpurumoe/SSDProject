@@ -12,6 +12,8 @@
 #include "FullWriteCommand.cpp"
 #include "ReadCommand.cpp"
 #include "WriteCommand.cpp"
+#include "EraseCommand.cpp"
+
 using namespace std;
 
 class TestShellApplication {
@@ -35,8 +37,10 @@ public:
 
 			if (cmd != nullptr)
 				executeCommand(cmd, v);
-			else
-				logger.print("INVALID COMMAND, TRY AGAIN");				
+			else {
+				logger.print("INVALID COMMAND, TRY AGAIN");	
+				return false;
+			}
 		}
 		catch (std::exception e) {
 			cout << e.what() << endl;
@@ -50,7 +54,11 @@ public:
 		cmd->execute(v);
 	}
 
+	int getLastResult() {
+		return receiver.getResultCode();
+	}
 private:
+	Receiver receiver;
 
 	string getUserCommand() {
 		string result;
@@ -60,7 +68,6 @@ private:
 	}
 
 	Command* createCommandInstance(const string& cmd) {
-		Receiver receiver;
 		if (cmd == "write") {
 			return new WriteCommand(&receiver);
 		}
@@ -77,10 +84,13 @@ private:
 			return new FullWriteCommand(&receiver);
 		}
 		else if (cmd == "testapp1") {
-			return new TestApp1Command();
+			return new TestApp1Command(&receiver);
 		}
 		else if (cmd == "testapp2") {
-			return new TestApp2Command();
+			return new TestApp2Command(&receiver);
+		}
+		else if (cmd == "erase" || cmd == "erase_range") {
+			return new EraseCommand(&receiver);
 		}
 		return nullptr;
 	}

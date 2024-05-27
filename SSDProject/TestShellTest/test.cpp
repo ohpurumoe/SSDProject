@@ -1,6 +1,7 @@
 ﻿#include "gmock/gmock.h"
 #include "gtest/gtest.h"
-#include "../TestShell/TestShellApplication.cpp"
+#include "../TestShell/ShellRunner.cpp"
+#include "../TestShell/InputValidChecker.cpp"
 #include <fstream>
 #include "MOCKCommand.cpp"
 
@@ -207,4 +208,93 @@ TEST_F(TestShellApplicationFixture, HelpCommandExceptionTest) {
     Receiver* receiver = nullptr;
 
     EXPECT_THROW(app.executeCommand(new HelpCommand(receiver), v), invalid_argument);
+}
+
+TEST(InputValidChecker, EmptyInput) {
+    InputValidChecker checker;
+    EXPECT_FALSE(checker.check({}));
+}
+
+TEST(InputValidChecker, TestHelpCommand) {
+    InputValidChecker checker;
+    EXPECT_TRUE(checker.check({ "help" }));
+}
+
+TEST(InputValidChecker, TestReadCommand) {
+    InputValidChecker checker;
+    EXPECT_TRUE(checker.check({ "read", "3" }, InputValidChecker::TYPE_CMD_LBA));
+}
+
+TEST(InputValidChecker, TestReadCommandInvalidLBA) {
+    InputValidChecker checker;
+    EXPECT_FALSE(checker.check({ "read", "A" }, InputValidChecker::TYPE_CMD_LBA));
+}
+
+TEST(InputValidChecker, TestWriteCommand) {
+    InputValidChecker checker;
+    EXPECT_TRUE(checker.check({ "write", "3", "0xFFFF" }, InputValidChecker::TYPE_CMD_LBA_VAL));
+}
+
+TEST(InputValidChecker, TestWriteCommandInvalidLBA) {
+    InputValidChecker checker;
+    EXPECT_FALSE(checker.check({ "write", "3", "FFFF" }, InputValidChecker::TYPE_CMD_LBA_VAL));
+}
+
+TEST(ReadCommand, ReadCommandTestExecuteInvalidInput) {
+    Receiver receiver;
+    ReadCommand readCommand(&receiver);
+    EXPECT_THROW(readCommand.execute({ "read", "100" }), invalid_argument);
+}
+
+TEST(ReadCommand, ReadCommandTestExecuteInvalidInputNum) {
+    Receiver receiver;
+    ReadCommand readCommand(&receiver);
+    EXPECT_THROW(readCommand.execute({ "read", "A" }), invalid_argument);
+}
+
+TEST(WriteCommand, WriteCommandTestExecuteInvalidInput) {
+    Receiver receiver;
+    WriteCommand writeCommand(&receiver);
+    EXPECT_THROW(writeCommand.execute({ "write", "3", "FFFF" }), invalid_argument);
+}
+
+TEST(EraseCommand, EraseCommandTestExecuteInvalidInput) {
+    Receiver receiver;
+    WriteCommand writeCommand(&receiver);
+    EXPECT_THROW(writeCommand.execute({ "erase", "3", "FFFF" }), invalid_argument);
+}
+
+TEST(EraseCommand, EraseCommandTestExecuteInvalidSize) {
+    Receiver receiver;
+    WriteCommand writeCommand(&receiver);
+    EXPECT_THROW(writeCommand.execute({ "erase", "3", "11" }), invalid_argument);
+}
+
+TEST(EraseCommand, EraseCommandTestExecute) {
+    Receiver receiver;
+    EraseCommand eraseCommand(&receiver);
+    eraseCommand.execute({ "erase", "3", "1" });
+    EXPECT_THAT(receiver.getResultCode(), 0);
+}
+
+TEST(EraseCommand, EraseRangeCommandTestExecuteInvalidInput) {
+    Receiver receiver;
+    WriteCommand writeCommand(&receiver);
+    EXPECT_THROW(writeCommand.execute({ "erase_range", "3", "0xFF" }), invalid_argument);
+}
+
+TEST(EraseCommand, EraseRangeCommandTestExecute) {
+    Receiver receiver;
+    EraseCommand eraseCommand(&receiver);
+    eraseCommand.execute({ "erase_range", "3", "5" });
+    EXPECT_THAT(receiver.getResultCode(), 0);
+}
+
+TEST_F(TestShellApplicationFixture, ShellRunnerTest) {
+    ShellRunner runner(&app);
+    string expected = "FullWriteReadCompare --- Run...PASS\nFullRead10AndCompare --- Run...PASS\nWrite10AndCompare --- Run...FAIL\nLoop_WriteAndReadCompare --- Run...FAIL\nUnknown --- Run...FAIL\n";
+
+    runner.run("..\\x64\\Debug\\run_list.lst");
+
+    EXPECT_THAT(expected, StrEq(strCout.str()));
 }
