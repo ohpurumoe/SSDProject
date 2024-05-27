@@ -40,7 +40,6 @@ public:
                 throw invalid_argument("Not Help available for command");
 
         }
-        return;
     }
 private:
     Receiver* receiver_;

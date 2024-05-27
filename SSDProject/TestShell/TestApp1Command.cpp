@@ -9,6 +9,9 @@ public:
 	void execute(vector<string> v) const override
 	{
 		// full write
+		if (v.size() >= 2)
+			throw invalid_argument("invalid vector size");
+
 		for (int i = 0; i < 100; i++) {
 			string argument = "W";
 			argument += " " + to_string(i);
