@@ -239,3 +239,15 @@ TEST(InputValidChecker, TestWriteCommandInvalidLBA) {
     InputValidChecker checker;
     EXPECT_FALSE(checker.check({ "write", "3", "FFFF" }, InputValidChecker::TYPE_CMD_LBA_VAL));
 }
+
+TEST(ReadCommand, ReadCommandTestExecuteInvalidInput) {
+    Receiver receiver;
+    ReadCommand readCommand(&receiver);
+    EXPECT_THROW(readCommand.execute({ "R", "A" }); , invalid_argument);
+}
+
+TEST(WriteCommand, WriteCommandTestExecuteInvalidInput) {
+    Receiver receiver;
+    WriteCommand writeCommand(&receiver);
+    EXPECT_THROW(writeCommand.execute({ "W", "3", "FFFF"}); , invalid_argument);
+}
