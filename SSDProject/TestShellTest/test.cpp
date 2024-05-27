@@ -177,7 +177,8 @@ TEST_F(TestShellApplicationFixture, HelpTestExecutePrintAll) {
 
     helpCommand.execute(args);
 
-    string expected = "Executing help command\nwrite : Save data into the LBA ex) wrtie 3 0xAAAABBBB \nexit : Exit this shell\nread : Load data from the LBA ex) read 3\ntestapp2 : Execute test application 2.\nhelp : Display this help message.ex) help write\nfull write : Perform save data to LBA's all range (0~99) ex) fullwrite 0xABCDFFFF\nfull read : Perform load data from LBA's all range (0~99) ex) full read\ntestapp1 : Execute test application 1.\n";
+    string expected = "write : Save data into the LBA ex) wrtie 3 0xAAAABBBB \nexit : Exit this shell\nread : Load data from the LBA ex) read 3\ntestapp2 : Execute test application 2.\nhelp : Display this help message.ex) help write\nfull write : Perform save data to LBA's all range (0~99) ex) fullwrite 0xABCDFFFF\nfull read : Perform load data from LBA's all range (0~99) ex) full read\ntestapp1 : Execute test application 1.\n";
+
     EXPECT_THAT(expected, StrEq(strCout.str()));
 
 }
@@ -188,13 +189,13 @@ TEST_F(TestShellApplicationFixture, HelpTestExecutePrintOnlyONe) {
 
     helpCommand.execute(args);
 
-    string expected = "Executing help command\nwrite : Save data into the LBA ex) wrtie 3 0xAAAABBBB \n";
+    string expected = "write : Save data into the LBA ex) wrtie 3 0xAAAABBBB \n";
     EXPECT_THAT(expected, StrEq(strCout.str()));
 }
 
 TEST_F(TestShellApplicationFixture, HelpCommandTest) {
     string str = "help";
-    string expected = "Executing help command\nwrite : Save data into the LBA ex) wrtie 3 0xAAAABBBB \nexit : Exit this shell\nread : Load data from the LBA ex) read 3\ntestapp2 : Execute test application 2.\nhelp : Display this help message.ex) help write\nfull write : Perform save data to LBA's all range (0~99) ex) fullwrite 0xABCDFFFF\nfull read : Perform load data from LBA's all range (0~99) ex) full read\ntestapp1 : Execute test application 1.\n";
+    string expected = "write : Save data into the LBA ex) wrtie 3 0xAAAABBBB \nexit : Exit this shell\nread : Load data from the LBA ex) read 3\ntestapp2 : Execute test application 2.\nhelp : Display this help message.ex) help write\nfull write : Perform save data to LBA's all range (0~99) ex) fullwrite 0xABCDFFFF\nfull read : Perform load data from LBA's all range (0~99) ex) full read\ntestapp1 : Execute test application 1.\n";
 
     app.execute(str);
 
