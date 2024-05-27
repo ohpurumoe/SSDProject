@@ -1,10 +1,8 @@
 ﻿#include "gmock/gmock.h"
 #include "gtest/gtest.h"
-#include "../SSDProject/StorageDriver.cpp"
 #include "../SSDProject/SSD.cpp"
 #include "../SSDProject/Parser.h"
 #include "../SSDProject/StorageException.cpp"
-#include "../SSDProject/Command.h"
 #include <cstring>
 #include <utility>
 
@@ -307,7 +305,7 @@ TEST_F(SSDTestFixture, FlushTest1) {
 	EXPECT_THAT(readResultFile("result.txt"), testing::StrEq(expected));
 }
 
-TEST_F(SSDTestFixture, FlushTest1) {
+TEST_F(SSDTestFixture, FlushTest2) {
 	StorageDriver driver(&ssd);
 	driver.write(7, "0xBBBBBBBB");
 	driver.write(8, "0xCCCCCCCC");

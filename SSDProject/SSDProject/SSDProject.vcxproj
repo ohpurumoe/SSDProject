@@ -131,9 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Command.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Parser.cpp" />
     <ClCompile Include="SSD.cpp" />
     <ClCompile Include="StorageDriver.cpp" />
     <ClCompile Include="StorageException.cpp" />
