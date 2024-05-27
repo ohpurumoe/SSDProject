@@ -100,10 +100,11 @@ TEST_F(TestShellApplicationFixture, TestApp2CommandTest) {
     EXPECT_THAT(expected, StrEq(strCout.str()));
 }
 
-// ReadCommand
+ //ReadCommand
 TEST_F(TestShellApplicationFixture, ReadCommandCommandTest) {
     ReadCommand readCommand(&mockReceiver);
-    readCommand.execute({ "R", "3" });
+    std::vector<std::string> args = { "R","3" };
+    readCommand.execute(args);
 }
 
 TEST_F(TestShellApplicationFixture, ReadCommandTestExecuteInvalidArgument) {
