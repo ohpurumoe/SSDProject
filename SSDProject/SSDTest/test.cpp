@@ -72,6 +72,7 @@ protected:
 		argsTestFixture::TearDown();
 		delete parser;
 		delete driver;
+		delete realDriver;
 	}
 	string readResultFile(string filename = "result.txt") {
 		fRead.open(filename);
