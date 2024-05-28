@@ -39,8 +39,11 @@ public:
 
 		Command* cmd = createCommandInstance(v.front());
 
-		if (cmd != nullptr)
+		if (cmd != nullptr) {
 			executeCommand(cmd, v);
+			if(v.front().find("testapp") != string::npos)
+				receiver.setResultCode(0);
+		}
 		else {
 			logger.print("INVALID COMMAND, TRY AGAIN");	
 			receiver.setResultCode(1);
