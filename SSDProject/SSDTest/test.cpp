@@ -352,7 +352,7 @@ TEST_F(commandTestFixture, Write) {
 	MockStorage storage;
 	Buffer CommandBuffer;
 	EXPECT_CALL(storage, write)
-		.Times(0)
+		.Times(1)
 		;
 	StorageDriver driver(&storage, &CommandBuffer);
 	Parser parser(&driver);
@@ -360,6 +360,7 @@ TEST_F(commandTestFixture, Write) {
 	auto& cmd = cmd_args.first;
 	auto& args = cmd_args.second;
 	cmd->execute(args);
+	driver.flush();
 }
 
 TEST_F(commandTestFixture, Erase) {
@@ -369,13 +370,36 @@ TEST_F(commandTestFixture, Erase) {
 	MockStorage storage;
 	Buffer CommandBuffer;
 	EXPECT_CALL(storage, erase)
-		.Times(0)
+		.Times(1)
 		;
 	StorageDriver driver(&storage, &CommandBuffer);
 	Parser parser(&driver);
 	auto cmd_args = parser.parse(4, argv);
 	auto& cmd = cmd_args.first;
 	auto& args = cmd_args.second;
+	cmd->execute(args);
+	driver.flush();
+}
+
+TEST_F(commandTestFixture, Flush) {
+	strcpy(argv[1], "E");
+	strcpy(argv[2], "0");
+	strcpy(argv[3], "3");
+	MockStorage storage;
+	Buffer CommandBuffer;
+	EXPECT_CALL(storage, erase)
+		.Times(1)
+		;
+	StorageDriver driver(&storage, &CommandBuffer);
+	Parser parser(&driver);
+	auto cmd_args = parser.parse(4, argv);
+	auto& cmd = cmd_args.first;
+	auto& args = cmd_args.second;
+	cmd->execute(args);
+	strcpy(argv[1], "F");
+	cmd_args = parser.parse(2, argv);
+	cmd = cmd_args.first;
+	args = cmd_args.second;
 	cmd->execute(args);
 }
 
