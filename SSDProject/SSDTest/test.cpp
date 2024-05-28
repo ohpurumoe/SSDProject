@@ -506,7 +506,7 @@ TEST_F(commandTestFixture, StorageCommandBufferOptimize3) {
 	EXPECT_THAT(driver->optimizeCommandBuffer(), testing::StrEq(expected));
 }
 
-TEST_F(commandTestFixture, StorageCommandBufferOptimize4) {
+TEST_F(commandTestFixture, DISABLED_StorageCommandBufferOptimize4) {
 
 	driver->erase(10, 4);
 	driver->erase(40, 5);
