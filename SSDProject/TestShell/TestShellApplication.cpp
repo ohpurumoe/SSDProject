@@ -81,7 +81,7 @@ private:
 		else if (cmd == "fullwrite") {
 			return new FullWriteCommand(&receiver);
 		}
-		else if (cmd == "testapp1" || cmd == "testapp2") {
+		else if (cmd.find("testapp") != string::npos) {
 			return getScenario(cmd, &receiver);
 		}
 		else if (cmd == "erase" || cmd == "erase_range") {
