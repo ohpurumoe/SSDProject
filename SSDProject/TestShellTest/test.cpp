@@ -314,6 +314,10 @@ TEST_F(TestShellApplicationFixture, FlushCommandTestExecute) {
     EXPECT_CALL(mockReceiver, flush(_))
         .Times(1);
 
+    EXPECT_CALL(mockReceiver, getResultCode())
+        .Times(1)
+        .WillOnce(Return(0));
+
     flushCommand.execute({ "flush" });;
     EXPECT_THAT(mockReceiver.getResultCode(), 0);
 }
