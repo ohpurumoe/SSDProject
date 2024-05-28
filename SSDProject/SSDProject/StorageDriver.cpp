@@ -51,7 +51,35 @@ public:
 		}
 	}
 	string optimizeCommandBuffer() {
-		return "";
+		mapbuffer = commandBuffer->flush();
+		vector<_Buffer> temp;
+
+		while (!mapbuffer.empty()) {
+			temp.push_back(mapbuffer.front());
+			mapbuffer.pop();
+		}
+
+		for (int i = 0; i < temp.size(); i++) {
+			for (int j = i + 1; j < temp.size(); j++) {
+				if (temp[i].op == 'W' && temp[j].op == 'W' && temp[i].addr == temp[j].addr) {
+					temp.erase(temp.begin() + i);
+				}
+			}
+		}
+
+		string ret;
+		for (int i = 0; i < temp.size(); i++) {
+			if (temp[i].op == 'W') {
+				commandBuffer->write(temp[i].addr, temp[i].data);
+				ret += "W " + to_string(temp[i].addr) + " " + temp[i].data + "\n";
+			}
+			else if (temp[i].op == 'E') {
+				commandBuffer->erase(temp[i].addr, temp[i].size);
+				ret += "E " + to_string(temp[i].addr) + " " + to_string(temp[i].size) + "\n";
+			}
+		}
+
+		return ret;
 	}
 private:
 	IStorage* ssd;
