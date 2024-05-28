@@ -239,6 +239,15 @@ TEST_F(SSDTestFixture, SSDEraseInvalidSize) {
 	EXPECT_THROW(ssd.erase(12, 11), StorageException);
 }
 
+TEST_F(SSDTestFixture, BufferRWSuccess) {
+	Buffer buf;
+
+	buf.write(10, "0xabcdefab");
+	buf.read(10);
+	string  expected = "0xabcdefab";
+	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
+}
+
 TEST(BufferTest, BufferWrite) {
 	Buffer buf;
 

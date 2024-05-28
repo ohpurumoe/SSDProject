@@ -7,18 +7,18 @@
 using namespace std;
 
 class Buffer :
-    public IStorage
+	public IStorage
 {
 public:
 	Buffer(string filename = "buffer.txt")
 		: filename{ filename } {}
 
-    // IStorage을(를) 통해 상속됨
-    string read(int lba) override;
-    void write(int lba, string data) override;
-    void erase(int lba, int size) override;
+	// IStorage을(를) 통해 상속됨
+	string read(int lba) override;
+	void write(int lba, string data) override;
+	void erase(int lba, int size) override;
 	int getBufferSize();
-    queue<_Buffer>& flush();
+	queue<_Buffer> flush();
 
 private:
 	string filename;
@@ -30,6 +30,7 @@ private:
 
 	void queueBuffer(char, int, int, string);
 	void fillBuffer();
+	void clearBuffer();
 	void storeBuffer();
 };
 
