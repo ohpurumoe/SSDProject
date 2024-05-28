@@ -20,7 +20,10 @@ private:														\
 	classname& operator=(const classname& other) = delete;		\
 	classname(const classname& other) = delete;					\
 
-#define print(msg) printLog(__FUNCTION__, msg)
+#define GET_MACRO(_1,_2,NAME,...) NAME
+#define print(...) GET_MACRO(__VA_ARGS__, print2, print1)(__VA_ARGS__)
+#define print1(msg) printLog(__FUNCTION__, msg)
+#define print2(msg, newline) printLog(__FUNCTION__, msg, newline)
 
 using namespace std;
 
@@ -149,8 +152,16 @@ public:
 	}
 
 	void printLog(string funcName, string message) {
-		if (this->logLevel == LOGGER_LEVEL_DEBUGGING)
-			cout << message << endl;
+		printLog(funcName, message, true);
+	}
+
+	void printLog(string funcName, string message, bool addNewline) {
+		if (this->logLevel == LOGGER_LEVEL_DEBUGGING) {
+			if (addNewline)
+				cout << message << endl;
+			else\
+				cout << message;
+		}
 
 		string logString;
 		formatLog(logString, funcName, message);
