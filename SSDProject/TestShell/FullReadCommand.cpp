@@ -1,11 +1,14 @@
 ﻿#include "Command.h"
 #include <stdexcept>
+#include "ReadCommand.cpp"
 
 using namespace std;
 
 class FullReadCommand : public Command {
+private:
+	const int argc = 2;
 public:
-	FullReadCommand(Receiver* receiver) : Command(receiver) {}
+	FullReadCommand(IReceiver* receiver) : Command(receiver) {}
 	void execute(std::vector<std::string> v) override {
 		if (v.size() != 1) {
 			throw invalid_argument("Need No argument for full read command");
@@ -15,38 +18,14 @@ public:
 			throw invalid_argument("Need Receiver for read command");
 		}
 
-		for (int lba = 0; lba < 100; lba++) {
-
-			string rdCmd;
-			string space = " ";
-
-			rdCmd.append(cmd);
-			rdCmd.append(space);
-			rdCmd.append(to_string(lba));
-
-			int ret = invoke(rdCmd);
-
-			// read result
-			if (ret == 0) {
-				string result = getReadResult();
-				logger.print(result);
-			}
-			receiver->read(ret);
+		ReadCommand readCommand(receiver);
+		if (v.size() < argc) {
+			v.resize(argc);
 		}
-	}
 
-private:
-	const string cmd = "R";
-	const std::string ssdResult = ".\\result.txt";
-
-	string getReadResult() const {
-		ifstream ifs;
-
-		ifs.open(ssdResult);
-		string result = string((std::istreambuf_iterator<char>(ifs)),
-			std::istreambuf_iterator<char>());
-		ifs.close();
-
-		return result;
+		for (int lba = 0; lba < 100; lba++) {
+			v[1] = to_string(lba);
+			readCommand.execute(v);
+		}
 	}
 };

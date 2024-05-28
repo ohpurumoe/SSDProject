@@ -24,12 +24,33 @@
     <ClCompile Include="SSD.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="StorageException.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="StorageException.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IStorage.h">
+    <ClInclude Include="Parser.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="StorageException.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="StorageException.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="util.h">
+    <ClInclude Include="Buffer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="IStorage.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

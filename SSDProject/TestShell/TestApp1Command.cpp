@@ -5,7 +5,7 @@ using namespace std;
 
 class TestApp1Command : public Command {
 public:
-	TestApp1Command(Receiver* receiver) : Command(receiver) {}
+	TestApp1Command(IReceiver* receiver) : Command(receiver) {}
 
 	// Command을(를) 통해 상속됨
 	void execute(vector<string> v) override
