@@ -3,8 +3,7 @@
 #include <string>
 #include <vector>
 #include "InputValidChecker.cpp"
-
-#include "Logger.h"
+#include "Logger.cpp"
 
 using namespace std;
 
@@ -52,7 +51,7 @@ private:
 
 protected:
     Receiver* receiver;
-    Logger& logger = Logger::getInstance();
     InputValidChecker checker;
+    Logger& logger = Logger::getInstance();
 };
 

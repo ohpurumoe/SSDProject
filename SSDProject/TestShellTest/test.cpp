@@ -1,5 +1,6 @@
 ﻿#include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include "../TestShell/Logger.cpp"
 #include "../TestShell/ShellRunner.cpp"
 #include "../TestShell/InputValidChecker.cpp"
 #include <fstream>
