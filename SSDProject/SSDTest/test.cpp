@@ -9,7 +9,7 @@
 
 class MockStorage : public IStorage {
 public:
-	MOCK_METHOD(string, read, (int), (override));
+	MOCK_METHOD(void, read, (int), (override));
 	MOCK_METHOD(void, write, (int, string), (override));
 	MOCK_METHOD(void, erase, (int, int), (override));
 };
@@ -259,7 +259,6 @@ TEST_F(commandTestFixture, Read) {
 	MockStorage storage;
 	EXPECT_CALL(storage, read, ::testing::_)
 		.Times(1)
-		.WillOnce(::testing::Return(""))
 		;
 	StorageDriver driver(&storage);
 	Parser parser(&driver);

@@ -1,6 +1,6 @@
 ﻿#include "Buffer.h"
 
-std::string Buffer::read(int lba)
+void Buffer::read(int lba)
 {
 	fillBuffer();
 
@@ -16,7 +16,7 @@ std::string Buffer::read(int lba)
 		qBuffer.pop();
 	}
 
-	return retBuffer.data;
+	storeReadData(retBuffer.data);
 }
 
 void Buffer::write(int lba, std::string data)
@@ -48,7 +48,7 @@ void Buffer::fillBuffer() {
 
 	clearBuffer();
 
-	fBufferIn.open(filename);
+	fBufferIn.open(filenameBuffer);
 	string line;
 	while (getline(fBufferIn, line)) {
 		if (line.size() == 0) continue;
@@ -89,11 +89,17 @@ void Buffer::clearBuffer()
 
 void Buffer::storeBuffer() {
 	_Buffer tempBuffer;
-	fBufferOut.open(filename, ios::out | ios::trunc);
+	fBufferOut.open(filenameBuffer, ios::out | ios::trunc);
 	while (!qBuffer.empty()) {
 		tempBuffer = qBuffer.front();
 		fBufferOut << tempBuffer.op << " " << tempBuffer.addr << " " << tempBuffer.size << " " << tempBuffer.data << endl;
 		qBuffer.pop();
 	}
 	fBufferOut.close();
+}
+
+void Buffer::storeReadData(const string data) {
+	fResultOut.open(filenameResult);
+	fResultOut << data;
+	fResultOut.close();
 }

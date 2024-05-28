@@ -14,10 +14,10 @@ public:
 		: nandname{ nandname },
 		resultname{ resultname } {}
 
-	string read(int LBA) override {
+	void read(int LBA) override {
 		validateAddr(LBA);
 
-		return _read(LBA);
+		_read(LBA);
 	}
 
 	void write(int LBA, string data) override {
@@ -48,13 +48,10 @@ private:
 	const int ADDR_LOW = 0;
 
 
-	string _read(int LBA) {
+	void _read(int LBA) {
 		validateAddr(LBA);
 
-		auto data = readData(LBA);
-		storeReadData(data);
-
-		return data;
+		storeReadData(readData(LBA));
 	}
 
 	void _write(int LBA, string data) {

@@ -11,7 +11,7 @@ struct _Buffer {
 
 class IStorage {
 public:
-	virtual std::string read(int lba) = 0;
+	virtual void read(int lba) = 0;
 	virtual void write(int lba, std::string data) = 0;
 	virtual void erase(int lba, int size) = 0;
 };
