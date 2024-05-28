@@ -13,6 +13,7 @@
 #include "ReadCommand.cpp"
 #include "WriteCommand.cpp"
 #include "EraseCommand.cpp"
+#include "FlushCommand.cpp"
 #include "Logger.cpp"
 
 using namespace std;
