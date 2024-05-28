@@ -27,7 +27,7 @@ public:
 
 private:
 	void prepare(const string &str) {
-		logger.print(str + " --- Run...");
+		logger.print(str + " --- Run...", false);
 		oldCoutStreamBuf = std::cout.rdbuf();
 		cout.rdbuf(strCout.rdbuf());
 	}
