@@ -183,8 +183,7 @@ TEST_F(TestShellApplicationFixture, HelpTestExecutePrintAll) {
 
     helpCommand.execute(args);
 
-    string expected = "write : Save data into the LBA ex) wrtie 3 0xAAAABBBB \nexit : Exit this shell\nread : Load data from the LBA ex) read 3\ntestapp2 : Execute test application 2.\nhelp : Display this help message.ex) help write\nfull write : Perform save data to LBA's all range (0~99) ex) fullwrite 0xABCDFFFF\nfull read : Perform load data from LBA's all range (0~99) ex) full read\ntestapp1 : Execute test application 1.\n";
-
+    string expected = "write : Save data into the LBA ex) wrtie 3 0xAAAABBBB \nexit : Exit this shell\nflush : Empty the entire command buffer by executing all commands in the Buffer\nerase : erase [LBA] [SIZE]\nread : Load data from the LBA ex) read 3\nerase_range : erase from [Start LBA] to [End LBA]\nfull write : Perform save data to LBA's all range (0~99) ex) fullwrite 0xABCDFFFF\nhelp : Display this help message.ex) help write\nfull read : Perform load data from LBA's all range (0~99) ex) full read\ntestapp1 : Execute test application 1.\ntestapp2 : Execute test application 2.\n";
     EXPECT_THAT(expected, StrEq(strCout.str()));
 
 }
@@ -201,7 +200,7 @@ TEST_F(TestShellApplicationFixture, HelpTestExecutePrintOnlyONe) {
 
 TEST_F(TestShellApplicationFixture, HelpCommandTest) {
     string str = "help";
-    string expected = "write : Save data into the LBA ex) wrtie 3 0xAAAABBBB \nexit : Exit this shell\nread : Load data from the LBA ex) read 3\ntestapp2 : Execute test application 2.\nhelp : Display this help message.ex) help write\nfull write : Perform save data to LBA's all range (0~99) ex) fullwrite 0xABCDFFFF\nfull read : Perform load data from LBA's all range (0~99) ex) full read\ntestapp1 : Execute test application 1.\n";
+    string expected = "write : Save data into the LBA ex) wrtie 3 0xAAAABBBB \nexit : Exit this shell\nflush : Empty the entire command buffer by executing all commands in the Buffer\nerase : erase [LBA] [SIZE]\nread : Load data from the LBA ex) read 3\nerase_range : erase from [Start LBA] to [End LBA]\nfull write : Perform save data to LBA's all range (0~99) ex) fullwrite 0xABCDFFFF\nhelp : Display this help message.ex) help write\nfull read : Perform load data from LBA's all range (0~99) ex) full read\ntestapp1 : Execute test application 1.\ntestapp2 : Execute test application 2.\n";
 
     app.execute(str);
 

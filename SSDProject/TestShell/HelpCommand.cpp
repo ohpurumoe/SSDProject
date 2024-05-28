@@ -7,6 +7,9 @@ public:
         helpMaps = {
             {"write", "write : Save data into the LBA ex) wrtie 3 0xAAAABBBB "},
             {"read", "read : Load data from the LBA ex) read 3"},
+            {"erase", "erase : erase [LBA] [SIZE]"},
+            {"erase_range", "erase_range : erase from [Start LBA] to [End LBA]"},
+            {"flush", "flush : Empty the entire command buffer by executing all commands in the Buffer"},
             {"exit", "exit : Exit this shell"},
             {"help", "help : Display this help message.ex) help write"},
             {"fullwrite", "full write : Perform save data to LBA's all range (0~99) ex) fullwrite 0xABCDFFFF"},
