@@ -1,11 +1,14 @@
 ﻿#include "Command.h"
 #include <stdexcept>
+#include "ReadCommand.cpp"
 
 using namespace std;
 
 class FullReadCommand : public Command {
+private:
+	const int argc = 2;
 public:
-	FullReadCommand(Receiver* receiver) : Command(receiver) {}
+	FullReadCommand(IReceiver* receiver) : Command(receiver) {}
 	void execute(std::vector<std::string> v) override {
 		if (v.size() != 1) {
 			throw invalid_argument("Need No argument for full read command");
@@ -15,18 +18,14 @@ public:
 			throw invalid_argument("Need Receiver for read command");
 		}
 
+		ReadCommand readCommand(receiver);
+		if (v.size() < argc) {
+			v.resize(argc);
+		}
+
 		for (int lba = 0; lba < 100; lba++) {
-			string rdCmd ="";
-			string space = " ";
-
-			rdCmd.append(cmd);
-			rdCmd.append(space);
-			rdCmd.append(to_string(lba));
-
-			int ret = invoke(rdCmd);
-			receiver->read(ret);
+			v[1] = to_string(lba);
+			readCommand.execute(v);
 		}
 	}
-private:
-	const string cmd = "R";
 };

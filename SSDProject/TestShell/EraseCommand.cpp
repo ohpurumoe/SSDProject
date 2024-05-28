@@ -6,7 +6,7 @@ using namespace std;
 
 class EraseCommand : public Command {
 public:
-	EraseCommand(Receiver* receiver) : Command(receiver) {}
+	EraseCommand(IReceiver* receiver) : Command(receiver) {}
 	void execute(std::vector<std::string> v) override {
 
 		if (receiver == nullptr) {

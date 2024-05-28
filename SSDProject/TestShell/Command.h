@@ -6,38 +6,50 @@
 
 using namespace std;
 
-class Receiver {
+class IReceiver {
 public:
-    void write(int retCode) { 
+    virtual void write(int retCode) = 0;
+    virtual void read(int retCode) = 0;
+    virtual void erase(int retCode) = 0;
+
+    virtual void fullwrite() = 0;
+    virtual void fullread() = 0;
+
+    virtual void setResultCode(int retCode) = 0;
+    virtual int getResultCode() = 0;
+
+protected:
+    int returnCode;
+};
+
+class Receiver : public IReceiver {
+public:
+    void write(int retCode) override {
         returnCode = retCode;
     }
 
-    void read(int retCode) {
+    void read(int retCode) override {
         returnCode = retCode;
     }
 
-    void erase(int retCode) {
+    void erase(int retCode) override {
         returnCode = retCode;
     }
-        
+
     void exit() const { }
     void help() const { }
-    void fullwrite() const { }
-    void fullread() const { }
+    void fullwrite() override { }
+    void fullread() override { }
 
-    void mock() const { }
-    void setResultCode(int retCode) {
+    void setResultCode(int retCode) override {
         returnCode = retCode;
     }
-    int getResultCode() const { return returnCode; }
-
-private:
-    int returnCode;
+    int getResultCode() override { return returnCode; }
 };
 
 class Command {
 public:
-    Command(Receiver* receiver = nullptr) : receiver(receiver) {}
+    Command(IReceiver* receiver = nullptr) : receiver(receiver) {}
     virtual ~Command() {}
     virtual void execute(std::vector<std::string> v) = 0;
     int invoke(std::string cmd) const {
@@ -48,7 +60,7 @@ public:
 private:
     const std::string ssdExe = "..\\x64\\Debug\\SSD.exe";
 protected:
-    Receiver* receiver;
+    IReceiver* receiver;
     InputValidChecker checker;
 };
 
