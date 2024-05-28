@@ -261,6 +261,20 @@ TEST_F(SSDTestFixture, BufferRWSuccess2) {
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
+TEST_F(SSDTestFixture, BufferRWOverwrite) {
+	Buffer buf;
+
+	buf.write(10, "0xABCDEFAB");
+	buf.write(12, "0xABCAEFAB");
+	buf.write(14, "0xAB2DEFAB");
+	buf.write(11, "0xAB2DEF5B");
+	buf.write(5, "0xAB2DE35B");
+	buf.write(14, "0xAB2DEFEB");
+	buf.read(14);
+	string  expected = "0xAB2DEFEB";
+	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
+}
+
 TEST_F(SSDTestFixture, BufferErase) {
 	Buffer buf;
 

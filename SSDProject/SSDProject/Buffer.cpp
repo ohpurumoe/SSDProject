@@ -4,19 +4,23 @@ void Buffer::read(int lba)
 {
 	fillBuffer();
 
-	_Buffer retBuffer, tempBuffer;
+	string readData = "0x00000000";
+	_Buffer tempBuffer;
 	while (!qBuffer.empty()) {
 		tempBuffer = qBuffer.front();
-		if (tempBuffer.addr == lba) {
-			if (tempBuffer.op == 'W')
-				retBuffer.data = tempBuffer.data;
-			else if (tempBuffer.op == 'E')
-				retBuffer.data = "0x00000000";
+		if (tempBuffer.op == 'W' && tempBuffer.addr == lba) {
+			readData = tempBuffer.data;
+		}
+		else if (tempBuffer.op == 'E') {
+			int low = tempBuffer.addr;
+			int high = tempBuffer.addr + tempBuffer.size;
+
+			if (low <= lba && lba < high) readData = "0x00000000";
 		}
 		qBuffer.pop();
 	}
 
-	storeReadData(retBuffer.data);
+	storeReadData(readData);
 }
 
 void Buffer::write(int lba, std::string data)
@@ -35,6 +39,7 @@ queue<_Buffer> Buffer::flush() {
 	queue <_Buffer> retBuffer = qBuffer;
 
 	clearBuffer();
+	storeBuffer();
 
 	return retBuffer;
 }
