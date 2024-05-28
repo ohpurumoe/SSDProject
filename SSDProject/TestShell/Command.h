@@ -2,29 +2,35 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
+#include "InputValidChecker.cpp"
+#include "Logger.cpp"
 
 using namespace std;
 
 class Receiver {
 public:
-    // TODO : need to check whether print log or not.
     void write(int retCode) { 
         returnCode = retCode;
-        std::cout << "Executing write command : " << retCode << std::endl;
     }
 
     void read(int retCode) {
         returnCode = retCode;
-        std::cout << "Executing read command : " << retCode << std::endl;
+    }
+
+    void erase(int retCode) {
+        returnCode = retCode;
     }
         
-    void exit() const { std::cout << "Executing exit command" << std::endl; }
-    void help() const { std::cout << "Executing help command" << std::endl; }
-    void fullwrite() const { std::cout << "Executing fullwrite command" << std::endl; }
-    void fullread() const { std::cout << "Executing fullread command" << std::endl; }
+    void exit() const { }
+    void help() const { }
+    void fullwrite() const { }
+    void fullread() const { }
 
-    void mock() const { std::cout << "Executing mock command" << std::endl; }
-
+    void mock() const { }
+    void setResultCode(int retCode) {
+        returnCode = retCode;
+    }
     int getResultCode() const { return returnCode; }
 
 private:
@@ -35,7 +41,7 @@ class Command {
 public:
     Command(Receiver* receiver = nullptr) : receiver(receiver) {}
     virtual ~Command() {}
-    virtual void execute(std::vector<std::string> v) const = 0;
+    virtual void execute(std::vector<std::string> v) = 0;
     int invoke(std::string cmd) const {
         std::string arg = ssdExe + " " + cmd;
         return system(arg.c_str());
@@ -43,7 +49,10 @@ public:
 
 private:
     const std::string ssdExe = "..\\x64\\Debug\\SSD.exe";
+
 protected:
     Receiver* receiver;
+    InputValidChecker checker;
+    Logger& logger = Logger::getInstance();
 };
 

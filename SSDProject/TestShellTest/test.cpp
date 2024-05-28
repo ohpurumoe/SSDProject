@@ -1,6 +1,8 @@
 ﻿#include "gmock/gmock.h"
 #include "gtest/gtest.h"
-#include "../TestShell/TestShellApplication.cpp"
+#include "../TestShell/Logger.cpp"
+#include "../TestShell/ShellRunner.cpp"
+#include "../TestShell/InputValidChecker.cpp"
 #include <fstream>
 #include "MOCKCommand.cpp"
 
@@ -14,149 +16,110 @@ public:
     void SetUp() override {
         oldCoutStreamBuf = std::cout.rdbuf();
         cout.rdbuf(strCout.rdbuf());
+
+        fullreadCmd = new FullReadCommand(&receiver);
+        writeCmd = new WriteCommand(&receiver);
+        fullwriteCmd = new FullWriteCommand(&receiver);
     }
     void TearDown() override {
         cout.rdbuf(oldCoutStreamBuf);
     }
 
     TestShellApplication app;
-    ostringstream strCout;
     streambuf* oldCoutStreamBuf;
+    ostringstream strCout;
+    Receiver receiver;
+    FullReadCommand* fullreadCmd;
+    FullWriteCommand* fullwriteCmd;
+    WriteCommand* writeCmd;
+
+    string expected = "";
+    vector<string> v;
+
+    MockReceiver mockReceiver;
 };
 
-// Test case for ReadCommand
-TEST(CommandTest, ReadCommand) {
-    MockReceiver mockReceiver;
-    EXPECT_CALL(mockReceiver, read()).Times(AtLeast(1));
-
-    ReadCommand readCommand(&mockReceiver);
-    readCommand.execute({});
-}
-
-// Test case for WriteCommand
-TEST(CommandTest, WriteCommand) {
-    MockReceiver mockReceiver;
-    EXPECT_CALL(mockReceiver, write()).Times(AtLeast(1));
-
-    WriteCommand writeCommand(&mockReceiver);
-    writeCommand.execute({});
-}
-
-
-TEST(TestShellApplicationTest, WriteCommandTest) {
-  EXPECT_EQ(1, 1);
-  EXPECT_TRUE(true);
-}
-
-TEST(TestShellApplicationTest, ReadCommandTest) {
-    EXPECT_EQ(1, 1);
-    EXPECT_TRUE(true);
-}
-
-TEST(TestShellApplicationTest, HelpCommandTest) {
-    EXPECT_EQ(1, 1);
-    EXPECT_TRUE(true);
-}
-
-TEST(TestShellApplicationTest, ExitCommandTest) {
-    TestShellApplication app;
+TEST_F(TestShellApplicationFixture, ExitCommandTest) {
     std::string str = "exit";
 
     EXPECT_FALSE(app.execute(str));
 }
 
-TEST(TestShellApplicationTest, FullReadCommandTest) {
-    //TODO
-    //cout 결과를 strCout에 저장되게함
-    //std::streambuf* oldCoutStreamBuf = std::cout.rdbuf();
-    //std::ostringstream strCout;
-    //std::cout.rdbuf(strCout.rdbuf());
-
-    //TestShellApplication testShell;
-    //FullReadCommand fullreadCmd;
-    //WriteCommand writeCmd;
-    //
-    //for (int lba = 0; lba < 100; lba++) 
-    //{
-    //    vector<string> v = { "write", to_string(lba), "0X12345678", " "};
-    //    testShell.executeCommand(&writeCmd, v);
-    //}
-
-    //vector<string> v = { "fullread", " " };
-    //testShell.executeCommand(&fullreadCmd, v);
+TEST_F(TestShellApplicationFixture, FullReadCommandTest) {
+    for (int lba = 0; lba < 100; lba++) 
+    {
+        v = { "write", to_string(lba), "0x12345678"};
+        app.executeCommand(writeCmd, v);
+    }
+    v = { "fullread" };
+    app.executeCommand(fullreadCmd, v);
  
-
-    //
-    //std::string expected = "";
-    //for (int lba = 0; lba < 100; lba++)
-    //{
-    //    expected += "0X12345678\n";
-    //}
-    //std::cout.rdbuf(oldCoutStreamBuf);
-    //EXPECT_THAT(strCout.str(), testing::Eq(expected));
-    
+    for (int lba = 0; lba < 100; lba++) expected += "0x12345678\n";
+    EXPECT_THAT(strCout.str(), testing::Eq(expected));
 }
 
+TEST_F(TestShellApplicationFixture, FullWriteCommandTest) {
+    v = { "fullwrite", "0x12345678" };
+    app.executeCommand(fullwriteCmd, v);
+    v = { "fullread" };
+    app.executeCommand(fullreadCmd, v);
 
-TEST(TestShellApplicationTest, FullWriteCommandTest) {
-    //TODO
-    //cout 결과를 strCout에 저장되게함
-    //std::streambuf* oldCoutStreamBuf = std::cout.rdbuf();
-    //std::ostringstream strCout;
-    //std::cout.rdbuf(strCout.rdbuf());
-
-    //TestShellApplication testShell;
-    //FullWriteCommand fullwriteCmd;
-    //FullReadCommand fullreadCmd;
-
-    //vector<string> v = { "fullwrite", "0X12345678", " " };
-    //testShell.executeCommand(&fullwriteCmd, v);
-    //v = { "fullread", " " };
-    //testShell.executeCommand(&fullreadCmd, v);
-
-    //std::string expected = "";
-    //for (int lba = 0; lba < 100; lba++)
-    //{
-    //    expected += "0X12345678\n";
-    //}
-    //std::cout.rdbuf(oldCoutStreamBuf);
-    //EXPECT_THAT(strCout.str(), testing::Eq(expected));
-
+    for (int lba = 0; lba < 100; lba++) expected += "0x12345678\n";
+    EXPECT_THAT(strCout.str(), testing::Eq(expected));
 }
 
 TEST_F(TestShellApplicationFixture, TestApp1CommandTest) {
     string str = "testapp1";
-    string expected = "0 0x5A5A5A5A\n1 0x5A5A5A5A\n2 0x5A5A5A5A\n3 0x5A5A5A5A\n4 0x5A5A5A5A\n5 0x5A5A5A5A\n6 0x5A5A5A5A\n7 0x5A5A5A5A\n8 0x5A5A5A5A\n9 0x5A5A5A5A\n10 0x5A5A5A5A\n11 0x5A5A5A5A\n12 0x5A5A5A5A\n13 0x5A5A5A5A\n14 0x5A5A5A5A\n15 0x5A5A5A5A\n16 0x5A5A5A5A\n17 0x5A5A5A5A\n18 0x5A5A5A5A\n19 0x5A5A5A5A\n20 0x5A5A5A5A\n21 0x5A5A5A5A\n22 0x5A5A5A5A\n23 0x5A5A5A5A\n24 0x5A5A5A5A\n25 0x5A5A5A5A\n26 0x5A5A5A5A\n27 0x5A5A5A5A\n28 0x5A5A5A5A\n29 0x5A5A5A5A\n30 0x5A5A5A5A\n31 0x5A5A5A5A\n32 0x5A5A5A5A\n33 0x5A5A5A5A\n34 0x5A5A5A5A\n35 0x5A5A5A5A\n36 0x5A5A5A5A\n37 0x5A5A5A5A\n38 0x5A5A5A5A\n39 0x5A5A5A5A\n40 0x5A5A5A5A\n41 0x5A5A5A5A\n42 0x5A5A5A5A\n43 0x5A5A5A5A\n44 0x5A5A5A5A\n45 0x5A5A5A5A\n46 0x5A5A5A5A\n47 0x5A5A5A5A\n48 0x5A5A5A5A\n49 0x5A5A5A5A\n50 0x5A5A5A5A\n51 0x5A5A5A5A\n52 0x5A5A5A5A\n53 0x5A5A5A5A\n54 0x5A5A5A5A\n55 0x5A5A5A5A\n56 0x5A5A5A5A\n57 0x5A5A5A5A\n58 0x5A5A5A5A\n59 0x5A5A5A5A\n60 0x5A5A5A5A\n61 0x5A5A5A5A\n62 0x5A5A5A5A\n63 0x5A5A5A5A\n64 0x5A5A5A5A\n65 0x5A5A5A5A\n66 0x5A5A5A5A\n67 0x5A5A5A5A\n68 0x5A5A5A5A\n69 0x5A5A5A5A\n70 0x5A5A5A5A\n71 0x5A5A5A5A\n72 0x5A5A5A5A\n73 0x5A5A5A5A\n74 0x5A5A5A5A\n75 0x5A5A5A5A\n76 0x5A5A5A5A\n77 0x5A5A5A5A\n78 0x5A5A5A5A\n79 0x5A5A5A5A\n80 0x5A5A5A5A\n81 0x5A5A5A5A\n82 0x5A5A5A5A\n83 0x5A5A5A5A\n84 0x5A5A5A5A\n85 0x5A5A5A5A\n86 0x5A5A5A5A\n87 0x5A5A5A5A\n88 0x5A5A5A5A\n89 0x5A5A5A5A\n90 0x5A5A5A5A\n91 0x5A5A5A5A\n92 0x5A5A5A5A\n93 0x5A5A5A5A\n94 0x5A5A5A5A\n95 0x5A5A5A5A\n96 0x5A5A5A5A\n97 0x5A5A5A5A\n98 0x5A5A5A5A\n99 0x5A5A5A5A\n100 0x5A5A5A5A\n\n0 0x5A5A5A5A\n1 0x5A5A5A5A\n2 0x5A5A5A5A\n3 0x5A5A5A5A\n4 0x5A5A5A5A\n5 0x5A5A5A5A\n6 0x5A5A5A5A\n7 0x5A5A5A5A\n8 0x5A5A5A5A\n9 0x5A5A5A5A\n10 0x5A5A5A5A\n11 0x5A5A5A5A\n12 0x5A5A5A5A\n13 0x5A5A5A5A\n14 0x5A5A5A5A\n15 0x5A5A5A5A\n16 0x5A5A5A5A\n17 0x5A5A5A5A\n18 0x5A5A5A5A\n19 0x5A5A5A5A\n20 0x5A5A5A5A\n21 0x5A5A5A5A\n22 0x5A5A5A5A\n23 0x5A5A5A5A\n24 0x5A5A5A5A\n25 0x5A5A5A5A\n26 0x5A5A5A5A\n27 0x5A5A5A5A\n28 0x5A5A5A5A\n29 0x5A5A5A5A\n30 0x5A5A5A5A\n31 0x5A5A5A5A\n32 0x5A5A5A5A\n33 0x5A5A5A5A\n34 0x5A5A5A5A\n35 0x5A5A5A5A\n36 0x5A5A5A5A\n37 0x5A5A5A5A\n38 0x5A5A5A5A\n39 0x5A5A5A5A\n40 0x5A5A5A5A\n41 0x5A5A5A5A\n42 0x5A5A5A5A\n43 0x5A5A5A5A\n44 0x5A5A5A5A\n45 0x5A5A5A5A\n46 0x5A5A5A5A\n47 0x5A5A5A5A\n48 0x5A5A5A5A\n49 0x5A5A5A5A\n50 0x5A5A5A5A\n51 0x5A5A5A5A\n52 0x5A5A5A5A\n53 0x5A5A5A5A\n54 0x5A5A5A5A\n55 0x5A5A5A5A\n56 0x5A5A5A5A\n57 0x5A5A5A5A\n58 0x5A5A5A5A\n59 0x5A5A5A5A\n60 0x5A5A5A5A\n61 0x5A5A5A5A\n62 0x5A5A5A5A\n63 0x5A5A5A5A\n64 0x5A5A5A5A\n65 0x5A5A5A5A\n66 0x5A5A5A5A\n67 0x5A5A5A5A\n68 0x5A5A5A5A\n69 0x5A5A5A5A\n70 0x5A5A5A5A\n71 0x5A5A5A5A\n72 0x5A5A5A5A\n73 0x5A5A5A5A\n74 0x5A5A5A5A\n75 0x5A5A5A5A\n76 0x5A5A5A5A\n77 0x5A5A5A5A\n78 0x5A5A5A5A\n79 0x5A5A5A5A\n80 0x5A5A5A5A\n81 0x5A5A5A5A\n82 0x5A5A5A5A\n83 0x5A5A5A5A\n84 0x5A5A5A5A\n85 0x5A5A5A5A\n86 0x5A5A5A5A\n87 0x5A5A5A5A\n88 0x5A5A5A5A\n89 0x5A5A5A5A\n90 0x5A5A5A5A\n91 0x5A5A5A5A\n92 0x5A5A5A5A\n93 0x5A5A5A5A\n94 0x5A5A5A5A\n95 0x5A5A5A5A\n96 0x5A5A5A5A\n97 0x5A5A5A5A\n98 0x5A5A5A5A\n99 0x5A5A5A5A\n100 0x5A5A5A5A\n\n0 0x5A5A5A5A\n1 0x5A5A5A5A\n2 0x5A5A5A5A\n3 0x5A5A5A5A\n4 0x5A5A5A5A\n5 0x5A5A5A5A\n6 0x5A5A5A5A\n7 0x5A5A5A5A\n8 0x5A5A5A5A\n9 0x5A5A5A5A\n10 0x5A5A5A5A\n11 0x5A5A5A5A\n12 0x5A5A5A5A\n13 0x5A5A5A5A\n14 0x5A5A5A5A\n15 0x5A5A5A5A\n16 0x5A5A5A5A\n17 0x5A5A5A5A\n18 0x5A5A5A5A\n19 0x5A5A5A5A\n20 0x5A5A5A5A\n21 0x5A5A5A5A\n22 0x5A5A5A5A\n23 0x5A5A5A5A\n24 0x5A5A5A5A\n25 0x5A5A5A5A\n26 0x5A5A5A5A\n27 0x5A5A5A5A\n28 0x5A5A5A5A\n29 0x5A5A5A5A\n30 0x5A5A5A5A\n31 0x5A5A5A5A\n32 0x5A5A5A5A\n33 0x5A5A5A5A\n34 0x5A5A5A5A\n35 0x5A5A5A5A\n36 0x5A5A5A5A\n37 0x5A5A5A5A\n38 0x5A5A5A5A\n39 0x5A5A5A5A\n40 0x5A5A5A5A\n41 0x5A5A5A5A\n42 0x5A5A5A5A\n43 0x5A5A5A5A\n44 0x5A5A5A5A\n45 0x5A5A5A5A\n46 0x5A5A5A5A\n47 0x5A5A5A5A\n48 0x5A5A5A5A\n49 0x5A5A5A5A\n50 0x5A5A5A5A\n51 0x5A5A5A5A\n52 0x5A5A5A5A\n53 0x5A5A5A5A\n54 0x5A5A5A5A\n55 0x5A5A5A5A\n56 0x5A5A5A5A\n57 0x5A5A5A5A\n58 0x5A5A5A5A\n59 0x5A5A5A5A\n60 0x5A5A5A5A\n61 0x5A5A5A5A\n62 0x5A5A5A5A\n63 0x5A5A5A5A\n64 0x5A5A5A5A\n65 0x5A5A5A5A\n66 0x5A5A5A5A\n67 0x5A5A5A5A\n68 0x5A5A5A5A\n69 0x5A5A5A5A\n70 0x5A5A5A5A\n71 0x5A5A5A5A\n72 0x5A5A5A5A\n73 0x5A5A5A5A\n74 0x5A5A5A5A\n75 0x5A5A5A5A\n76 0x5A5A5A5A\n77 0x5A5A5A5A\n78 0x5A5A5A5A\n79 0x5A5A5A5A\n80 0x5A5A5A5A\n81 0x5A5A5A5A\n82 0x5A5A5A5A\n83 0x5A5A5A5A\n84 0x5A5A5A5A\n85 0x5A5A5A5A\n86 0x5A5A5A5A\n87 0x5A5A5A5A\n88 0x5A5A5A5A\n89 0x5A5A5A5A\n90 0x5A5A5A5A\n91 0x5A5A5A5A\n92 0x5A5A5A5A\n93 0x5A5A5A5A\n94 0x5A5A5A5A\n95 0x5A5A5A5A\n96 0x5A5A5A5A\n97 0x5A5A5A5A\n98 0x5A5A5A5A\n99 0x5A5A5A5A\n100 0x5A5A5A5A\n\n0 0x5A5A5A5A\n1 0x5A5A5A5A\n2 0x5A5A5A5A\n3 0x5A5A5A5A\n4 0x5A5A5A5A\n5 0x5A5A5A5A\n6 0x5A5A5A5A\n7 0x5A5A5A5A\n8 0x5A5A5A5A\n9 0x5A5A5A5A\n10 0x5A5A5A5A\n11 0x5A5A5A5A\n12 0x5A5A5A5A\n13 0x5A5A5A5A\n14 0x5A5A5A5A\n15 0x5A5A5A5A\n16 0x5A5A5A5A\n17 0x5A5A5A5A\n18 0x5A5A5A5A\n19 0x5A5A5A5A\n20 0x5A5A5A5A\n21 0x5A5A5A5A\n22 0x5A5A5A5A\n23 0x5A5A5A5A\n24 0x5A5A5A5A\n25 0x5A5A5A5A\n26 0x5A5A5A5A\n27 0x5A5A5A5A\n28 0x5A5A5A5A\n29 0x5A5A5A5A\n30 0x5A5A5A5A\n31 0x5A5A5A5A\n32 0x5A5A5A5A\n33 0x5A5A5A5A\n34 0x5A5A5A5A\n35 0x5A5A5A5A\n36 0x5A5A5A5A\n37 0x5A5A5A5A\n38 0x5A5A5A5A\n39 0x5A5A5A5A\n40 0x5A5A5A5A\n41 0x5A5A5A5A\n42 0x5A5A5A5A\n43 0x5A5A5A5A\n44 0x5A5A5A5A\n45 0x5A5A5A5A\n46 0x5A5A5A5A\n47 0x5A5A5A5A\n48 0x5A5A5A5A\n49 0x5A5A5A5A\n50 0x5A5A5A5A\n51 0x5A5A5A5A\n52 0x5A5A5A5A\n53 0x5A5A5A5A\n54 0x5A5A5A5A\n55 0x5A5A5A5A\n56 0x5A5A5A5A\n57 0x5A5A5A5A\n58 0x5A5A5A5A\n59 0x5A5A5A5A\n60 0x5A5A5A5A\n61 0x5A5A5A5A\n62 0x5A5A5A5A\n63 0x5A5A5A5A\n64 0x5A5A5A5A\n65 0x5A5A5A5A\n66 0x5A5A5A5A\n67 0x5A5A5A5A\n68 0x5A5A5A5A\n69 0x5A5A5A5A\n70 0x5A5A5A5A\n71 0x5A5A5A5A\n72 0x5A5A5A5A\n73 0x5A5A5A5A\n74 0x5A5A5A5A\n75 0x5A5A5A5A\n76 0x5A5A5A5A\n77 0x5A5A5A5A\n78 0x5A5A5A5A\n79 0x5A5A5A5A\n80 0x5A5A5A5A\n81 0x5A5A5A5A\n82 0x5A5A5A5A\n83 0x5A5A5A5A\n84 0x5A5A5A5A\n85 0x5A5A5A5A\n86 0x5A5A5A5A\n87 0x5A5A5A5A\n88 0x5A5A5A5A\n89 0x5A5A5A5A\n90 0x5A5A5A5A\n91 0x5A5A5A5A\n92 0x5A5A5A5A\n93 0x5A5A5A5A\n94 0x5A5A5A5A\n95 0x5A5A5A5A\n96 0x5A5A5A5A\n97 0x5A5A5A5A\n98 0x5A5A5A5A\n99 0x5A5A5A5A\n100 0x5A5A5A5A\n\n0 0x5A5A5A5A\n1 0x5A5A5A5A\n2 0x5A5A5A5A\n3 0x5A5A5A5A\n4 0x5A5A5A5A\n5 0x5A5A5A5A\n6 0x5A5A5A5A\n7 0x5A5A5A5A\n8 0x5A5A5A5A\n9 0x5A5A5A5A\n10 0x5A5A5A5A\n11 0x5A5A5A5A\n12 0x5A5A5A5A\n13 0x5A5A5A5A\n14 0x5A5A5A5A\n15 0x5A5A5A5A\n16 0x5A5A5A5A\n17 0x5A5A5A5A\n18 0x5A5A5A5A\n19 0x5A5A5A5A\n20 0x5A5A5A5A\n21 0x5A5A5A5A\n22 0x5A5A5A5A\n23 0x5A5A5A5A\n24 0x5A5A5A5A\n25 0x5A5A5A5A\n26 0x5A5A5A5A\n27 0x5A5A5A5A\n28 0x5A5A5A5A\n29 0x5A5A5A5A\n30 0x5A5A5A5A\n31 0x5A5A5A5A\n32 0x5A5A5A5A\n33 0x5A5A5A5A\n34 0x5A5A5A5A\n35 0x5A5A5A5A\n36 0x5A5A5A5A\n37 0x5A5A5A5A\n38 0x5A5A5A5A\n39 0x5A5A5A5A\n40 0x5A5A5A5A\n41 0x5A5A5A5A\n42 0x5A5A5A5A\n43 0x5A5A5A5A\n44 0x5A5A5A5A\n45 0x5A5A5A5A\n46 0x5A5A5A5A\n47 0x5A5A5A5A\n48 0x5A5A5A5A\n49 0x5A5A5A5A\n50 0x5A5A5A5A\n51 0x5A5A5A5A\n52 0x5A5A5A5A\n53 0x5A5A5A5A\n54 0x5A5A5A5A\n55 0x5A5A5A5A\n56 0x5A5A5A5A\n57 0x5A5A5A5A\n58 0x5A5A5A5A\n59 0x5A5A5A5A\n60 0x5A5A5A5A\n61 0x5A5A5A5A\n62 0x5A5A5A5A\n63 0x5A5A5A5A\n64 0x5A5A5A5A\n65 0x5A5A5A5A\n66 0x5A5A5A5A\n67 0x5A5A5A5A\n68 0x5A5A5A5A\n69 0x5A5A5A5A\n70 0x5A5A5A5A\n71 0x5A5A5A5A\n72 0x5A5A5A5A\n73 0x5A5A5A5A\n74 0x5A5A5A5A\n75 0x5A5A5A5A\n76 0x5A5A5A5A\n77 0x5A5A5A5A\n78 0x5A5A5A5A\n79 0x5A5A5A5A\n80 0x5A5A5A5A\n81 0x5A5A5A5A\n82 0x5A5A5A5A\n83 0x5A5A5A5A\n84 0x5A5A5A5A\n85 0x5A5A5A5A\n86 0x5A5A5A5A\n87 0x5A5A5A5A\n88 0x5A5A5A5A\n89 0x5A5A5A5A\n90 0x5A5A5A5A\n91 0x5A5A5A5A\n92 0x5A5A5A5A\n93 0x5A5A5A5A\n94 0x5A5A5A5A\n95 0x5A5A5A5A\n96 0x5A5A5A5A\n97 0x5A5A5A5A\n98 0x5A5A5A5A\n99 0x5A5A5A5A\n100 0x5A5A5A5A\n\n";
+    string expected = "0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n0x5A5A5A5A\n";
 
     app.execute(str);
 
     EXPECT_THAT(expected, StrEq(strCout.str()));
 
+}
+
+TEST_F(TestShellApplicationFixture, TestApp1InvalidCommandTest) {
+    string str = "error";
+    string expected = "invalid command, try again\n";
+
+    app.execute(str);
+
+    EXPECT_THAT(expected, StrEq(strCout.str()));
+}
+
+TEST_F(TestShellApplicationFixture, TestApp1ExceptionCommandTest) {
+    string str = "testapp1 1 2 3";
+    EXPECT_THROW(app.execute(str), exception);
 }
 
 TEST_F(TestShellApplicationFixture, TestApp2CommandTest) {
     std::string str = "testapp2";
-    string expected = "0 0x12345678\n1 0x12345678\n2 0x12345678\n3 0x12345678\n4 0x12345678\n\n";
+    string expected = "0x12345678\n0x12345678\n0x12345678\n0x12345678\n0x12345678\n";
 
     app.execute(str);
 
     EXPECT_THAT(expected, StrEq(strCout.str()));
 }
 
-TEST(ReadCommand, TestExecuteInvalidArgument) {
-    MockReceiver mockReceiver;
+ //ReadCommand
+TEST_F(TestShellApplicationFixture, ReadCommandCommandTest) {
+    ReadCommand readCommand(&mockReceiver);
+    std::vector<std::string> args = { "R","3" };
+    readCommand.execute(args);
+}
+
+TEST_F(TestShellApplicationFixture, ReadCommandTestExecuteInvalidArgument) {
     ReadCommand readCommand(&mockReceiver);
     EXPECT_THROW(readCommand.execute({}), invalid_argument);
 }
 
-TEST(ReadCommand, TestExecuteNoReceiver) {
+TEST_F(TestShellApplicationFixture, ReadCommandTestExecuteNoReceiver) {
     ReadCommand cmd(nullptr);
     vector<string> args = { "r", "3" };
     EXPECT_THROW(cmd.execute(args), invalid_argument);
 }
 
-TEST(ReadCommand, TestExecute) {
-    MockReceiver mockReceiver;
+TEST_F(TestShellApplicationFixture, ReadCommandTestExecute) {
     ReadCommand readCommand(&mockReceiver);
 
     EXPECT_CALL(mockReceiver, getResultCode())
@@ -167,14 +130,18 @@ TEST(ReadCommand, TestExecute) {
     EXPECT_EQ(0, mockReceiver.getResultCode());
 }
 
-TEST(WriteCommand, TestExecuteInvalidArgument) {
-    MockReceiver mockReceiver;
+// WriteCommand
+TEST_F(TestShellApplicationFixture, WriteCommandCommandTest) {
+    WriteCommand writeCommand(&mockReceiver);
+    writeCommand.execute({ "W", "3", "0x5A5A5A5A" });
+}
+
+TEST_F(TestShellApplicationFixture, WriteCommandTestExecuteInvalidArgument) {
     WriteCommand writeCommand(&mockReceiver);
     EXPECT_THROW(writeCommand.execute({}), invalid_argument);
 }
 
-TEST(WriteCommand, TestExecute) {
-    MockReceiver mockReceiver;
+TEST_F(TestShellApplicationFixture, WriteCommandTestExecute) {
     WriteCommand writeCommand(&mockReceiver);
 
     EXPECT_CALL(mockReceiver, getResultCode())
@@ -186,40 +153,171 @@ TEST(WriteCommand, TestExecute) {
 
 }
 
-TEST(HelpCommand, HelpTestExecuteNoReceiver) {
+// HelpCommand
+TEST_F(TestShellApplicationFixture, HelpTestExecuteNoReceiver) {
     ReadCommand cmd(nullptr);
     vector<string> args = { "help", "3" };
     EXPECT_THROW(cmd.execute(args), invalid_argument);
 }
 
-TEST(HelpCommand, HelpTestExecuteInvalidArgumentNo) {
-    MockReceiver mockReceiver;
+TEST_F(TestShellApplicationFixture, HelpTestExecuteInvalidArgumentNo) {
     HelpCommand helpCommand(&mockReceiver);
     vector<string> args = { "help", "3",  };
 
     EXPECT_THROW(helpCommand.execute(args), invalid_argument);
 }
 
-TEST(HelpCommand, HelpTestExecuteInvalidArgumentOver) {
-    MockReceiver mockReceiver;
+TEST_F(TestShellApplicationFixture, HelpTestExecuteInvalidArgumentOver) {
     HelpCommand helpCommand(&mockReceiver);
     vector<string> args = { "help", "full", "3"};
 
     EXPECT_THROW(helpCommand.execute(args), invalid_argument);
 }
 
-TEST(HelpCommand, HelpTestExecutePrintAll) {
-    MockReceiver mockReceiver;
+TEST_F(TestShellApplicationFixture, HelpTestExecutePrintAll) {
     HelpCommand helpCommand(&mockReceiver);
     vector<string> args = { "help"};
+
     helpCommand.execute(args);
-    EXPECT_TRUE(true);
+
+    string expected = "write : Save data into the LBA ex) wrtie 3 0xAAAABBBB \nexit : Exit this shell\nread : Load data from the LBA ex) read 3\ntestapp2 : Execute test application 2.\nhelp : Display this help message.ex) help write\nfull write : Perform save data to LBA's all range (0~99) ex) fullwrite 0xABCDFFFF\nfull read : Perform load data from LBA's all range (0~99) ex) full read\ntestapp1 : Execute test application 1.\n";
+
+    EXPECT_THAT(expected, StrEq(strCout.str()));
+
 }
 
-TEST(HelpCommand, HelpTestExecutePrintOnlyONe) {
-    MockReceiver mockReceiver;
+TEST_F(TestShellApplicationFixture, HelpTestExecutePrintOnlyONe) {
     HelpCommand helpCommand(&mockReceiver);
     vector<string> args = { "help", "write"};
+
     helpCommand.execute(args);
-    EXPECT_TRUE(true);
+
+    string expected = "write : Save data into the LBA ex) wrtie 3 0xAAAABBBB \n";
+    EXPECT_THAT(expected, StrEq(strCout.str()));
+}
+
+TEST_F(TestShellApplicationFixture, HelpCommandTest) {
+    string str = "help";
+    string expected = "write : Save data into the LBA ex) wrtie 3 0xAAAABBBB \nexit : Exit this shell\nread : Load data from the LBA ex) read 3\ntestapp2 : Execute test application 2.\nhelp : Display this help message.ex) help write\nfull write : Perform save data to LBA's all range (0~99) ex) fullwrite 0xABCDFFFF\nfull read : Perform load data from LBA's all range (0~99) ex) full read\ntestapp1 : Execute test application 1.\n";
+
+    app.execute(str);
+
+    EXPECT_THAT(expected, StrEq(strCout.str()));
+}
+
+TEST_F(TestShellApplicationFixture, HelpCommandExceptionTest) {
+    vector<string> v;
+    Receiver* receiver = nullptr;
+
+    EXPECT_THROW(app.executeCommand(new HelpCommand(receiver), v), invalid_argument);
+}
+
+TEST(InputValidChecker, EmptyInput) {
+    InputValidChecker checker;
+    EXPECT_FALSE(checker.check({}));
+}
+
+TEST(InputValidChecker, TestHelpCommand) {
+    InputValidChecker checker;
+    EXPECT_TRUE(checker.check({ "help" }));
+}
+
+TEST(InputValidChecker, TestReadCommand) {
+    InputValidChecker checker;
+    EXPECT_TRUE(checker.check({ "read", "3" }, InputValidChecker::TYPE_CMD_LBA));
+}
+
+TEST(InputValidChecker, TestReadCommandInvalidLBA) {
+    InputValidChecker checker;
+    EXPECT_FALSE(checker.check({ "read", "A" }, InputValidChecker::TYPE_CMD_LBA));
+}
+
+TEST(InputValidChecker, TestWriteCommand) {
+    InputValidChecker checker;
+    EXPECT_TRUE(checker.check({ "write", "3", "0xAAAABBBB" }, InputValidChecker::TYPE_CMD_LBA_VAL));
+}
+
+TEST(InputValidChecker, TestWriteCommandInvalidLBA) {
+    InputValidChecker checker;
+    EXPECT_FALSE(checker.check({ "write", "3", "FFFF" }, InputValidChecker::TYPE_CMD_LBA_VAL));
+}
+
+TEST(ReadCommand, ReadCommandTestExecuteInvalidInput) {
+    Receiver receiver;
+    ReadCommand readCommand(&receiver);
+    EXPECT_THROW(readCommand.execute({ "read", "100" }), invalid_argument);
+}
+
+TEST(ReadCommand, ReadCommandTestExecuteInvalidInputNum) {
+    Receiver receiver;
+    ReadCommand readCommand(&receiver);
+    EXPECT_THROW(readCommand.execute({ "read", "A" }), invalid_argument);
+}
+
+TEST(WriteCommand, WriteCommandTestExecuteInvalidInput) {
+    Receiver receiver;
+    WriteCommand writeCommand(&receiver);
+    EXPECT_THROW(writeCommand.execute({ "write", "3", "FFFF" }), invalid_argument);
+}
+
+TEST(EraseCommand, EraseCommandTestExecuteInvalidInput) {
+    Receiver receiver;
+    WriteCommand writeCommand(&receiver);
+    EXPECT_THROW(writeCommand.execute({ "erase", "3", "FFFF" }), invalid_argument);
+}
+
+TEST(EraseCommand, EraseCommandTestExecuteInvalidSize) {
+    Receiver receiver;
+    WriteCommand writeCommand(&receiver);
+    EXPECT_THROW(writeCommand.execute({ "erase", "3", "11" }), invalid_argument);
+}
+
+TEST(EraseCommand, EraseCommandTestExecute) {
+    Receiver receiver;
+    EraseCommand eraseCommand(&receiver);
+    eraseCommand.execute({ "erase", "3", "1" });
+    EXPECT_THAT(receiver.getResultCode(), 0);
+}
+
+TEST(EraseCommand, EraseRangeCommandTestExecuteInvalidInput) {
+    Receiver receiver;
+    WriteCommand writeCommand(&receiver);
+    EXPECT_THROW(writeCommand.execute({ "erase_range", "3", "0xFF" }), invalid_argument);
+}
+
+TEST(EraseCommand, EraseRangeCommandTestExecute) {
+    Receiver receiver;
+    EraseCommand eraseCommand(&receiver);
+    eraseCommand.execute({ "erase_range", "3", "5" });
+    EXPECT_THAT(receiver.getResultCode(), 0);
+}
+
+TEST(EraseCommand, EraseRangeCommandTestExecuteInvalidNum) {
+    Receiver receiver;
+    EraseCommand eraseCommand(&receiver);
+    EXPECT_THROW(eraseCommand.execute({ "erase_range", "3", "0xFF" }), invalid_argument);
+}
+
+TEST_F(TestShellApplicationFixture, ShellRunnerTest) {
+    ShellRunner runner(&app);
+    string expected = "FullWriteReadCompare --- Run...PASS\nFullRead10AndCompare --- Run...PASS\nWrite10AndCompare --- Run...FAIL\nLoop_WriteAndReadCompare --- Run...FAIL\nUnknown --- Run...FAIL\n";
+
+    string osCmd = "echo FullWriteReadCompare> .\\run_list.lst";
+    system(osCmd.c_str());
+
+    osCmd = "echo FullRead10AndCompare>> .\\run_list.lst";
+    system(osCmd.c_str());
+
+    osCmd = "echo Write10AndCompare>> .\\run_list.lst";
+    system(osCmd.c_str());
+
+    osCmd = "echo Loop_WriteAndReadCompare>> .\\run_list.lst";
+    system(osCmd.c_str());
+
+    osCmd = "echo Unknown>> .\\run_list.lst";
+    system(osCmd.c_str());
+
+    runner.run(".\\run_list.lst");
+
+    EXPECT_THAT(expected, StrEq(strCout.str()));
 }

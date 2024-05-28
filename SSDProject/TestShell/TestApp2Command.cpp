@@ -5,9 +5,12 @@ using namespace std;
 
 class TestApp2Command : public Command {
 public:
+	TestApp2Command(Receiver* receiver) : Command(receiver) {}
+
 	// Command을(를) 통해 상속됨
-	void execute(vector<string> v) const override
+	void execute(vector<string> v) override
 	{
+		int ret = 0;
 		// full write
 		for (int i = 0; i < 5; i++) {
 			string argument = "W";
@@ -42,11 +45,17 @@ public:
 			ifs.open(ssdResult);
 			result = string((std::istreambuf_iterator<char>(ifs)),
 				std::istreambuf_iterator<char>());
+
+			if ("0x12345678" != result)
+				ret++;
+
 			cout << result << endl;
 			ifs.close();
 		}
+
+		receiver->setResultCode(ret);
 	}
 
 private:
-	const std::string ssdResult = "..\\x64\\Debug\\result.txt";
+	const std::string ssdResult = ".\\result.txt";
 };

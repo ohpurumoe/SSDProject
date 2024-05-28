@@ -1,19 +1,19 @@
 ﻿#include "Command.h"
 #include <stdexcept>
-#include <fstream>
+
 
 using namespace std;
 
 class ReadCommand : public Command {
 public:
 	ReadCommand(Receiver* receiver) : Command(receiver) {}
-	void execute(std::vector<std::string> v) const override {
-		if (v.size() < 2) {
-			throw invalid_argument("Need two argument for read command");
-		}
-
+	void execute(std::vector<std::string> v) override {
 		if (receiver == nullptr) {
 			throw invalid_argument("Need valid read receiver");
+		}
+
+		if (!checker.check(v, InputValidChecker::TYPE_CMD_LBA)) {
+			throw invalid_argument("Need valid argument");
 		}
 
 		string rdCmd;
@@ -34,7 +34,7 @@ public:
 	}
 private:
 	const string cmd = "R";
-	const std::string ssdResult = "..\\x64\\Debug\\result.txt";
+	const std::string ssdResult = ".\\result.txt";
 
 	string getReadResult() const {
 		ifstream ifs;
@@ -42,7 +42,6 @@ private:
 		ifs.open(ssdResult);
 		string result = string((std::istreambuf_iterator<char>(ifs)),
 			std::istreambuf_iterator<char>());
-		cout << result << endl;
 		ifs.close();
 
 		return result;
