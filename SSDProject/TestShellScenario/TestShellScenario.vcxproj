@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{af1358c1-64c4-458c-84b9-71ed2b7fafc6}</ProjectGuid>
-    <RootNamespace>TestShell</RootNamespace>
+    <ProjectGuid>{39e19f53-4ebc-47ed-ad21-504c6d529b6e}</ProjectGuid>
+    <RootNamespace>TestShellScenario</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -40,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -102,7 +102,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;CREATEDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -127,21 +127,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="EraseCommand.cpp" />
-    <ClCompile Include="FlushCommand.cpp" />
-    <ClCompile Include="FullReadCommand.cpp" />
-    <ClCompile Include="FullWriteCommand.cpp" />
-    <ClCompile Include="HelpCommand.cpp" />
-    <ClCompile Include="Logger.cpp" />
-    <ClCompile Include="InputValidChecker.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="ReadCommand.cpp" />
-    <ClCompile Include="ShellRunner.cpp" />
-    <ClCompile Include="TestShellApplication.cpp" />
-    <ClCompile Include="WriteCommand.cpp" />
+    <ClCompile Include="TestApp1Command.cpp" />
+    <ClCompile Include="TestApp2Command.cpp" />
+    <ClCompile Include="TestShellScenario.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Command.h" />
+    <ClInclude Include="TestShellScenario.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
