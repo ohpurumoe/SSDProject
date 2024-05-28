@@ -30,8 +30,10 @@ public:
 	bool execute(string input) {
 		try {
 			vector<string> v = trim(input);
+			if (v.size() == 0)
+				return true;
 
-			if (v.front() == "exit" || v.size() == 0)
+			if (v.front() == "exit")
 				return false;
 
 			Command* cmd = createCommandInstance(v.front());
@@ -40,12 +42,10 @@ public:
 				executeCommand(cmd, v);
 			else {
 				logger.print("INVALID COMMAND, TRY AGAIN");	
-				return false;
 			}
 		}
 		catch (std::exception e) {
 			cout << e.what() << endl;
-			throw e;
 		}
 
 		return true;
