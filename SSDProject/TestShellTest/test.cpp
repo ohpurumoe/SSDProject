@@ -75,7 +75,6 @@ TEST_F(TestShellApplicationFixture, TestApp1CommandTest) {
     app.execute(str);
 
     EXPECT_THAT(expected, StrEq(strCout.str()));
-
 }
 
 TEST_F(TestShellApplicationFixture, TestApp1InvalidCommandTest) {
@@ -101,13 +100,6 @@ TEST_F(TestShellApplicationFixture, TestApp2CommandTest) {
     EXPECT_THAT(expected, StrEq(strCout.str()));
 }
 
- //ReadCommand
-TEST_F(TestShellApplicationFixture, ReadCommandCommandTest) {
-    ReadCommand readCommand(&mockReceiver);
-    std::vector<std::string> args = { "R","3" };
-    readCommand.execute(args);
-}
-
 TEST_F(TestShellApplicationFixture, ReadCommandTestExecuteInvalidArgument) {
     ReadCommand readCommand(&mockReceiver);
     EXPECT_THROW(readCommand.execute({}), invalid_argument);
@@ -115,25 +107,37 @@ TEST_F(TestShellApplicationFixture, ReadCommandTestExecuteInvalidArgument) {
 
 TEST_F(TestShellApplicationFixture, ReadCommandTestExecuteNoReceiver) {
     ReadCommand cmd(nullptr);
-    vector<string> args = { "r", "3" };
+    vector<string> args = { "read", "3" };
     EXPECT_THROW(cmd.execute(args), invalid_argument);
 }
 
-TEST_F(TestShellApplicationFixture, ReadCommandTestExecute) {
+TEST_F(TestShellApplicationFixture, ReadCommandCommandTest) {
     ReadCommand readCommand(&mockReceiver);
+
+    EXPECT_CALL(mockReceiver, read(_))
+        .Times(1);
 
     EXPECT_CALL(mockReceiver, getResultCode())
         .Times(1)
         .WillOnce(Return(0));
 
-    readCommand.execute({"R", "3"});
+    readCommand.execute({"read", "3"});
     EXPECT_EQ(0, mockReceiver.getResultCode());
 }
 
 // WriteCommand
 TEST_F(TestShellApplicationFixture, WriteCommandCommandTest) {
     WriteCommand writeCommand(&mockReceiver);
-    writeCommand.execute({ "W", "3", "0x5A5A5A5A" });
+
+    EXPECT_CALL(mockReceiver, write(_))
+        .Times(1);
+
+    EXPECT_CALL(mockReceiver, getResultCode())
+        .Times(1)
+        .WillOnce(Return(0));
+
+    writeCommand.execute({ "write", "3", "0x5A5A5A5A" });
+    EXPECT_THAT(mockReceiver.getResultCode(), 0);
 }
 
 TEST_F(TestShellApplicationFixture, WriteCommandTestExecuteInvalidArgument) {
@@ -148,9 +152,8 @@ TEST_F(TestShellApplicationFixture, WriteCommandTestExecute) {
         .Times(1)
         .WillOnce(Return(0));
         
-    writeCommand.execute({ "W", "3", "0xFFF" });
-    EXPECT_EQ(0, mockReceiver.getResultCode());
-
+    writeCommand.execute({ "write", "3", "0xFFFFFFFF" });
+    EXPECT_THAT(mockReceiver.getResultCode(), 0);
 }
 
 // HelpCommand
@@ -161,21 +164,21 @@ TEST_F(TestShellApplicationFixture, HelpTestExecuteNoReceiver) {
 }
 
 TEST_F(TestShellApplicationFixture, HelpTestExecuteInvalidArgumentNo) {
-    HelpCommand helpCommand(&mockReceiver);
+    HelpCommand helpCommand(&receiver);
     vector<string> args = { "help", "3",  };
 
     EXPECT_THROW(helpCommand.execute(args), invalid_argument);
 }
 
 TEST_F(TestShellApplicationFixture, HelpTestExecuteInvalidArgumentOver) {
-    HelpCommand helpCommand(&mockReceiver);
+    HelpCommand helpCommand(&receiver);
     vector<string> args = { "help", "full", "3"};
 
     EXPECT_THROW(helpCommand.execute(args), invalid_argument);
 }
 
 TEST_F(TestShellApplicationFixture, HelpTestExecutePrintAll) {
-    HelpCommand helpCommand(&mockReceiver);
+    HelpCommand helpCommand(&receiver);
     vector<string> args = { "help"};
 
     helpCommand.execute(args);
@@ -187,7 +190,7 @@ TEST_F(TestShellApplicationFixture, HelpTestExecutePrintAll) {
 }
 
 TEST_F(TestShellApplicationFixture, HelpTestExecutePrintOnlyONe) {
-    HelpCommand helpCommand(&mockReceiver);
+    HelpCommand helpCommand(&receiver);
     vector<string> args = { "help", "write"};
 
     helpCommand.execute(args);
@@ -242,59 +245,67 @@ TEST(InputValidChecker, TestWriteCommandInvalidLBA) {
     EXPECT_FALSE(checker.check({ "write", "3", "FFFF" }, InputValidChecker::TYPE_CMD_LBA_VAL));
 }
 
-TEST(ReadCommand, ReadCommandTestExecuteInvalidInput) {
-    Receiver receiver;
-    ReadCommand readCommand(&receiver);
+TEST_F(TestShellApplicationFixture, ReadCommandTestExecuteInvalidInput) {
+    ReadCommand readCommand(&mockReceiver);
     EXPECT_THROW(readCommand.execute({ "read", "100" }), invalid_argument);
 }
 
-TEST(ReadCommand, ReadCommandTestExecuteInvalidInputNum) {
-    Receiver receiver;
-    ReadCommand readCommand(&receiver);
+TEST_F(TestShellApplicationFixture, ReadCommandTestExecuteInvalidInputNum) {
+    ReadCommand readCommand(&mockReceiver);
     EXPECT_THROW(readCommand.execute({ "read", "A" }), invalid_argument);
 }
 
-TEST(WriteCommand, WriteCommandTestExecuteInvalidInput) {
-    Receiver receiver;
-    WriteCommand writeCommand(&receiver);
+TEST_F(TestShellApplicationFixture, WriteCommandTestExecuteInvalidInput) {
+    WriteCommand writeCommand(&mockReceiver);
     EXPECT_THROW(writeCommand.execute({ "write", "3", "FFFF" }), invalid_argument);
 }
 
-TEST(EraseCommand, EraseCommandTestExecuteInvalidInput) {
-    Receiver receiver;
-    WriteCommand writeCommand(&receiver);
+TEST_F(TestShellApplicationFixture, EraseCommandTestExecuteInvalidInput) {
+    WriteCommand writeCommand(&mockReceiver);
     EXPECT_THROW(writeCommand.execute({ "erase", "3", "FFFF" }), invalid_argument);
 }
 
-TEST(EraseCommand, EraseCommandTestExecuteInvalidSize) {
-    Receiver receiver;
-    WriteCommand writeCommand(&receiver);
+TEST_F(TestShellApplicationFixture, EraseCommandTestExecuteInvalidSize) {
+    WriteCommand writeCommand(&mockReceiver);
     EXPECT_THROW(writeCommand.execute({ "erase", "3", "11" }), invalid_argument);
 }
 
-TEST(EraseCommand, EraseCommandTestExecute) {
-    Receiver receiver;
-    EraseCommand eraseCommand(&receiver);
+TEST_F(TestShellApplicationFixture, EraseCommandTestExecute) {
+    EraseCommand eraseCommand(&mockReceiver);
+
+    EXPECT_CALL(mockReceiver, erase(_))
+        .Times(1);
+
+    EXPECT_CALL(mockReceiver, getResultCode())
+        .Times(1)
+        .WillOnce(Return(0));
+
     eraseCommand.execute({ "erase", "3", "1" });
-    EXPECT_THAT(receiver.getResultCode(), 0);
+    EXPECT_THAT(mockReceiver.getResultCode(), 0);
 }
 
-TEST(EraseCommand, EraseRangeCommandTestExecuteInvalidInput) {
-    Receiver receiver;
-    WriteCommand writeCommand(&receiver);
+TEST_F(TestShellApplicationFixture, EraseRangeCommandTestExecuteInvalidInput) {
+    WriteCommand writeCommand(&mockReceiver);
     EXPECT_THROW(writeCommand.execute({ "erase_range", "3", "0xFF" }), invalid_argument);
 }
 
-TEST(EraseCommand, EraseRangeCommandTestExecute) {
-    Receiver receiver;
-    EraseCommand eraseCommand(&receiver);
+TEST_F(TestShellApplicationFixture, EraseRangeCommandTestExecute) {
+    EraseCommand eraseCommand(&mockReceiver);
+
+    EXPECT_CALL(mockReceiver, erase(_))
+        .Times(1);
+
+    EXPECT_CALL(mockReceiver, getResultCode())
+        .Times(1)
+        .WillOnce(Return(0));
+
     eraseCommand.execute({ "erase_range", "3", "5" });
-    EXPECT_THAT(receiver.getResultCode(), 0);
+    EXPECT_THAT(mockReceiver.getResultCode(), 0);
 }
 
-TEST(EraseCommand, EraseRangeCommandTestExecuteInvalidNum) {
+TEST_F(TestShellApplicationFixture, EraseRangeCommandTestExecuteInvalidNum) {
     Receiver receiver;
-    EraseCommand eraseCommand(&receiver);
+    EraseCommand eraseCommand(&mockReceiver);
     EXPECT_THROW(eraseCommand.execute({ "erase_range", "3", "0xFF" }), invalid_argument);
 }
 

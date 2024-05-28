@@ -5,16 +5,27 @@
 using namespace testing;
 using namespace std;
 
+class MockReceiver : public IReceiver {
+public:
+	MOCK_METHOD(void, write, (int), (override));
+	MOCK_METHOD(void, read, (int), (override));
+	MOCK_METHOD(void, erase, (int), (override));
+	MOCK_METHOD(void, fullwrite, (), (override));
+	MOCK_METHOD(void, fullread, (), (override));
+	MOCK_METHOD(int, getResultCode, (), (override));
+	MOCK_METHOD(void, setResultCode, (int), (override));
+	MOCK_METHOD(void, mock, (), ());
+};
+
 // Mock Receiver class
 class MockCommand : public Command {
 public:
-	MockCommand(Receiver* receiver) : receiver_(receiver) {}
+	MockCommand(MockReceiver* receiver) : receiver_(receiver) {}
 	void execute(vector<string> v) override {
 		if (receiver_ == nullptr) {
 			cout << "receiver_ is nullptr" << endl;
 			return;
 		}
-
 		receiver_->mock();
 		// TODO : something
 		return;
@@ -24,16 +35,6 @@ public:
 	MOCK_METHOD(void, write, (int lba, string data), ());
 
 private:
-	Receiver* receiver_;
+	MockReceiver* receiver_;
 };
 
-class MockReceiver : public Receiver {
-public:
-	MOCK_METHOD(void, write, (), (const));
-	MOCK_METHOD(void, read, (), (const));
-	MOCK_METHOD(void, exit, (), (const));
-	MOCK_METHOD(void, help, (), (const));
-	MOCK_METHOD(void, fullwrite, (), (const));
-	MOCK_METHOD(void, fullread, (), (const));
-	MOCK_METHOD(int, getResultCode, (), (const));
-};
