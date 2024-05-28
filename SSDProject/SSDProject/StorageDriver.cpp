@@ -50,6 +50,9 @@ public:
 			mapbuffer.pop();
 		}
 	}
+	string optimizeCommandBuffer() {
+		return "";
+	}
 private:
 	IStorage* ssd;
 	Buffer* commandBuffer;
