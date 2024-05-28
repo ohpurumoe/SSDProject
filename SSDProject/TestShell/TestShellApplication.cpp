@@ -94,6 +94,9 @@ private:
 		else if (cmd == "erase" || cmd == "erase_range") {
 			return new EraseCommand(&receiver);
 		}
+		else if (cmd == "flush") {
+			return new FlushCommand(&receiver);
+		}
 		return nullptr;
 	}
 
