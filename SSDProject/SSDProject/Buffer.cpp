@@ -4,7 +4,7 @@ void Buffer::read(int lba)
 {
 	fillBuffer();
 
-	string readData = "0x00000000";
+	string readData = "0000000000";
 	_Buffer tempBuffer;
 	while (!qBuffer.empty()) {
 		tempBuffer = qBuffer.front();

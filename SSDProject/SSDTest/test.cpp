@@ -305,7 +305,7 @@ TEST_F(SSDTestFixture, BufferFlush) {
 	buf.write(5, "0xAB2DE35B");
 	buf.flush();
 	buf.read(5);
-	string  expected = "0x00000000";
+	string  expected = "0000000000";
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
