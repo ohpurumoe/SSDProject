@@ -159,7 +159,7 @@ public:
 		if (this->logLevel == LOGGER_LEVEL_DEBUGGING) {
 			if (addNewline)
 				cout << message << endl;
-			else\
+			else
 				cout << message;
 		}
 
