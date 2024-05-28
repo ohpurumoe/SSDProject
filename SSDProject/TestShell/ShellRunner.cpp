@@ -1,4 +1,5 @@
-﻿#include "TestShellApplication.cpp"
+﻿#include "Logger.cpp"
+#include "TestShellApplication.cpp"
 #include <fstream>
 
 class ShellRunner {

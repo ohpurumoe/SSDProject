@@ -1,5 +1,6 @@
 ﻿#include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include "../TestShell/Logger.cpp"
 #include "../TestShell/ShellRunner.cpp"
 #include "../TestShell/InputValidChecker.cpp"
 #include <fstream>
@@ -99,12 +100,6 @@ TEST_F(TestShellApplicationFixture, TestApp2CommandTest) {
     EXPECT_THAT(expected, StrEq(strCout.str()));
 }
 
-// ReadCommand
-TEST_F(TestShellApplicationFixture, ReadCommandCommandTest) {
-    ReadCommand readCommand(&mockReceiver);
-    readCommand.execute({ "read", "3" });
-}
-
 TEST_F(TestShellApplicationFixture, ReadCommandTestExecuteInvalidArgument) {
     ReadCommand readCommand(&mockReceiver);
     EXPECT_THROW(readCommand.execute({}), invalid_argument);
@@ -116,7 +111,7 @@ TEST_F(TestShellApplicationFixture, ReadCommandTestExecuteNoReceiver) {
     EXPECT_THROW(cmd.execute(args), invalid_argument);
 }
 
-TEST_F(TestShellApplicationFixture, ReadCommandTestExecute) {
+TEST_F(TestShellApplicationFixture, ReadCommandCommandTest) {
     ReadCommand readCommand(&mockReceiver);
 
     EXPECT_CALL(mockReceiver, read(_))
@@ -318,7 +313,22 @@ TEST_F(TestShellApplicationFixture, ShellRunnerTest) {
     ShellRunner runner(&app);
     string expected = "FullWriteReadCompare --- Run...PASS\nFullRead10AndCompare --- Run...PASS\nWrite10AndCompare --- Run...FAIL\nLoop_WriteAndReadCompare --- Run...FAIL\nUnknown --- Run...FAIL\n";
 
-    runner.run("..\\x64\\Debug\\run_list.lst");
+    string osCmd = "echo FullWriteReadCompare> .\\run_list.lst";
+    system(osCmd.c_str());
+
+    osCmd = "echo FullRead10AndCompare>> .\\run_list.lst";
+    system(osCmd.c_str());
+
+    osCmd = "echo Write10AndCompare>> .\\run_list.lst";
+    system(osCmd.c_str());
+
+    osCmd = "echo Loop_WriteAndReadCompare>> .\\run_list.lst";
+    system(osCmd.c_str());
+
+    osCmd = "echo Unknown>> .\\run_list.lst";
+    system(osCmd.c_str());
+
+    runner.run(".\\run_list.lst");
 
     EXPECT_THAT(expected, StrEq(strCout.str()));
 }
