@@ -32,15 +32,18 @@ public:
 		if (argv1 == "W") {
 			return { new WriteCommand(m_driver), args };
 		}
-		return { new EraseCommand(m_driver), args };
+		if (argv1 == "E") {
+			return { new EraseCommand(m_driver), args };
+		}
+		return { new FlushCommand(m_driver), args };
 	}
 private:
 	StorageDriver* m_driver;
 };
 
 void checkCmdValidity(int argc, const std::string& argv0, const std::string& argv1) {
-	if (argv1 != "R" && argv1 != "W" && argv1 != "E") {
-		throw std::runtime_error("First argument must be \"R\" or \"W\". Please check usage of ssd.");
+	if (argv1 != "R" && argv1 != "W" && argv1 != "E" && argv1 != "F") {
+		throw std::runtime_error("First argument must be \"R\" or \"W\" or \"E\" or \"F\". Please check usage of ssd.");
 	}
 	if (argv1 == "R" && argc != 3) {
 		throw std::runtime_error("Wrong usage of ssd Read. Please check usage of ssd.");
@@ -50,5 +53,8 @@ void checkCmdValidity(int argc, const std::string& argv0, const std::string& arg
 	}
 	if (argv1 == "E" && argc != 4) {
 		throw std::runtime_error("Wrong usage of ssd Erase. Please check usage of ssd.");
+	}
+	if (argv1 == "F" && argc != 2) {
+		throw std::runtime_error("Wrong usage of ssd Flush. Please check usage of ssd.");
 	}
 }
