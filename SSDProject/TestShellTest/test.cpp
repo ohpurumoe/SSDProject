@@ -79,7 +79,7 @@ TEST_F(TestShellApplicationFixture, TestApp1CommandTest) {
 
 TEST_F(TestShellApplicationFixture, TestApp1InvalidCommandTest) {
     string str = "error";
-    string expected = "invalid command, try again\n";
+    string expected = "INVALID COMMAND, TRY AGAIN\n";
 
     app.execute(str);
 

@@ -28,24 +28,20 @@ public:
 	}
 
 	bool execute(string input) {
-		try {
-			vector<string> v = trim(input);
-			if (v.size() == 0)
-				return true;
+		vector<string> v = trim(input);
+		if (v.size() == 0)
+			return true;
 
-			if (v.front() == "exit")
-				return false;
+		if (v.front() == "exit")
+			return false;
 
-			Command* cmd = createCommandInstance(v.front());
+		Command* cmd = createCommandInstance(v.front());
 
-			if (cmd != nullptr)
-				executeCommand(cmd, v);
-			else {
-				logger.print("INVALID COMMAND, TRY AGAIN");	
-			}
-		}
-		catch (std::exception e) {
-			logger.print(e.what());
+		if (cmd != nullptr)
+			executeCommand(cmd, v);
+		else {
+			logger.print("INVALID COMMAND, TRY AGAIN");	
+			receiver.setResultCode(1);
 		}
 
 		return true;
