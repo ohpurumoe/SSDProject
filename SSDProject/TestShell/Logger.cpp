@@ -1,5 +1,13 @@
 ﻿#pragma once
 
+#include <iostream>
+#include <fstream>
+#include <chrono>
+#include <sstream>
+#include <iomanip>
+#include <vector>
+#include <windows.h>
+
 #define MAKESINGLE(classname)									\
 public:															\
 	static classname& getInstance() {							\
@@ -13,12 +21,6 @@ private:														\
 	classname(const classname& other) = delete;					\
 
 #define print(msg) printLog(__FUNCTION__, msg)
-
-#include <iostream>
-#include <fstream>
-#include <chrono>
-#include <sstream>
-#include <iomanip>
 
 using namespace std;
 
@@ -37,8 +39,8 @@ public:
 	int getFileSize(const string& filename) {
 		ifstream file(filename, ios::binary | ios::ate);
 		if (!file) {
-			cerr << "Error: Cannot open file " << filename << endl;
-			return -1;
+			// cerr << "Error: Cannot open file " << filename << endl;
+			return RETURN_FAIL;
 		}
 
 		return static_cast<int>(file.tellg());
@@ -56,35 +58,64 @@ public:
 		return dateTimeStream.str();
 	}
 
-	void saveUntilLog() {
-
+	int saveUntilLog() {
 		string strDatesInfo = getDateFromtString();
 		string oldFileName = LOG_FILE_NAME_LATEST;
 		string newFileName = "until_" + strDatesInfo + ".log";
 
-		if (!rename(oldFileName.c_str(), newFileName.c_str())) {
-			cerr << "Error: Fail to re name" << endl;
+		if (rename(oldFileName.c_str(), newFileName.c_str())) {
+			// cerr << "Error: Fail to re name" << endl;
+			return RETURN_FAIL;
 		}
+		return RETURN_SUCCESS;
 	}
 
-	void modifyLogToZip() {
-		// TODO : log to zip
+	int modifyLogToZip() {
+		string untilLog = "until_*.log";
+
+		vector<string> logFiles;
+		WIN32_FIND_DATAA  findFileData;
+		HANDLE hFind = FindFirstFileA(untilLog.c_str(), &findFileData);
+
+		if (hFind == INVALID_HANDLE_VALUE) return RETURN_FAIL;
+
+		do {
+			if (!(findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
+				std::string filename = findFileData.cFileName;
+				logFiles.push_back(filename);
+			}
+		} while (FindNextFileA(hFind, &findFileData) != 0);
+
+		FindClose(hFind);
+
+		if (logFiles.size() < MAX_LOG_TO_ZIP) return RETURN_SUCCESS;
+
+		for (int i = 0; i < logFiles.size() - MAX_LOG_TO_ZIP + 1; ++i) {
+			string oldFileName = logFiles[i];
+			string compressedLogFile = oldFileName;
+			compressedLogFile.replace(compressedLogFile.find(".log"), 4, ".zip");
+			rename(oldFileName.c_str(), compressedLogFile.c_str());
+		}
+
+		return RETURN_SUCCESS;
 	}
 
-	void checkLogFileSize(size_t logSize) {
+	int checkLogFileSize(size_t logSize) {
 		int logFileSize = getFileSize(LOG_FILE_NAME_LATEST);
+		int ret = RETURN_SUCCESS;
 
-		if (logFileSize == -1) return;
+		if (logFileSize == RETURN_FAIL) return ret;
 		if (logFileSize + logSize >= MAX_LOG_SIZE) {
-			saveUntilLog();
-			modifyLogToZip();
+			ret += saveUntilLog();
+			ret += modifyLogToZip();
 		}
+		return ret;
 	}
 
-	bool openLogFile(fstream& logFstream, const string& filename) {
+	int openLogFile(fstream& logFstream, const string& filename) {
 		logFstream.open(filename, ios::out | ios::app);
-		if (!logFstream.is_open()) return false;
-		return true;
+		if (!logFstream.is_open()) return RETURN_FAIL;
+		return RETURN_SUCCESS;
 	}
 
 	void closeLogFile() {
@@ -92,9 +123,10 @@ public:
 	}
 
 	void saveLog(string log) {
-		if (!openLogFile(logFstream, LOG_FILE_NAME_LATEST)) return;
-
 		checkLogFileSize(log.size());
+
+		if (openLogFile(logFstream, LOG_FILE_NAME_LATEST) == RETURN_FAIL) return;
+
 		logFstream << log << endl;
 		closeLogFile();
 	}
@@ -117,11 +149,11 @@ public:
 	}
 
 	void printLog(string funcName, string message) {
+		if (this->logLevel == LOGGER_LEVEL_DEBUGGING)
+			cout << message << endl;
+
 		string logString;
 		formatLog(logString, funcName, message);
-
-		if (this->logLevel == LOGGER_LEVEL_DEBUGGING)
-			cout << logString << endl;
 
 		saveLog(logString);
 	}
@@ -129,10 +161,13 @@ public:
 private:
 	static constexpr char LOG_FILE_NAME_LATEST[11] = "latest.log";
 	static constexpr int MAX_LOG_SIZE = 1024 * 10; // 10KB
+	static constexpr int MAX_LOG_TO_ZIP = 2;
+
+	static constexpr int RETURN_SUCCESS = 0;
+	static constexpr int RETURN_FAIL = -1;
+
 
 	LoggerLevel logLevel = LOGGER_LEVEL_DEBUGGING;
 	fstream logFstream;
 	streampos logFileSize;
 };
-
-
