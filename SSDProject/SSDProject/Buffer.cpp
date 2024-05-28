@@ -4,29 +4,7 @@
 void Buffer::read(int lba)
 {
 	fillBuffer();
-
-	string readData = "0000000000";
-	BufferCached = false;
-	_Buffer tempBuffer;
-	while (!qBuffer.empty()) {
-		tempBuffer = qBuffer.front();
-		if (tempBuffer.op == 'W' && tempBuffer.addr == lba) {
-			readData = tempBuffer.data;
-			BufferCached = true;
-		}
-		else if (tempBuffer.op == 'E') {
-			int low = tempBuffer.addr;
-			int high = tempBuffer.addr + tempBuffer.size;
-
-			if (low <= lba && lba < high) {
-				readData = "0x00000000";
-				BufferCached = true;
-			}
-		}
-		qBuffer.pop();
-	}
-
-	storeReadData(readData);
+	storeReadData(_read(lba));
 }
 
 void Buffer::write(int lba, std::string data)
@@ -126,6 +104,33 @@ void Buffer::storeReadData(const string data) {
 	fResultOut.open(filenameResult);
 	fResultOut << data;
 	fResultOut.close();
+}
+
+string Buffer::_read(int lba)
+{
+	string readData = "0000000000";
+
+	BufferCached = false;
+	_Buffer tempBuffer;
+	while (!qBuffer.empty()) {
+		tempBuffer = qBuffer.front();
+		if (tempBuffer.op == 'W' && tempBuffer.addr == lba) {
+			readData = tempBuffer.data;
+			BufferCached = true;
+		}
+		else if (tempBuffer.op == 'E') {
+			int low = tempBuffer.addr;
+			int high = tempBuffer.addr + tempBuffer.size;
+
+			if (low <= lba && lba < high) {
+				readData = "0x00000000";
+				BufferCached = true;
+			}
+		}
+		qBuffer.pop();
+	}
+
+	return readData;
 }
 
 bool Buffer::BufferHit() {
