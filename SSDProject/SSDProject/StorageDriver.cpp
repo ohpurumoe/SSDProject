@@ -81,6 +81,39 @@ public:
 
 		return ret;
 	}
+	string optimizeCommandBuffer_3() {
+		mapbuffer = commandBuffer->flush();
+		vector<_Buffer> temp;
+
+		while (!mapbuffer.empty()) {
+			temp.push_back(mapbuffer.front());
+			mapbuffer.pop();
+		}
+
+		for (int i = 0; i < temp.size() - 1; ++i) {
+			if (temp[i].op == 'E' && temp[i + 1].op == 'E' &&
+				temp[i].addr + temp[i].size == temp[i + 1].addr &&
+				temp[i].size <= 10 && temp[i + 1].size <= 10) {
+				// 두 개의 Erase 명령어를 합침
+				temp[i].size += temp[i + 1].size;
+				temp.erase(temp.begin() + i + 1);
+			}
+		}
+
+		string ret;
+		for (int i = 0; i < temp.size(); i++) {
+			if (temp[i].op == 'W') {
+				commandBuffer->write(temp[i].addr, temp[i].data);
+				ret += "W " + to_string(temp[i].addr) + " " + temp[i].data + "\n";
+			}
+			if (temp[i].op == 'E') {
+				commandBuffer->erase(temp[i].addr, temp[i].size);
+				ret += "E " + to_string(temp[i].addr) + " " + to_string(temp[i].size) + "\n";
+			}
+		}
+
+		return ret;
+	}
 private:
 	IStorage* ssd;
 	Buffer* commandBuffer;

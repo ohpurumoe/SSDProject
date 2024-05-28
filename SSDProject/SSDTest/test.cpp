@@ -503,7 +503,7 @@ TEST_F(commandTestFixture, StorageCommandBufferOptimize3) {
 	driver->erase(12, 3);
 
 	string expected = "W 20 0xABCDABCD\nE 10 5\n";
-	EXPECT_THAT(driver->optimizeCommandBuffer(), testing::StrEq(expected));
+	EXPECT_THAT(driver->optimizeCommandBuffer_3(), testing::StrEq(expected));
 }
 
 TEST_F(commandTestFixture, StorageCommandBufferOptimize4) {
