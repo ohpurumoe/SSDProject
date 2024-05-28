@@ -234,7 +234,7 @@ TEST(InputValidChecker, TestReadCommandInvalidLBA) {
 
 TEST(InputValidChecker, TestWriteCommand) {
     InputValidChecker checker;
-    EXPECT_TRUE(checker.check({ "write", "3", "0xFFFF" }, InputValidChecker::TYPE_CMD_LBA_VAL));
+    EXPECT_TRUE(checker.check({ "write", "3", "0xAAAABBBB" }, InputValidChecker::TYPE_CMD_LBA_VAL));
 }
 
 TEST(InputValidChecker, TestWriteCommandInvalidLBA) {
@@ -290,6 +290,12 @@ TEST(EraseCommand, EraseRangeCommandTestExecute) {
     EraseCommand eraseCommand(&receiver);
     eraseCommand.execute({ "erase_range", "3", "5" });
     EXPECT_THAT(receiver.getResultCode(), 0);
+}
+
+TEST(EraseCommand, EraseRangeCommandTestExecuteInvalidNum) {
+    Receiver receiver;
+    EraseCommand eraseCommand(&receiver);
+    EXPECT_THROW(eraseCommand.execute({ "erase_range", "3", "0xFF" }), invalid_argument);
 }
 
 TEST_F(TestShellApplicationFixture, ShellRunnerTest) {

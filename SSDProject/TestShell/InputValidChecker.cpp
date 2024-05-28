@@ -47,6 +47,10 @@ private:
 	bool isValidLBA(const string lba) {
 		int num = -1;
 
+		if (!isDigitValue(lba)) {
+			return false;
+		}
+
 		try {
 			num = stoi(lba);
 		}
@@ -63,6 +67,10 @@ private:
 			return false;
 		}
 
+		if (value.size() != 10) {
+			return false;
+		}
+
 		string hexValue = value.substr(2);
 		for (char c : hexValue) {
 			if (!((c >= 'A' && c <= 'F') || (c >= '0' && c <= '9'))) {
@@ -76,6 +84,10 @@ private:
 	bool isValidSize(const string size) {
 		int num = -1;
 
+		if (isDigitValue(size)) {
+			return false;
+		}
+
 		try {
 			num = stoi(size);
 		}
@@ -84,5 +96,14 @@ private:
 		}
 
 		return (num >= 0 && num <= 10);
+	}
+
+	bool isDigitValue(const string value) {
+		for (int i = 0; i < value.length(); i++) {
+			if (!isdigit(value[i])) {
+				return false;
+			}
+		}
+		return true;
 	}
 };

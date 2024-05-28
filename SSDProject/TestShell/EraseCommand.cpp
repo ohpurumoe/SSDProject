@@ -8,6 +8,7 @@ class EraseCommand : public Command {
 public:
 	EraseCommand(Receiver* receiver) : Command(receiver) {}
 	void execute(std::vector<std::string> v) override {
+
 		if (receiver == nullptr) {
 			throw invalid_argument("Need valid read receiver");
 		}
@@ -37,25 +38,13 @@ private:
 			throw invalid_argument("Need valid argument");
 		}
 
-		string eraseCmd;
-		string space = " ";
-
-		eraseCmd.append(cmd);
-		eraseCmd.append(space);
-		eraseCmd.append(v[1]);
-		eraseCmd.append(space);
-		eraseCmd.append(v[2]);
-
-		return eraseCmd;
+		return makeCommand(v[1], v[2]);
 	}
 
 	string getEraseRangeCommand(vector<std::string> v) {
 		if (!checker.check(v, InputValidChecker::TYPE_CMD_LBA_LBA)) {
 			throw invalid_argument("Need valid argument");
 		}
-
-		string eraseCmd;
-		string space = " ";
 
 		int start_lba = stoi(v[1]);
 		int end_lba = stoi(v[2]);
@@ -69,11 +58,18 @@ private:
 			throw invalid_argument("Need valid argument");
 		}
 
+		return makeCommand(v[1], to_string(size));
+	}
+
+	string makeCommand(string lba, string size) {
+		string eraseCmd;
+		string space = " ";
+
 		eraseCmd.append(cmd);
 		eraseCmd.append(space);
-		eraseCmd.append(v[1]);
+		eraseCmd.append(lba);
 		eraseCmd.append(space);
-		eraseCmd.append(to_string(size));
+		eraseCmd.append(size);
 
 		return eraseCmd;
 	}
