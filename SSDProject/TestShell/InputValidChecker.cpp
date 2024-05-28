@@ -84,7 +84,7 @@ private:
 	bool isValidSize(const string size) {
 		int num = -1;
 
-		if (isDigitValue(size)) {
+		if (!isDigitValue(size)) {
 			return false;
 		}
 
