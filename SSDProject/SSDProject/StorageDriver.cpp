@@ -12,7 +12,8 @@ public:
 	}
 	void read(int lba)
 	{
-		if (commandBuffer->read(lba) == EMPTY) ssd->read(lba);
+		commandBuffer->read(lba);
+		if (!commandBuffer->BufferHit()) ssd->read(lba);
 	}
 	void write(int lba, std::string data)
 	{

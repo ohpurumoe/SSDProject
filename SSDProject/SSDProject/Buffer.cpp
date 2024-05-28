@@ -5,8 +5,8 @@ void Buffer::read(int lba)
 	fillBuffer();
 
 	string readData = "0000000000";
+	BufferCached = false;
 	_Buffer tempBuffer;
-	retBuffer.data = "0x00000000";
 	while (!qBuffer.empty()) {
 		tempBuffer = qBuffer.front();
 		if (tempBuffer.op == 'W' && tempBuffer.addr == lba) {
@@ -16,7 +16,10 @@ void Buffer::read(int lba)
 			int low = tempBuffer.addr;
 			int high = tempBuffer.addr + tempBuffer.size;
 
-			if (low <= lba && lba < high) readData = "0x00000000";
+			if (low <= lba && lba < high) {
+				readData = "0x00000000";
+				BufferCached = false;
+			}
 		}
 		qBuffer.pop();
 	}
@@ -108,4 +111,8 @@ void Buffer::storeReadData(const string data) {
 	fResultOut.open(filenameResult);
 	fResultOut << data;
 	fResultOut.close();
+}
+
+bool Buffer::BufferHit() {
+	return BufferCached;
 }
