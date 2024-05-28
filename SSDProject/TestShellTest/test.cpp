@@ -304,9 +304,22 @@ TEST_F(TestShellApplicationFixture, EraseRangeCommandTestExecute) {
 }
 
 TEST_F(TestShellApplicationFixture, EraseRangeCommandTestExecuteInvalidNum) {
-    Receiver receiver;
     EraseCommand eraseCommand(&mockReceiver);
     EXPECT_THROW(eraseCommand.execute({ "erase_range", "3", "0xFF" }), invalid_argument);
+}
+
+TEST_F(TestShellApplicationFixture, FlushCommandTestExecute) {
+    FlushCommand flushCommand(&mockReceiver);
+
+    EXPECT_CALL(mockReceiver, flush(_))
+        .Times(1);
+
+    EXPECT_CALL(mockReceiver, getResultCode())
+        .Times(1)
+        .WillOnce(Return(0));
+
+    flushCommand.execute({ "flush" });;
+    EXPECT_THAT(mockReceiver.getResultCode(), 0);
 }
 
 TEST_F(TestShellApplicationFixture, ShellRunnerTest) {

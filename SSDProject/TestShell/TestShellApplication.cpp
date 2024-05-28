@@ -13,6 +13,7 @@
 #include "ReadCommand.cpp"
 #include "WriteCommand.cpp"
 #include "EraseCommand.cpp"
+#include "FlushCommand.cpp"
 #include "Logger.cpp"
 
 using namespace std;
@@ -88,6 +89,9 @@ private:
 		}
 		else if (cmd == "erase" || cmd == "erase_range") {
 			return new EraseCommand(&receiver);
+		}
+		else if (cmd == "flush") {
+			return new FlushCommand(&receiver);
 		}
 		return nullptr;
 	}
