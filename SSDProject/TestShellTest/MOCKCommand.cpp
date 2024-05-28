@@ -10,6 +10,7 @@ public:
 	MOCK_METHOD(void, write, (int), (override));
 	MOCK_METHOD(void, read, (int), (override));
 	MOCK_METHOD(void, erase, (int), (override));
+	MOCK_METHOD(void, flush, (int), (override));
 	MOCK_METHOD(void, fullwrite, (), (override));
 	MOCK_METHOD(void, fullread, (), (override));
 	MOCK_METHOD(int, getResultCode, (), (override));

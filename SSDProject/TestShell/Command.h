@@ -13,6 +13,7 @@ public:
     virtual void write(int retCode) = 0;
     virtual void read(int retCode) = 0;
     virtual void erase(int retCode) = 0;
+    virtual void flush(int retCode) = 0;
 
     virtual void fullwrite() = 0;
     virtual void fullread() = 0;
@@ -35,6 +36,10 @@ public:
     }
 
     void erase(int retCode) override {
+        returnCode = retCode;
+    }
+
+    void flush(int retCode) override {
         returnCode = retCode;
     }
 
