@@ -50,6 +50,91 @@ public:
 			mapbuffer.pop();
 		}
 	}
+	string optimizeCommandBuffer() {
+		mapbuffer = commandBuffer->flush();
+		vector<_Buffer> Commands;
+
+		CopyBufferToVector(Commands);
+
+		OptimizeOverwrite(Commands);
+		OptimizeEraseAfterWrite(Commands);
+		OptimizeEraseTwice(Commands);
+
+		return ProcessOptimizedCommand(Commands);
+	}
+
+	string optimizeCommandBuffer5() {
+		std::vector<_Buffer> newMapbuffer;
+
+		mapbuffer = commandBuffer->flush();
+		while (!mapbuffer.empty()) {
+			_Buffer bufferdata = mapbuffer.front();
+
+			if (newMapbuffer.size() == 0) {
+				newMapbuffer.push_back(bufferdata);
+				mapbuffer.pop();
+				continue;
+			}
+
+			if (bufferdata.op == 'W') {
+				for (auto it = newMapbuffer.begin(); it != newMapbuffer.end(); ) {
+					if (it->op == 'E') {
+						int eStart = it->addr;
+						int eEnd = eStart + it->size;
+						int wStart = bufferdata.addr;
+						if (eStart <= bufferdata.addr && bufferdata.addr < eEnd) {
+							if (eStart == bufferdata.addr) {
+								_Buffer newbuf;
+								newbuf.op = it->op;
+								newbuf.addr = it->addr + 1;
+								newbuf.size = eEnd - newbuf.addr;
+								newMapbuffer.erase(it);
+								newMapbuffer.push_back(newbuf);
+								newMapbuffer.push_back(bufferdata);
+								break;
+							}
+						}
+					}
+				}
+			}
+			else if (bufferdata.op == 'E') {
+				for (auto it = newMapbuffer.begin(); it != newMapbuffer.end(); ) {
+					if (it->op == 'E') {
+						int start = bufferdata.addr;
+						int end = start + bufferdata.size;
+						int it_start = it->addr;
+						int it_end = it->addr + it->size;
+						if (it_start <= start && it_end <= end) {
+							newMapbuffer.erase(it);
+							_Buffer newbuf = bufferdata;
+							newbuf.addr = it_start;
+							newbuf.size = end - it_start;
+							newMapbuffer.push_back(newbuf);
+							break;
+						}
+					}
+				}
+			}
+			mapbuffer.pop();
+		}
+
+		string opstr;
+		string value = "";
+		for (auto it = newMapbuffer.begin(); it != newMapbuffer.end(); it++) {
+			opstr = it->op;
+			value.append(opstr);
+			value.append(" ");
+			value.append(to_string(it->addr));
+			value.append(" ");
+			if (it->op == 'E')
+				value.append(to_string(it->size));
+			else
+				value.append(it->data);
+			value.append("\n");
+		}
+		return value;
+	}
+
 private:
 	IStorage* ssd;
 	Buffer* commandBuffer;
@@ -77,5 +162,72 @@ private:
 		if (LBA < 0 || LBA > 99) {
 			throw StorageException("LBA는 0 ~ 99 사이의 값이어야 합니다. LBA : " + to_string(LBA));
 		}
+	}
+
+	void CopyBufferToVector(vector<_Buffer>& commands)
+	{
+		while (!mapbuffer.empty()) {
+			commands.push_back(mapbuffer.front());
+			mapbuffer.pop();
+		}
+	}
+
+	void OptimizeOverwrite(vector<_Buffer>& commands)
+	{
+		for (int i = 0; i < commands.size(); i++) {
+			for (int j = i + 1; j < commands.size(); j++) {
+				if (commands[i].op == 'W' && commands[j].op == 'W' && commands[i].addr == commands[j].addr) {
+					commands.erase(commands.begin() + i);
+				}
+			}
+		}
+	}
+
+	void OptimizeEraseAfterWrite(vector<_Buffer>& commands)
+	{
+		int low, high;
+		for (int i = 0; i < commands.size(); i++) {
+			if (commands[i].op != 'E') continue;
+
+			low = commands[i].addr;
+			high = commands[i].addr + commands[i].size;
+			for (int j = 0; j < i && j < commands.size(); j++) {
+				if (commands[j].op == 'W' && low <= commands[j].addr && commands[j].addr < high) {
+					commands.erase(commands.begin() + j);
+					j--;
+				}
+			}
+		}
+	}
+
+	void OptimizeEraseTwice(vector<_Buffer>& commands)
+	{
+		for (int i = 0; i < commands.size() - 1; ++i) {
+			if (commands[i].op == 'E' && commands[i + 1].op == 'E' &&
+				commands[i].addr + commands[i].size == commands[i + 1].addr &&
+				commands[i].size <= 10 && commands[i + 1].size <= 10) {
+				// 두 개의 Erase 명령어를 합침
+				commands[i].size += commands[i + 1].size;
+				commands.erase(commands.begin() + i + 1);
+			}
+		}
+	}
+
+	string ProcessOptimizedCommand(vector<_Buffer>& commands)
+	{
+		string ret;
+
+		for (int i = 0; i < commands.size(); i++) {
+			if (commands[i].op == 'W') {
+				commandBuffer->write(commands[i].addr, commands[i].data);
+				ret += "W " + to_string(commands[i].addr) + " " + commands[i].data + "\n";
+			}
+			else if (commands[i].op == 'E') {
+				commandBuffer->erase(commands[i].addr, commands[i].size);
+				ret += "E " + to_string(commands[i].addr) + " " + to_string(commands[i].size) + "\n";
+			}
+		}
+
+		return ret;
 	}
 };

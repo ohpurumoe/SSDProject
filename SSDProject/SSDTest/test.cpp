@@ -448,7 +448,7 @@ TEST_F(commandTestFixture, StorageEraseInvalidSize) {
 	EXPECT_THROW(driver->erase(12, 11), StorageException);
 }
 
-TEST_F(commandTestFixture, FlushTest1) {
+TEST_F(commandTestFixture, StorageFlushTest1) {
 	realDriver->write(1, "0xAAAAAAAA");
 	realDriver->write(2, "0xBBBBBBBB");
 	realDriver->write(3, "0xCCCCCCCC");
@@ -467,7 +467,7 @@ TEST_F(commandTestFixture, FlushTest1) {
 	EXPECT_THAT(readResultFile("result.txt"), testing::StrEq(expected));
 }
 
-TEST_F(commandTestFixture, FlushTest2) {
+TEST_F(commandTestFixture, StorageFlushTest2) {
 	realDriver->write(7, "0xBBBBBBBB");
 	realDriver->write(8, "0xCCCCCCCC");
 	realDriver->flush();
@@ -477,4 +477,58 @@ TEST_F(commandTestFixture, FlushTest2) {
 	realDriver->read(8);
 	expected = "0xCCCCCCCC";
 	EXPECT_THAT(readResultFile("result.txt"), testing::StrEq(expected));
+}
+
+TEST_F(commandTestFixture, StorageCommandBufferOptimize1) {
+	driver->write(20, "0xABCDABCD");
+	driver->write(21, "0x12341234");
+	driver->write(20, "0xEEEEFFFF");
+
+	string expected = "W 21 0x12341234\nW 20 0xEEEEFFFF\n";
+	EXPECT_THAT(driver->optimizeCommandBuffer(), testing::StrEq(expected));
+}
+
+TEST_F(commandTestFixture, StorageCommandBufferOptimize2) {
+	driver->write(20, "0xABCDABCD");
+	driver->write(21, "0x12341234");
+	driver->erase(18, 5);
+
+	string expected = "E 18 5\n";
+	EXPECT_THAT(driver->optimizeCommandBuffer(), testing::StrEq(expected));
+}
+
+TEST_F(commandTestFixture, StorageCommandBufferOptimize3) {
+	driver->write(20, "0xABCDABCD");
+	driver->erase(10, 2);
+	driver->erase(12, 3);
+
+	string expected = "W 20 0xABCDABCD\nE 10 5\n";
+	EXPECT_THAT(driver->optimizeCommandBuffer(), testing::StrEq(expected));
+}
+
+TEST_F(commandTestFixture, DISABLED_StorageCommandBufferOptimize4) {
+
+	driver->erase(10, 4);
+	driver->erase(40, 5);
+	driver->write(12, "0xABCD1234");
+	driver->write(12, "0xABCD1234");
+
+	string expected = "E 10 2\nE 40 5\nW 12 0xABCD1234\n13 0x4BCD5351\n";
+	EXPECT_THAT(driver->optimizeCommandBuffer(), testing::StrEq(expected));
+
+	driver->erase(50, 1);
+	driver->erase(40, 5);
+	driver->write(50, "0xABCD1234");
+
+	expected = "E 40 5\nW 50 0xABCD1234\n";
+	EXPECT_THAT(driver->optimizeCommandBuffer(), testing::StrEq(expected));
+}
+
+TEST_F(commandTestFixture, StorageCommandBufferOptimize5) {
+	driver->erase(10, 2);
+	driver->write(10, "0xABCDABCD");
+	driver->erase(12, 3);
+
+	string expected = "W 10 0xABCDABCD\nE 11 4\n";
+	EXPECT_THAT(driver->optimizeCommandBuffer5(), testing::StrEq(expected));
 }
