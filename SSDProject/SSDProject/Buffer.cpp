@@ -31,16 +31,18 @@ void Buffer::read(int lba)
 
 void Buffer::write(int lba, std::string data)
 {
-	fillBuffer();
 	checkBufferFull();
+
+	fillBuffer();
 	queueBuffer('W', lba, 0, data);
 	storeBuffer();
 }
 
 void Buffer::erase(int lba, int size)
 {
-	fillBuffer();
 	checkBufferFull();
+
+	fillBuffer();
 	queueBuffer('E', lba, size, "0x00000000");
 	storeBuffer();
 }

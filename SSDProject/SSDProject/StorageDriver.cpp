@@ -29,7 +29,7 @@ public:
 	void flush()
 	{
 		mapbuffer = commandBuffer->flush();
-		while (mapbuffer.empty()) {
+		while (!mapbuffer.empty()) {
 			_Buffer bufferdata = mapbuffer.front();
 			if (bufferdata.op == 'W') {
 				ssd->write(bufferdata.addr, bufferdata.data);
