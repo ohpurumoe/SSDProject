@@ -1,22 +1,26 @@
 ﻿#include "Buffer.h"
 
-std::string Buffer::read(int lba)
+void Buffer::read(int lba)
 {
 	fillBuffer();
 
-	_Buffer retBuffer, tempBuffer;
+	string readData = "0000000000";
+	_Buffer tempBuffer;
 	while (!qBuffer.empty()) {
 		tempBuffer = qBuffer.front();
-		if (tempBuffer.addr == lba) {
-			if (tempBuffer.op == 'W')
-				retBuffer.data = tempBuffer.data;
-			else if (tempBuffer.op == 'E')
-				retBuffer.data = "0x00000000";
+		if (tempBuffer.op == 'W' && tempBuffer.addr == lba) {
+			readData = tempBuffer.data;
+		}
+		else if (tempBuffer.op == 'E') {
+			int low = tempBuffer.addr;
+			int high = tempBuffer.addr + tempBuffer.size;
+
+			if (low <= lba && lba < high) readData = "0x00000000";
 		}
 		qBuffer.pop();
 	}
 
-	return retBuffer.data;
+	storeReadData(readData);
 }
 
 void Buffer::write(int lba, std::string data)
@@ -35,6 +39,7 @@ queue<_Buffer> Buffer::flush() {
 	queue <_Buffer> retBuffer = qBuffer;
 
 	clearBuffer();
+	storeBuffer();
 
 	return retBuffer;
 }
@@ -48,7 +53,7 @@ void Buffer::fillBuffer() {
 
 	clearBuffer();
 
-	fBufferIn.open(filename);
+	fBufferIn.open(filenameBuffer);
 	string line;
 	while (getline(fBufferIn, line)) {
 		if (line.size() == 0) continue;
@@ -89,11 +94,17 @@ void Buffer::clearBuffer()
 
 void Buffer::storeBuffer() {
 	_Buffer tempBuffer;
-	fBufferOut.open(filename, ios::out | ios::trunc);
+	fBufferOut.open(filenameBuffer, ios::out | ios::trunc);
 	while (!qBuffer.empty()) {
 		tempBuffer = qBuffer.front();
 		fBufferOut << tempBuffer.op << " " << tempBuffer.addr << " " << tempBuffer.size << " " << tempBuffer.data << endl;
 		qBuffer.pop();
 	}
 	fBufferOut.close();
+}
+
+void Buffer::storeReadData(const string data) {
+	fResultOut.open(filenameResult);
+	fResultOut << data;
+	fResultOut.close();
 }

@@ -10,20 +10,20 @@ class Buffer :
 	public IStorage
 {
 public:
-	Buffer(string filename = "buffer.txt")
-		: filename{ filename } {}
+	Buffer(string buffer = "buffer.txt", string result = "result.txt")
+		: filenameBuffer{ buffer }, filenameResult{ result } {}
 
 	// IStorage을(를) 통해 상속됨
-	string read(int lba) override;
+	void read(int lba) override;
 	void write(int lba, string data) override;
 	void erase(int lba, int size) override;
 	int getBufferSize();
 	queue<_Buffer> flush();
 
 private:
-	string filename;
+	string filenameBuffer, filenameResult;
 	ifstream fBufferIn;
-	ofstream fBufferOut;
+	ofstream fBufferOut, fResultOut;
 
 	queue <_Buffer> qBuffer;
 	const int BUFFER_SIZE = 10;
@@ -32,5 +32,6 @@ private:
 	void fillBuffer();
 	void clearBuffer();
 	void storeBuffer();
+	void storeReadData(const string data);
 };
 
