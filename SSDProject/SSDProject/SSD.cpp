@@ -2,7 +2,10 @@
 #include <fstream>
 #include <map>
 #include <string>
+#include <regex>
+#include <queue>
 #include "IStorage.h"
+#include "StorageException.h"
 
 using namespace std;
 class SSD : public IStorage {
@@ -11,19 +14,24 @@ public:
 		: nandname{ nandname },
 		resultname{ resultname } {}
 
-	string read(int LBA) override {
-		auto data = readData(LBA);
-		storeReadData(data);
+	void read(int LBA) override {
+		validateAddr(LBA);
 
-		return data;
+		_read(LBA);
 	}
 
 	void write(int LBA, string data) override {
-		fillMap();
+		validateAddr(LBA);
+		validateData(data);
 
-		writeDataToMap(LBA, data);
+		_write(LBA, data);
+	}
 
-		writeMapToFile();
+	void erase(int LBA, int size) override {
+		validateAddr(LBA);
+		validateEraseSize(size);
+
+		_erase(LBA, size);
 	}
 
 private:
@@ -32,8 +40,60 @@ private:
 	ofstream fNandOut, fResultOut;
 	ifstream fNandIn;
 	map<int, string> mapNand;
+
 	const char BLANK = ' ';
 	const int DATA_SIZE = 10;
+	const string EMPTY = "0x00000000";
+	const int ADDR_HIGH = 99;
+	const int ADDR_LOW = 0;
+
+
+	void _read(int LBA) {
+		validateAddr(LBA);
+
+		storeReadData(readData(LBA));
+	}
+
+	void _write(int LBA, string data) {
+		validateAddr(LBA);
+		validateData(data);
+
+		fillMapFromFile();
+		writeDataToMap(LBA, data);
+		writeMapToFile();
+	}
+
+	void _erase(int LBA, int size) {
+		validateAddr(LBA);
+		validateEraseSize(size);
+
+		fillMapFromFile();
+		for (int addr = LBA; addr < LBA + size; addr++) {
+			writeDataToMap(addr, EMPTY);
+		}
+		writeMapToFile();
+	}
+
+	void validateEraseSize(const int size) {
+		if (size < 1 || 10 < size) {
+			throw StorageException("size는 1 ~ 10 사이의 값이어야 합니다. size : " + to_string(size));
+		}
+	}
+
+	void validateData(const std::string& data)
+	{
+		regex re("^0x[A-F0-9]{8}");
+		if (!regex_match(data, re)) {
+			throw StorageException("data는 0x로 시작하고 숫자와 16진수 대문자 8개로 이루어져야합니다. data : " + data);
+		}
+	}
+
+	void validateAddr(const int LBA)
+	{
+		if (LBA < ADDR_LOW || LBA > ADDR_HIGH) {
+			throw StorageException("LBA는 0 ~ 99 사이의 값이어야 합니다. LBA : " + to_string(LBA));
+		}
+	}
 
 	void writeMapToFile() {
 		fNandOut.open(nandname);
@@ -51,11 +111,11 @@ private:
 			mapNand.insert({ LBA, data });
 		}
 	}
-	string getData(string data) {
+	string getData(const string data) {
 		string removeAddr = data.substr(data.find(BLANK), DATA_SIZE + sizeof(BLANK));
-		return removeAddr.substr(1, DATA_SIZE);
+		return removeAddr.substr(sizeof(BLANK), DATA_SIZE);
 	}
-	void fillMap() {
+	void fillMapFromFile() {
 		string line, readData;
 
 		mapNand.clear();
@@ -69,14 +129,15 @@ private:
 		fNandIn.close();
 	}
 	string readData(const int LBA) {
-		string line, readData;
+		string line, readData = EMPTY;
 
 		fNandIn.open(nandname, ios_base::in);
 		while (getline(fNandIn, line)) {
 			if (line.size() == 0) continue;
 			int addr = stoi(line);
-			readData = line.substr(line.find(' '), 11).substr(1, 10);
+			readData = getData(line);
 			if (addr == LBA) break;
+			readData = EMPTY;
 		}
 		fNandIn.close();
 
