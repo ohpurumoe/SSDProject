@@ -41,8 +41,8 @@ void Buffer::erase(int lba, int size)
 }
 
 queue<_Buffer> Buffer::flush() {
+	fillBuffer();
 	queue <_Buffer> retBuffer = qBuffer;
-
 	clearBuffer();
 	storeBuffer();
 

@@ -408,6 +408,7 @@ TEST_F(commandTestFixture, ReadWrite) {
 TEST_F(SSDTestFixture, FlushTest1) {
 	Buffer CommandBuffer;
 	StorageDriver driver(&ssd, &CommandBuffer);
+
 	driver.write(1, "0xAAAAAAAA");
 	driver.write(2, "0xBBBBBBBB");
 	driver.write(3, "0xCCCCCCCC");
@@ -419,11 +420,10 @@ TEST_F(SSDTestFixture, FlushTest1) {
 	driver.write(9, "0xDDDDDDDD");
 	driver.write(10, "0xFFFFFFFF");
 	driver.write(11, "0xFFFFFFFF");
+	driver.write(12, "0xFFFFFFFF");
 
-	string  expected = "";
-	EXPECT_THAT(readResultFile("buffer.txt"), testing::StrEq(expected));
-	driver.read(8);
-	expected = "0xCCCCCCCC";
+	driver.read(1);
+	string  expected = "0xAAAAAAAA";
 	EXPECT_THAT(readResultFile("result.txt"), testing::StrEq(expected));
 }
 
@@ -432,7 +432,7 @@ TEST_F(SSDTestFixture, FlushTest2) {
 	StorageDriver driver(&ssd, &CommandBuffer);
 	driver.write(7, "0xBBBBBBBB");
 	driver.write(8, "0xCCCCCCCC");
-	//driver.flush();
+	driver.flush();
 
 	string  expected = "";
 	EXPECT_THAT(readResultFile("buffer.txt"), testing::StrEq(expected));
