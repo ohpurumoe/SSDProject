@@ -63,6 +63,78 @@ public:
 		return ProcessOptimizedCommand(Commands);
 	}
 
+	string optimizeCommandBuffer5() {
+		std::vector<_Buffer> newMapbuffer;
+
+		mapbuffer = commandBuffer->flush();
+		while (!mapbuffer.empty()) {
+			_Buffer bufferdata = mapbuffer.front();
+
+			if (newMapbuffer.size() == 0) {
+				newMapbuffer.push_back(bufferdata);
+				mapbuffer.pop();
+				continue;
+			}
+
+			if (bufferdata.op == 'W') {
+				for (auto it = newMapbuffer.begin(); it != newMapbuffer.end(); ) {
+					if (it->op == 'E') {
+						int eStart = it->addr;
+						int eEnd = eStart + it->size;
+						int wStart = bufferdata.addr;
+						if (eStart <= bufferdata.addr && bufferdata.addr < eEnd) {
+							if (eStart == bufferdata.addr) {
+								_Buffer newbuf;
+								newbuf.op = it->op;
+								newbuf.addr = it->addr + 1;
+								newbuf.size = eEnd - newbuf.addr;
+								newMapbuffer.erase(it);
+								newMapbuffer.push_back(newbuf);
+								newMapbuffer.push_back(bufferdata);
+								break;
+							}
+						}
+					}
+				}
+			}
+			else if (bufferdata.op == 'E') {
+				for (auto it = newMapbuffer.begin(); it != newMapbuffer.end(); ) {
+					if (it->op == 'E') {
+						int start = bufferdata.addr;
+						int end = start + bufferdata.size;
+						int it_start = it->addr;
+						int it_end = it->addr + it->size;
+						if (it_start <= start && it_end <= end) {
+							newMapbuffer.erase(it);
+							_Buffer newbuf = bufferdata;
+							newbuf.addr = it_start;
+							newbuf.size = end - it_start;
+							newMapbuffer.push_back(newbuf);
+							break;
+						}
+					}
+				}
+			}
+			mapbuffer.pop();
+		}
+
+		string opstr;
+		string value = "";
+		for (auto it = newMapbuffer.begin(); it != newMapbuffer.end(); it++) {
+			opstr = it->op;
+			value.append(opstr);
+			value.append(" ");
+			value.append(to_string(it->addr));
+			value.append(" ");
+			if (it->op == 'E')
+				value.append(to_string(it->size));
+			else
+				value.append(it->data);
+			value.append("\n");
+		}
+		return value;
+	}
+
 private:
 	IStorage* ssd;
 	Buffer* commandBuffer;
