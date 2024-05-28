@@ -30,7 +30,7 @@ public:
 		for (int i = 0; i < 100; i++) {
 			string argument = "R " + to_string(i);
 			if (invoke(argument)) {
-				cout << "invoke error" << endl;
+				logger.print("invoke error");
 				throw invalid_argument("invoke error");
 			}
 
@@ -41,7 +41,7 @@ public:
 			if ("0x5A5A5A5A" != result)
 				ret++;
 
-			cout << result << endl;
+			logger.print(result);
 			ifs.close();
 		}
 

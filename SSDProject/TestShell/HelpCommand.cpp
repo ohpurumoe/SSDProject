@@ -29,13 +29,13 @@ public:
 
         if (v.size() == 1) {
             for (const auto& cmd : helpMaps)
-                cout << cmd.second << endl;
+                logger.print(cmd.second);
         }
         else {
             string command = *(v.begin()+1);
             auto it = helpMaps.find(command);
             if (it != helpMaps.end())
-                cout << it->second << endl;
+                logger.print(it->second);
             else
                 throw invalid_argument("Not Help available for command");
 

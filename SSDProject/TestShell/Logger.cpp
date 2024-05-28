@@ -166,7 +166,6 @@ private:
 	static constexpr int RETURN_SUCCESS = 0;
 	static constexpr int RETURN_FAIL = -1;
 
-
 	LoggerLevel logLevel = LOGGER_LEVEL_DEBUGGING;
 	fstream logFstream;
 	streampos logFileSize;
