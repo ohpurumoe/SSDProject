@@ -5,8 +5,6 @@
 #include <vector>
 #include <iterator>
 
-#include "TestApp1Command.cpp"
-#include "TestApp2Command.cpp"
 #include "HelpCommand.cpp"
 #include "FullReadCommand.cpp"
 #include "FullWriteCommand.cpp"
@@ -14,6 +12,9 @@
 #include "WriteCommand.cpp"
 #include "EraseCommand.cpp"
 #include "Logger.cpp"
+
+#include "../TestShellScenario/TestShellScenario.h"
+#pragma comment (lib, "../TestShellScenario.lib")
 
 using namespace std;
 
@@ -80,11 +81,8 @@ private:
 		else if (cmd == "fullwrite") {
 			return new FullWriteCommand(&receiver);
 		}
-		else if (cmd == "testapp1") {
-			return new TestApp1Command(&receiver);
-		}
-		else if (cmd == "testapp2") {
-			return new TestApp2Command(&receiver);
+		else if (cmd == "testapp1" || cmd == "testapp2") {
+			return getScenario(cmd, &receiver);
 		}
 		else if (cmd == "erase" || cmd == "erase_range") {
 			return new EraseCommand(&receiver);
