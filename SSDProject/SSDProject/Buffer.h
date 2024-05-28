@@ -16,7 +16,9 @@ public:
 	// IStorage을(를) 통해 상속됨
 	void read(int lba) override;
 	void write(int lba, string data) override;
+	void checkBufferFull();
 	void erase(int lba, int size) override;
+
 	int getBufferSize();
 	queue<_Buffer> flush();
 
@@ -26,7 +28,7 @@ private:
 	ofstream fBufferOut, fResultOut;
 
 	queue <_Buffer> qBuffer;
-	const int BUFFER_SIZE = 10;
+	const int MAX_BUFFER_SIZE = 10;
 
 	void queueBuffer(char, int, int, string);
 	void fillBuffer();

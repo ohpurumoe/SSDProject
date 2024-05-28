@@ -1,4 +1,5 @@
 ﻿#include "Buffer.h"
+#include "StorageException.h"
 
 void Buffer::read(int lba)
 {
@@ -25,12 +26,16 @@ void Buffer::read(int lba)
 
 void Buffer::write(int lba, std::string data)
 {
+	fillBuffer();
+	checkBufferFull();
 	queueBuffer('W', lba, 0, data);
 	storeBuffer();
 }
 
 void Buffer::erase(int lba, int size)
 {
+	fillBuffer();
+	checkBufferFull();
 	queueBuffer('E', lba, size, "0x00000000");
 	storeBuffer();
 }
@@ -46,6 +51,12 @@ queue<_Buffer> Buffer::flush() {
 
 int Buffer::getBufferSize() {
 	return (int)qBuffer.size();
+}
+
+void Buffer::checkBufferFull()
+{
+	if (getBufferSize() >= MAX_BUFFER_SIZE)
+		throw StorageException("Buffer full");
 }
 
 void Buffer::fillBuffer() {
@@ -75,8 +86,6 @@ void Buffer::fillBuffer() {
 }
 
 void Buffer::queueBuffer(char op, int lba, int size, string data) {
-	fillBuffer();
-
 	_Buffer tempBuffer;
 
 	tempBuffer.op = op;
