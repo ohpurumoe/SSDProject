@@ -64,7 +64,9 @@ protected:
 	void SetUp() override {
 		argsTestFixture::SetUp();
 		driver = new StorageDriver(&storage, &CommandBuffer);
+		realDriver = new StorageDriver(&ssd, &CommandBuffer);
 		parser = new Parser(driver);
+		CommandBuffer.flush();
 	}
 	void TearDown() override {
 		argsTestFixture::TearDown();
@@ -82,6 +84,8 @@ protected:
 	ifstream fRead;
 	Parser* parser;
 	StorageDriver* driver;
+	StorageDriver* realDriver;
+	SSD ssd;
 	Buffer CommandBuffer;
 	testing::NiceMock<MockStorage> storage;
 };
@@ -168,29 +172,7 @@ TEST_F(parseTestFixture, parseFlush){
 	EXPECT_EQ(typeid(*parsed_pair.first), typeid(FlushCommand));
 }
 
-class SSDTestFixture : public ::testing::Test {
-protected:
-	void SetUp() override {
-		buf.flush();
-	}
-	void TearDown() override {
-	}
-	string readResultFile(string filename = "result.txt") {
-		fRead.open(filename);
-		string readResult;
-		getline(fRead, readResult);
-		fRead.close();
-
-		return readResult;
-	}
-public:
-	SSD ssd;
-	Buffer buf;
-private:
-	ifstream fRead;
-};
-
-TEST_F(SSDTestFixture, SSDRWSuccess1) {
+TEST_F(commandTestFixture, SSDRWSuccess1) {
 	ssd.write(12, "0xAAAAAAAA");
 	ssd.read(12);
 
@@ -198,7 +180,7 @@ TEST_F(SSDTestFixture, SSDRWSuccess1) {
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
-TEST_F(SSDTestFixture, SSDRWSuccess2) {
+TEST_F(commandTestFixture, SSDRWSuccess2) {
 	ssd.write(12, "0xAAAAAAAA");
 	ssd.write(13, "0xBBBBBBBB");
 	ssd.write(14, "0xCCCCCCCC");
@@ -210,7 +192,7 @@ TEST_F(SSDTestFixture, SSDRWSuccess2) {
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
-TEST_F(SSDTestFixture, SSDRWSuccess3) {
+TEST_F(commandTestFixture, SSDRWSuccess3) {
 	ssd.write(12, "0xAAAAAAAA");
 	ssd.write(13, "0xBBB1BBBB");
 	ssd.write(14, "0xCCCCCCCC");
@@ -222,7 +204,7 @@ TEST_F(SSDTestFixture, SSDRWSuccess3) {
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
-TEST_F(SSDTestFixture, SSDDuplicatedWrite) {
+TEST_F(commandTestFixture, SSDDuplicatedWrite) {
 	ssd.write(10, "0xABCDEFAB");
 	ssd.write(10, "0xABCDEFBA");
 	ssd.read(10);
@@ -231,28 +213,14 @@ TEST_F(SSDTestFixture, SSDDuplicatedWrite) {
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
-TEST_F(SSDTestFixture, SSDReadEmpty) {
+TEST_F(commandTestFixture, SSDReadEmpty) {
 	ssd.read(99);
 
 	string  expected = "0x00000000";
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
-TEST_F(SSDTestFixture, SSDReadInvalidAddr) {
-	EXPECT_THROW(ssd.read(100), StorageException);
-	EXPECT_THROW(ssd.read(-1), StorageException);
-}
-
-TEST_F(SSDTestFixture, SSDWriteInvalidAddr) {
-	EXPECT_THROW(ssd.write(100, "0xFFFFFFFF"), StorageException);
-	EXPECT_THROW(ssd.write(-1, "0xFFFFFFFF"), StorageException);
-}
-
-TEST_F(SSDTestFixture, SSDWriteInvalidData) {
-	EXPECT_THROW(ssd.write(1, "0xABCDEFGH"), StorageException);
-}
-
-TEST_F(SSDTestFixture, SSDErase1Addr) {
+TEST_F(commandTestFixture, SSDErase1Addr) {
 	ssd.write(12, "0xAAAAAAAA");
 	ssd.write(13, "0xBBB1BBBB");
 	ssd.write(14, "0xCCCCCCCC");
@@ -265,7 +233,7 @@ TEST_F(SSDTestFixture, SSDErase1Addr) {
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
-TEST_F(SSDTestFixture, SSDErase3Addr) {
+TEST_F(commandTestFixture, SSDErase3Addr) {
 	ssd.write(12, "0xAAAAAAAA");
 	ssd.write(13, "0xBBB1BBBB");
 	ssd.write(14, "0xCCCCCCCC");
@@ -281,87 +249,83 @@ TEST_F(SSDTestFixture, SSDErase3Addr) {
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
-TEST_F(SSDTestFixture, SSDEraseInvalidSize) {
-	EXPECT_THROW(ssd.erase(12, 11), StorageException);
-}
-
-TEST_F(SSDTestFixture, BufferRWSuccess) {
-	buf.write(10, "0xABCDEFAB");
-	buf.read(10);
+TEST_F(commandTestFixture, BufferRWSuccess) {
+	CommandBuffer.write(10, "0xABCDEFAB");
+	CommandBuffer.read(10);
 
 	string  expected = "0xABCDEFAB";
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
-TEST_F(SSDTestFixture, BufferRWSuccess2) {
-	buf.write(10, "0xABCDEFAB");
-	buf.write(12, "0xABCAEFAB");
-	buf.write(14, "0xAB2DEFAB");
-	buf.write(11, "0xAB2DEF5B");
-	buf.write(5, "0xAB2DE35B");
-	buf.read(14);
+TEST_F(commandTestFixture, BufferRWSuccess2) {
+	CommandBuffer.write(10, "0xABCDEFAB");
+	CommandBuffer.write(12, "0xABCAEFAB");
+	CommandBuffer.write(14, "0xAB2DEFAB");
+	CommandBuffer.write(11, "0xAB2DEF5B");
+	CommandBuffer.write(5, "0xAB2DE35B");
+	CommandBuffer.read(14);
 
 	string  expected = "0xAB2DEFAB";
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
-TEST_F(SSDTestFixture, BufferRWOverwrite) {
-	buf.write(10, "0xABCDEFAB");
-	buf.write(12, "0xABCAEFAB");
-	buf.write(14, "0xAB2DEFAB");
-	buf.write(11, "0xAB2DEF5B");
-	buf.write(5, "0xAB2DE35B");
-	buf.write(14, "0xAB2DEFEB");
-	buf.read(14);
+TEST_F(commandTestFixture, BufferRWOverwrite) {
+	CommandBuffer.write(10, "0xABCDEFAB");
+	CommandBuffer.write(12, "0xABCAEFAB");
+	CommandBuffer.write(14, "0xAB2DEFAB");
+	CommandBuffer.write(11, "0xAB2DEF5B");
+	CommandBuffer.write(5, "0xAB2DE35B");
+	CommandBuffer.write(14, "0xAB2DEFEB");
+	CommandBuffer.read(14);
 
 	string  expected = "0xAB2DEFEB";
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
-TEST_F(SSDTestFixture, BufferErase) {
-	buf.write(5, "0xAB2DE35B");
-	buf.erase(5, 1);
-	buf.read(5);
+TEST_F(commandTestFixture, BufferErase) {
+	CommandBuffer.write(5, "0xAB2DE35B");
+	CommandBuffer.erase(5, 1);
+	CommandBuffer.read(5);
 
 	string  expected = "0x00000000";
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
-TEST_F(SSDTestFixture, BufferBlockErase) {
-	buf.write(10, "0xABCDEFAB");
-	buf.write(11, "0xABCAEFAB");
-	buf.write(12, "0xAB2DEFAB");
-	buf.write(13, "0xAB2DEF5B");
-	buf.write(14, "0xAB2DE35B");
-	buf.erase(10, 3);
-	buf.read(12);
+TEST_F(commandTestFixture, BufferBlockErase) {
+	CommandBuffer.write(10, "0xABCDEFAB");
+	CommandBuffer.write(11, "0xABCAEFAB");
+	CommandBuffer.write(12, "0xAB2DEFAB");
+	CommandBuffer.write(13, "0xAB2DEF5B");
+	CommandBuffer.write(14, "0xAB2DE35B");
+	CommandBuffer.erase(10, 3);
+	CommandBuffer.read(12);
 
 	string  expected = "0x00000000";
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
-TEST_F(SSDTestFixture, BufferFlush) {
-	buf.write(5, "0xAB2DE35B");
-	buf.flush();
-	buf.read(5);
+TEST_F(commandTestFixture, BufferFlush) {
+	CommandBuffer.write(5, "0xAB2DE35B");
+	CommandBuffer.flush();
+	CommandBuffer.read(5);
 
 	string  expected = "0000000000";
 	EXPECT_THAT(readResultFile(), testing::StrEq(expected));
 }
 
-TEST_F(SSDTestFixture, BufferFull) {
-	buf.write(1, "0xAB2DE35B");
-	buf.write(2, "0xAB2DE35B");
-	buf.write(3, "0xAB2DE35B");
-	buf.write(4, "0xAB2DE35B");
-	buf.write(5, "0xAB2DE35B");
-	buf.write(6, "0xAB2DE35B");
-	buf.write(7, "0xAB2DE35B");
-	buf.write(8, "0xAB2DE35B");
-	buf.write(9, "0xAB2DE35B");
-	buf.write(10, "0xAB2DE35B");
+TEST_F(commandTestFixture, BufferFull) {
+	CommandBuffer.write(1, "0xAB2DE35B");
+	CommandBuffer.write(2, "0xAB2DE35B");
+	CommandBuffer.write(3, "0xAB2DE35B");
+	CommandBuffer.write(4, "0xAB2DE35B");
+	CommandBuffer.write(5, "0xAB2DE35B");
+	CommandBuffer.write(6, "0xAB2DE35B");
+	CommandBuffer.write(7, "0xAB2DE35B");
+	CommandBuffer.write(8, "0xAB2DE35B");
+	CommandBuffer.write(9, "0xAB2DE35B");
+	CommandBuffer.write(10, "0xAB2DE35B");
 	
-	EXPECT_THROW(buf.write(11, "0xAB2DE35B"), StorageException);
+	EXPECT_THROW(CommandBuffer.write(11, "0xAB2DE35B"), StorageException);
 }
 
 TEST_F(commandTestFixture, Read) {
@@ -415,9 +379,6 @@ TEST_F(commandTestFixture, Erase) {
 	cmd->execute(args);
 }
 
-
-
-
 TEST_F(commandTestFixture, ReadWrite) {
 	strcpy(argv[1], "W");
 	strcpy(argv[2], "0");
@@ -444,38 +405,51 @@ TEST_F(commandTestFixture, ReadWrite) {
 
 }
 
-TEST_F(SSDTestFixture, FlushTest1) {
-	Buffer CommandBuffer;
-	StorageDriver driver(&ssd, &CommandBuffer);
+TEST_F(commandTestFixture, StorageReadInvalidAddr) {
+	EXPECT_THROW(driver->read(100), StorageException);
+	EXPECT_THROW(driver->read(-1), StorageException);
+}
 
-	driver.write(1, "0xAAAAAAAA");
-	driver.write(2, "0xBBBBBBBB");
-	driver.write(3, "0xCCCCCCCC");
-	driver.write(4, "0xDDDDDDDD");
-	driver.write(5, "0xFFFFFFFF");
-	driver.write(6, "0xAAAAAAAA");
-	driver.write(7, "0xBBBBBBBB");
-	driver.write(8, "0xCCCCCCCC");
-	driver.write(9, "0xDDDDDDDD");
-	driver.write(10, "0xFFFFFFFF");
-	driver.write(11, "0xFFFFFFFF");
-	driver.write(12, "0xFFFFFFFF");
+TEST_F(commandTestFixture, StorageWriteInvalidAddr) {
+	EXPECT_THROW(driver->write(100, "0xFFFFFFFF"), StorageException);
+	EXPECT_THROW(driver->write(-1, "0xFFFFFFFF"), StorageException);
+}
 
-	driver.read(1);
+TEST_F(commandTestFixture, StorageWriteInvalidData) {
+	EXPECT_THROW(driver->write(1, "0xABCDEFGH"), StorageException);
+}
+
+TEST_F(commandTestFixture, StorageEraseInvalidSize) {
+	EXPECT_THROW(driver->erase(12, 11), StorageException);
+}
+
+TEST_F(commandTestFixture, FlushTest1) {
+	realDriver->write(1, "0xAAAAAAAA");
+	realDriver->write(2, "0xBBBBBBBB");
+	realDriver->write(3, "0xCCCCCCCC");
+	realDriver->write(4, "0xDDDDDDDD");
+	realDriver->write(5, "0xFFFFFFFF");
+	realDriver->write(6, "0xAAAAAAAA");
+	realDriver->write(7, "0xBBBBBBBB");
+	realDriver->write(8, "0xCCCCCCCC");
+	realDriver->write(9, "0xDDDDDDDD");
+	realDriver->write(10, "0xFFFFFFFF");
+	realDriver->write(11, "0xFFFFFFFF");
+	realDriver->write(12, "0xFFFFFFFF");
+
+	realDriver->read(1);
 	string  expected = "0xAAAAAAAA";
 	EXPECT_THAT(readResultFile("result.txt"), testing::StrEq(expected));
 }
 
-TEST_F(SSDTestFixture, FlushTest2) {
-	Buffer CommandBuffer;
-	StorageDriver driver(&ssd, &CommandBuffer);
-	driver.write(7, "0xBBBBBBBB");
-	driver.write(8, "0xCCCCCCCC");
-	driver.flush();
+TEST_F(commandTestFixture, FlushTest2) {
+	realDriver->write(7, "0xBBBBBBBB");
+	realDriver->write(8, "0xCCCCCCCC");
+	realDriver->flush();
 
 	string  expected = "";
 	EXPECT_THAT(readResultFile("buffer.txt"), testing::StrEq(expected));
-	driver.read(8);
+	realDriver->read(8);
 	expected = "0xCCCCCCCC";
 	EXPECT_THAT(readResultFile("result.txt"), testing::StrEq(expected));
 }
