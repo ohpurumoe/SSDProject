@@ -17,13 +17,13 @@ public:
 	}
 	void write(int lba, std::string data)
 	{
-		if (commandBuffer->getBufferSize() == MAX_BUFFER_SIZE) flush();
+		if (commandBuffer->getBufferSize() >= MAX_BUFFER_SIZE) flush();
 		commandBuffer->write(lba, data);
 	}
 	void erase(int lba, int size)
 	{
 
-		if (commandBuffer->getBufferSize() == MAX_BUFFER_SIZE) flush();
+		if (commandBuffer->getBufferSize() >= MAX_BUFFER_SIZE) flush();
 		commandBuffer->erase(lba, size);
 	}
 	void flush()

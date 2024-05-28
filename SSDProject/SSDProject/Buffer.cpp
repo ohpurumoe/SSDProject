@@ -11,6 +11,7 @@ void Buffer::read(int lba)
 		tempBuffer = qBuffer.front();
 		if (tempBuffer.op == 'W' && tempBuffer.addr == lba) {
 			readData = tempBuffer.data;
+			BufferCached = true;
 		}
 		else if (tempBuffer.op == 'E') {
 			int low = tempBuffer.addr;
@@ -18,7 +19,7 @@ void Buffer::read(int lba)
 
 			if (low <= lba && lba < high) {
 				readData = "0x00000000";
-				BufferCached = false;
+				BufferCached = true;
 			}
 		}
 		qBuffer.pop();
@@ -49,7 +50,10 @@ queue<_Buffer> Buffer::flush() {
 }
 
 int Buffer::getBufferSize() {
-	return (int)qBuffer.size();
+	fillBuffer();
+	int ret =  (int)qBuffer.size();
+	clearBuffer();
+	return ret;
 }
 
 void Buffer::fillBuffer() {
