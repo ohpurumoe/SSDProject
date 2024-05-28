@@ -324,7 +324,7 @@ TEST_F(TestShellApplicationFixture, FlushCommandTestExecute) {
 
 TEST_F(TestShellApplicationFixture, ShellRunnerTest) {
     ShellRunner runner(&app);
-    string expected = "FullWriteReadCompare --- Run...PASS\nFullRead10AndCompare --- Run...PASS\nWrite10AndCompare --- Run...FAIL\nLoop_WriteAndReadCompare --- Run...FAIL\nUnknown --- Run...FAIL\n";
+    string expected = "FullWriteReadCompare --- Run...\nPASS\nFullRead10AndCompare --- Run...\nPASS\nWrite10AndCompare --- Run...\nFAIL\nLoop_WriteAndReadCompare --- Run...\nFAIL\nUnknown --- Run...\nFAIL\n";
 
     string osCmd = "echo FullWriteReadCompare> .\\run_list.lst";
     system(osCmd.c_str());
