@@ -4,6 +4,7 @@
 #include <vector>
 #include <fstream>
 #include "InputValidChecker.cpp"
+#include "Logger.cpp"
 
 using namespace std;
 
@@ -48,8 +49,10 @@ public:
 
 private:
     const std::string ssdExe = "..\\x64\\Debug\\SSD.exe";
+
 protected:
     Receiver* receiver;
     InputValidChecker checker;
+    Logger& logger = Logger::getInstance();
 };
 

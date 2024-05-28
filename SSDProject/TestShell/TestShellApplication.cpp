@@ -13,6 +13,7 @@
 #include "ReadCommand.cpp"
 #include "WriteCommand.cpp"
 #include "EraseCommand.cpp"
+#include "Logger.cpp"
 
 using namespace std;
 
@@ -38,7 +39,7 @@ public:
 			if (cmd != nullptr)
 				executeCommand(cmd, v);
 			else {
-				cout << "invalid command, try again" << endl;
+				logger.print("INVALID COMMAND, TRY AGAIN");	
 				return false;
 			}
 		}
@@ -103,4 +104,6 @@ private:
 
 		return vstrings;
 	}
+
+	Logger& logger = Logger::getInstance();
 };
