@@ -5,15 +5,17 @@
 #include <vector>
 #include <iterator>
 
-#include "TestApp1Command.cpp"
-#include "TestApp2Command.cpp"
 #include "HelpCommand.cpp"
 #include "FullReadCommand.cpp"
 #include "FullWriteCommand.cpp"
 #include "ReadCommand.cpp"
 #include "WriteCommand.cpp"
 #include "EraseCommand.cpp"
+#include "FlushCommand.cpp"
 #include "Logger.cpp"
+
+#include "../TestShellScenario/TestShellScenario.h"
+#pragma comment (lib, "../TestShellScenario.lib")
 
 using namespace std;
 
@@ -28,24 +30,23 @@ public:
 	}
 
 	bool execute(string input) {
-		try {
-			vector<string> v = trim(input);
+		vector<string> v = trim(input);
+		if (v.size() == 0)
+			return true;
 
-			if (v.front() == "exit" || v.size() == 0)
-				return false;
+		if (v.front() == "exit")
+			return false;
 
-			Command* cmd = createCommandInstance(v.front());
+		Command* cmd = createCommandInstance(v.front());
 
-			if (cmd != nullptr)
-				executeCommand(cmd, v);
-			else {
-				logger.print("INVALID COMMAND, TRY AGAIN");	
-				return false;
-			}
+		if (cmd != nullptr) {
+			executeCommand(cmd, v);
+			if(v.front().find("testapp") != string::npos)
+				receiver.setResultCode(0);
 		}
-		catch (std::exception e) {
-			cout << e.what() << endl;
-			throw e;
+		else {
+			logger.print("INVALID COMMAND, TRY AGAIN");	
+			receiver.setResultCode(1);
 		}
 
 		return true;
@@ -84,14 +85,14 @@ private:
 		else if (cmd == "fullwrite") {
 			return new FullWriteCommand(&receiver);
 		}
-		else if (cmd == "testapp1") {
-			return new TestApp1Command(&receiver);
-		}
-		else if (cmd == "testapp2") {
-			return new TestApp2Command(&receiver);
+		else if (cmd.find("testapp") != string::npos) {
+			return getScenario(cmd, &receiver);
 		}
 		else if (cmd == "erase" || cmd == "erase_range") {
 			return new EraseCommand(&receiver);
+		}
+		else if (cmd == "flush") {
+			return new FlushCommand(&receiver);
 		}
 		return nullptr;
 	}

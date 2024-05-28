@@ -1,11 +1,14 @@
 ﻿#include "Command.h"
 #include <stdexcept>
+#include "WriteCommand.cpp"
 
 using namespace std;
 
 class FullWriteCommand : public Command {
+private:
+	const int argc = 3;
 public:
-	FullWriteCommand(Receiver* receiver) : Command(receiver) {}
+	FullWriteCommand(IReceiver* receiver) : Command(receiver) {}
 	void execute(std::vector<std::string> v) override {
 		if (v.size() < 2) {
 			throw invalid_argument("Need two argument for full write command");
@@ -15,20 +18,15 @@ public:
 			throw invalid_argument("Need Receiver for full write command");
 		}
 
+		WriteCommand writeCommand(receiver);
+		if (v.size() < argc) {
+			v.resize(argc);
+		}
+		string value = v[1];
 		for (int lba = 0; lba < 100; lba++) {
-			string wrCmd = "";
-			string space = " ";
-
-			wrCmd.append(cmd);
-			wrCmd.append(space);
-			wrCmd.append(to_string(lba));
-			wrCmd.append(space);
-			wrCmd.append(v[1]);
-
-			int ret = invoke(wrCmd);
-			receiver->write(ret);
+			v[1] = to_string(lba);
+			v[2] = value;
+			writeCommand.execute(v);
 		}
 	}
-private:
-	const string cmd = "W";
 };

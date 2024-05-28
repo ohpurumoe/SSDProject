@@ -1,4 +1,6 @@
-﻿#include "Command.h"
+﻿#pragma once
+
+#include "Command.h"
 #include <stdexcept>
 #include "InputValidChecker.cpp"
 
@@ -6,7 +8,7 @@ using namespace std;
 
 class WriteCommand : public Command {
 public:
-	WriteCommand(Receiver* receiver) : Command(receiver) {}
+	WriteCommand(IReceiver* receiver) : Command(receiver) {}
 	void execute(std::vector<std::string> v) override {
 		if (receiver == nullptr) {
 			throw invalid_argument("Need valid write receiver");

@@ -27,7 +27,7 @@ public:
 
 private:
 	void prepare(const string &str) {
-		cout << str << " --- Run...";
+		logger.print(str + " --- Run...", false);
 		oldCoutStreamBuf = std::cout.rdbuf();
 		cout.rdbuf(strCout.rdbuf());
 	}
@@ -35,7 +35,7 @@ private:
 	void unprepare(bool result) {
 		cout.rdbuf(oldCoutStreamBuf);
 		strCout.clear();
-		cout << (result ? "PASS" : "FAIL") << endl;
+		logger.print(result ? "PASS" : "FAIL");
 	}
 
 	string getStringToCommand(const string &str) {
@@ -54,4 +54,6 @@ private:
 	streambuf* oldCoutStreamBuf;
 	ostringstream strCout;
 	TestShellApplication * app;
+
+	Logger& logger = Logger::getInstance();
 };

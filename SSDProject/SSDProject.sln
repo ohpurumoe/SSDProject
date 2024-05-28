@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SSDTest", "SSDTest\SSDTest.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestShellTest", "TestShellTest\TestShellTest.vcxproj", "{66CBC725-203B-44F7-A49A-39FEF20CCEE5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestShellScenario", "TestShellScenario\TestShellScenario.vcxproj", "{39E19F53-4EBC-47ED-AD21-504C6D529B6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -57,6 +59,14 @@ Global
 		{66CBC725-203B-44F7-A49A-39FEF20CCEE5}.Release|x64.Build.0 = Release|x64
 		{66CBC725-203B-44F7-A49A-39FEF20CCEE5}.Release|x86.ActiveCfg = Release|Win32
 		{66CBC725-203B-44F7-A49A-39FEF20CCEE5}.Release|x86.Build.0 = Release|Win32
+		{39E19F53-4EBC-47ED-AD21-504C6D529B6E}.Debug|x64.ActiveCfg = Debug|x64
+		{39E19F53-4EBC-47ED-AD21-504C6D529B6E}.Debug|x64.Build.0 = Debug|x64
+		{39E19F53-4EBC-47ED-AD21-504C6D529B6E}.Debug|x86.ActiveCfg = Debug|Win32
+		{39E19F53-4EBC-47ED-AD21-504C6D529B6E}.Debug|x86.Build.0 = Debug|Win32
+		{39E19F53-4EBC-47ED-AD21-504C6D529B6E}.Release|x64.ActiveCfg = Release|x64
+		{39E19F53-4EBC-47ED-AD21-504C6D529B6E}.Release|x64.Build.0 = Release|x64
+		{39E19F53-4EBC-47ED-AD21-504C6D529B6E}.Release|x86.ActiveCfg = Release|Win32
+		{39E19F53-4EBC-47ED-AD21-504C6D529B6E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

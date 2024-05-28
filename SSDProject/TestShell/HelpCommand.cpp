@@ -7,6 +7,9 @@ public:
         helpMaps = {
             {"write", "write : Save data into the LBA ex) wrtie 3 0xAAAABBBB "},
             {"read", "read : Load data from the LBA ex) read 3"},
+            {"erase", "erase : erase [LBA] [SIZE]"},
+            {"erase_range", "erase_range : erase from [Start LBA] to [End LBA]"},
+            {"flush", "flush : Empty the entire command buffer by executing all commands in the Buffer"},
             {"exit", "exit : Exit this shell"},
             {"help", "help : Display this help message.ex) help write"},
             {"fullwrite", "full write : Perform save data to LBA's all range (0~99) ex) fullwrite 0xABCDFFFF"},
@@ -29,13 +32,13 @@ public:
 
         if (v.size() == 1) {
             for (const auto& cmd : helpMaps)
-                cout << cmd.second << endl;
+                logger.print(cmd.second);
         }
         else {
             string command = *(v.begin()+1);
             auto it = helpMaps.find(command);
             if (it != helpMaps.end())
-                cout << it->second << endl;
+                logger.print(it->second);
             else
                 throw invalid_argument("Not Help available for command");
 

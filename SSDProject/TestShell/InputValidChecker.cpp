@@ -73,7 +73,7 @@ private:
 
 		string hexValue = value.substr(2);
 		for (char c : hexValue) {
-			if (!((c >= 'A' && c <= 'F') || (c >= '0' && c <= '9'))) {
+			if (!((c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f') || (c >= '0' && c <= '9'))) {
 				return false;
 			}
 		}
@@ -84,7 +84,7 @@ private:
 	bool isValidSize(const string size) {
 		int num = -1;
 
-		if (isDigitValue(size)) {
+		if (!isDigitValue(size)) {
 			return false;
 		}
 
