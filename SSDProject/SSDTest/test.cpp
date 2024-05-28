@@ -1,4 +1,5 @@
-﻿#include "gmock/gmock.h"
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include "gmock/gmock.h"
 #include "gtest/gtest.h"
 #include "../SSDProject/SSD.cpp"
 #include "../SSDProject/Parser.h"
@@ -248,7 +249,7 @@ TEST_F(commandTestFixture, Read) {
 	strcpy(argv[1], "R");
 	strcpy(argv[2], "0");
 	MockStorage storage;
-	EXPECT_CALL(storage, read, ::testing::_)
+	EXPECT_CALL(storage, read)
 		.Times(1)
 		.WillOnce(::testing::Return(""))
 		;
@@ -265,7 +266,7 @@ TEST_F(commandTestFixture, Write) {
 	strcpy(argv[2], "0");
 	strcpy(argv[3], "0x12345678");
 	MockStorage storage;
-	EXPECT_CALL(storage, write, ::testing::_)
+	EXPECT_CALL(storage, write)
 		.Times(1)
 		;
 	StorageDriver driver(&storage);
@@ -281,7 +282,7 @@ TEST_F(commandTestFixture, Erase) {
 	strcpy(argv[2], "0");
 	strcpy(argv[3], "3");
 	MockStorage storage;
-	EXPECT_CALL(storage, erase, ::testing::_)
+	EXPECT_CALL(storage, erase)
 		.Times(1)
 		;
 	StorageDriver driver(&storage);
