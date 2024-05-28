@@ -149,11 +149,11 @@ public:
 	}
 
 	void printLog(string funcName, string message) {
+		if (this->logLevel == LOGGER_LEVEL_DEBUGGING)
+			cout << message << endl;
+
 		string logString;
 		formatLog(logString, funcName, message);
-
-		if (this->logLevel == LOGGER_LEVEL_DEBUGGING)
-			cout << logString << endl;
 
 		saveLog(logString);
 	}
