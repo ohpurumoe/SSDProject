@@ -67,6 +67,20 @@ public:
 			}
 		}
 
+		int low, high;
+		for (int i = 0; i < temp.size(); i++) {
+			if (temp[i].op == 'E') {
+				low = temp[i].addr;
+				high = temp[i].addr + temp[i].size;
+				for (int j = 0; j < i && j < temp.size(); j++) {
+					if (temp[j].op == 'W' && low <= temp[j].addr && temp[j].addr < high) {
+						temp.erase(temp.begin() + j);
+						j--;
+					}
+				}
+			}
+		}
+
 		string ret;
 		for (int i = 0; i < temp.size(); i++) {
 			if (temp[i].op == 'W') {
