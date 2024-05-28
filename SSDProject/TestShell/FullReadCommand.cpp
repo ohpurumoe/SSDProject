@@ -29,7 +29,7 @@ public:
 			// read result
 			if (ret == 0) {
 				string result = getReadResult();
-				cout << result << endl;
+				logger.print(result);
 			}
 			receiver->read(ret);
 		}

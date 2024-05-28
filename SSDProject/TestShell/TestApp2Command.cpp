@@ -27,7 +27,7 @@ public:
 			argument += " " + to_string(i);
 			argument += " 0x12345678";
 			if (invoke(argument)) {
-				cout << "invoke error" << endl;
+				logger.print("invoke error");
 				throw invalid_argument("invoke error");
 			}
 		}
@@ -38,7 +38,7 @@ public:
 			string result;
 
 			if (invoke(argument)) {
-				cout << "invoke error" << endl;
+				logger.print("invoke error");
 				throw invalid_argument("invoke error");
 			}
 
@@ -49,7 +49,7 @@ public:
 			if ("0x12345678" != result)
 				ret++;
 
-			cout << result << endl;
+			logger.print(result);
 			ifs.close();
 		}
 

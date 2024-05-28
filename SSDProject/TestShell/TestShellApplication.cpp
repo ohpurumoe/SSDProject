@@ -44,7 +44,7 @@ public:
 			}
 		}
 		catch (std::exception e) {
-			cout << e.what() << endl;
+			logger.print(e.what());
 			throw e;
 		}
 
