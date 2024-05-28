@@ -43,18 +43,18 @@ private:
 
 void checkCmdValidity(int argc, const std::string& argv0, const std::string& argv1) {
 	if (argv1 != "R" && argv1 != "W" && argv1 != "E" && argv1 != "F") {
-		throw std::runtime_error("First argument must be \"R\" or \"W\" or \"E\" or \"F\". Please check usage of ssd.");
+		throw std::runtime_error("First argument must be \"R\" or \"W\" or \"E\" or \"F\".");
 	}
 	if (argv1 == "R" && argc != 3) {
-		throw std::runtime_error("Wrong usage of ssd Read. Please check usage of ssd.");
+		throw std::runtime_error("Wrong usage for ssd Read. Please write 1 arguments: addr");
 	}
 	if (argv1 == "W" && argc != 4) {
-		throw std::runtime_error("Wrong usage of ssd Write. Please check usage of ssd.");
+		throw std::runtime_error("Wrong usage for ssd Write. Please write 2 arguments: addr, data");
 	}
 	if (argv1 == "E" && argc != 4) {
-		throw std::runtime_error("Wrong usage of ssd Erase. Please check usage of ssd.");
+		throw std::runtime_error("Wrong usage for ssd Erase. Please write 2 arguments: addr, size");
 	}
 	if (argv1 == "F" && argc != 2) {
-		throw std::runtime_error("Wrong usage of ssd Flush. Please check usage of ssd.");
+		throw std::runtime_error("Wrong usage for ssd Flush. Please do not write any arguments.");
 	}
 }

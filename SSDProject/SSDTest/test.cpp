@@ -105,6 +105,22 @@ TEST_F(parseTestFixture, parseWriteFail){
 	EXPECT_THROW(parser->parse(3, argv), std::exception);
 }
 
+TEST_F(parseTestFixture, parseEraseFail){
+	strcpy(argv[0], "SSD.exe");
+	strcpy(argv[1], "E");
+	strcpy(argv[2], "5");
+	cpyArgs(3);
+	EXPECT_THROW(parser->parse(3, argv), std::exception);
+}
+
+TEST_F(parseTestFixture, parseFlushFail){
+	strcpy(argv[0], "SSD.exe");
+	strcpy(argv[1], "F");
+	strcpy(argv[2], "5");
+	cpyArgs(3);
+	EXPECT_THROW(parser->parse(3, argv), std::exception);
+}
+
 TEST_F(parseTestFixture, parseRead){
 	strcpy(argv[0], "SSD.exe");
 	strcpy(argv[1], "R");
@@ -122,6 +138,24 @@ TEST_F(parseTestFixture, parseWrite){
 	cpyArgs(4);
 	auto parsed_pair = parser->parse(4, argv);
 	EXPECT_EQ(typeid(*parsed_pair.first), typeid(WriteCommand));
+}
+
+TEST_F(parseTestFixture, parseErase){
+	strcpy(argv[0], "SSD.exe");
+	strcpy(argv[1], "E");
+	strcpy(argv[2], "5");
+	strcpy(argv[3], "5");
+	cpyArgs(4);
+	auto parsed_pair = parser->parse(4, argv);
+	EXPECT_EQ(typeid(*parsed_pair.first), typeid(EraseCommand));
+}
+
+TEST_F(parseTestFixture, parseFlush){
+	strcpy(argv[0], "SSD.exe");
+	strcpy(argv[1], "F");
+	cpyArgs(2);
+	auto parsed_pair = parser->parse(2, argv);
+	EXPECT_EQ(typeid(*parsed_pair.first), typeid(FlushCommand));
 }
 
 class SSDTestFixture : public ::testing::Test {
