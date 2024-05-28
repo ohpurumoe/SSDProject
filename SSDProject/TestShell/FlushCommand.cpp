@@ -17,12 +17,7 @@ public:
 			throw invalid_argument("Need valid argument");
 		}
 
-		string flushCmd;
-		string space = " ";
-
-		flushCmd.append(cmd);
-
-		int ret = invoke(flushCmd);
+		int ret = invoke(cmd);
 		receiver->flush(ret);
 	}
 private:
