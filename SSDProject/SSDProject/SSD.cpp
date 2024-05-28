@@ -15,22 +15,14 @@ public:
 		resultname{ resultname } {}
 
 	void read(int LBA) override {
-		validateAddr(LBA);
-
 		_read(LBA);
 	}
 
 	void write(int LBA, string data) override {
-		validateAddr(LBA);
-		validateData(data);
-
 		_write(LBA, data);
 	}
 
 	void erase(int LBA, int size) override {
-		validateAddr(LBA);
-		validateEraseSize(size);
-
 		_erase(LBA, size);
 	}
 
@@ -49,50 +41,21 @@ private:
 
 
 	void _read(int LBA) {
-		validateAddr(LBA);
-
 		storeReadData(readData(LBA));
 	}
 
 	void _write(int LBA, string data) {
-		validateAddr(LBA);
-		validateData(data);
-
 		fillMapFromFile();
 		writeDataToMap(LBA, data);
 		writeMapToFile();
 	}
 
 	void _erase(int LBA, int size) {
-		validateAddr(LBA);
-		validateEraseSize(size);
-
 		fillMapFromFile();
 		for (int addr = LBA; addr < LBA + size; addr++) {
 			writeDataToMap(addr, EMPTY);
 		}
 		writeMapToFile();
-	}
-
-	void validateEraseSize(const int size) {
-		if (size < 1 || 10 < size) {
-			throw StorageException("size는 1 ~ 10 사이의 값이어야 합니다. size : " + to_string(size));
-		}
-	}
-
-	void validateData(const std::string& data)
-	{
-		regex re("^0x[A-F0-9]{8}");
-		if (!regex_match(data, re)) {
-			throw StorageException("data는 0x로 시작하고 숫자와 16진수 대문자 8개로 이루어져야합니다. data : " + data);
-		}
-	}
-
-	void validateAddr(const int LBA)
-	{
-		if (LBA < ADDR_LOW || LBA > ADDR_HIGH) {
-			throw StorageException("LBA는 0 ~ 99 사이의 값이어야 합니다. LBA : " + to_string(LBA));
-		}
 	}
 
 	void writeMapToFile() {
@@ -111,10 +74,12 @@ private:
 			mapNand.insert({ LBA, data });
 		}
 	}
+
 	string getData(const string data) {
 		string removeAddr = data.substr(data.find(BLANK), DATA_SIZE + sizeof(BLANK));
 		return removeAddr.substr(sizeof(BLANK), DATA_SIZE);
 	}
+
 	void fillMapFromFile() {
 		string line, readData;
 
@@ -128,6 +93,7 @@ private:
 		}
 		fNandIn.close();
 	}
+
 	string readData(const int LBA) {
 		string line, readData = EMPTY;
 
@@ -143,6 +109,7 @@ private:
 
 		return readData;
 	}
+
 	void storeReadData(const string data) {
 		fResultOut.open(resultname);
 		fResultOut << data;

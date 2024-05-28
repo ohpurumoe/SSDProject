@@ -19,12 +19,11 @@ public:
 	// IStorage을(를) 통해 상속됨
 	void read(int lba) override;
 	void write(int lba, string data) override;
-	void checkBufferFull();
 	void erase(int lba, int size) override;
 
+	queue<_Buffer> flush();
 	int getBufferSize();
 	bool BufferHit();
-	queue<_Buffer> flush();
 
 private:
 	bool BufferCached = false;
@@ -43,8 +42,7 @@ private:
 	void clearBuffer();
 	void storeBuffer();
 	void storeReadData(const string data);
-
-	
-
+	string _read(int lba);
+	void checkBufferFull();
 };
 
