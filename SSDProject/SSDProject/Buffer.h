@@ -13,6 +13,9 @@ public:
 	Buffer(string buffer = "buffer.txt", string result = "result.txt")
 		: filenameBuffer{ buffer }, filenameResult{ result } {}
 
+	
+
+
 	// IStorage을(를) 통해 상속됨
 	void read(int lba) override;
 	void write(int lba, string data) override;
@@ -20,10 +23,15 @@ public:
 	void erase(int lba, int size) override;
 
 	int getBufferSize();
+	bool BufferHit();
 	queue<_Buffer> flush();
 
 private:
+	bool BufferCached = false;
+
 	string filenameBuffer, filenameResult;
+	string resultname;
+
 	ifstream fBufferIn;
 	ofstream fBufferOut, fResultOut;
 
@@ -35,5 +43,8 @@ private:
 	void clearBuffer();
 	void storeBuffer();
 	void storeReadData(const string data);
+
+	
+
 };
 
