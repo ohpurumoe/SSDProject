@@ -6,6 +6,7 @@ void Buffer::read(int lba)
 
 	string readData = "0000000000";
 	_Buffer tempBuffer;
+	retBuffer.data = "0x00000000";
 	while (!qBuffer.empty()) {
 		tempBuffer = qBuffer.front();
 		if (tempBuffer.op == 'W' && tempBuffer.addr == lba) {

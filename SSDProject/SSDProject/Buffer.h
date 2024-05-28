@@ -22,6 +22,8 @@ public:
 
 private:
 	string filenameBuffer, filenameResult;
+	string resultname;
+
 	ifstream fBufferIn;
 	ofstream fBufferOut, fResultOut;
 

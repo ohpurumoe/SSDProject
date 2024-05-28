@@ -1,9 +1,11 @@
 ﻿#include "SSD.cpp"
 #include "Parser.h"
+#include "Buffer.h"
 
 int main(int argc, char** argv) {
 	auto hardware = new SSD();
-	StorageDriver driver(hardware);
+	auto commandbuffer = new Buffer();
+	StorageDriver driver(hardware, commandbuffer);
 	Parser parser(&driver);
 
 	try {
