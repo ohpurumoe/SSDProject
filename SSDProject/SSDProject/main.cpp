@@ -12,10 +12,16 @@ int main(int argc, char** argv) {
 		auto& args = command_args_pair.second;
 		command->execute(args);
 	}
-	catch (...) {
+	catch (const std::exception& e) {
+		std::cout << e.what() << std::endl;
 		std::cout << "Wrong use of SSD.exe. Please retry." << std::endl;
 		delete hardware;
 		return -1;
+	}
+	catch (...) {
+		std::cout << "Fatal error has occurred." << std::endl;
+		delete hardware;
+		return -2;
 	}
 	delete hardware;
 	
